@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <div>
+        <h3>Forgot your username or password?</h3>
+        <p>Enter your username or email linked to your <%= title %> account. A link will 
+        be sent to your email. Use it to reset your password, or be reminded of your username.</p>
+        <form method="get" action="/forgotlogin">
+           Username: <input type="text" name="username"/><br/>
+           or
+           E-mail: <input type="text" name="email"/><br/>
+           <input type="submit" value="Submit"/>
+        </form>
+    </div>
+  </body>
+</html>

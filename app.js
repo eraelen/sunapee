@@ -1,11 +1,16 @@
-
 /**
+ * --Tweetee Application Main File, app.js--
+ *
+ *
  * Module dependencies.
  */
 
 var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
+  , register = require('./routes/register')
+  , forgotlogin = require('./routes/forgotlogin')
+
   , http = require('http')
   , path = require('path');
 
@@ -29,8 +34,11 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-app.get('/', routes.index);
+app.get('/', routes.index);    //Route to the Login/Register Page
 app.get('/users', user.list);
+app.get('/register', register.regInfo);
+app.get('/forgotlogin', forgotlogin.forgotlog);
+app.get('/:user', user.home);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

@@ -1,4 +1,2 @@
-sunapee
-=======
-
-326 web programming project
+CSC-326-Project2-Sunapee
+========================
