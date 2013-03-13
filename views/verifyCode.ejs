@@ -1,0 +1,13 @@
+    <% include entryheader %>
+    <div class="entryBody" >
+       <div class="entryCSS">
+        <h1><%= title %></h1>
+          <h3>Verification Page</h3>
+          <%= message %>
+          <form method="post" action="/codeCheck">
+             Code: <input type="text" name="code"/><br/>
+             <input type="submit" value="Submit"/>
+          </form>
+       </div>
+    </div>
+    <% include footer %>

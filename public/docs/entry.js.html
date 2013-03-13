@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>entry.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="doc-style.css" />
+  <script src="doc-filelist.js"></script>
+  <script>
+    var relativeDir = "", thisFile = "Users/weini/test1//entry.js", defaultSidebar = true;
+  </script>
+  <script src="doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+      <div class="heading h1">
+        <a href="#user-server-side-routes">User Server-Side Routes</a>
+      </div>
+      <div class="heading h2">
+        <a href="#login">login</a>
+      </div>
+      <div class="heading h2">
+        <a href="#authentication">authentication</a>
+      </div>
+      <div class="heading h2">
+        <a href="#logout">logout</a>
+      </div>
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs">
+          <h1>entry.js</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">users</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;../lib/users&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">tweets</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;../lib/tweets&#39;</span><span class="p">);</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<p>Records the logged in user:</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">var</span> <span class="nx">userids</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<p>A logged in "database":</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">var</span> <span class="nx">online</span> <span class="o">=</span> <span class="p">[];</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">online</span> <span class="o">=</span> <span class="nx">online</span><span class="p">;</span> <span class="c1">//needed if newTweet?</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="user-server-side-routes">
+  <h1>
+    <a href="#user-server-side-routes" class="pilcrow">&#182;</a>
+    User Server-Side Routes
+  </h1>
+</div>
+
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+</div>
+<p>GET rsegister</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">register</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">){</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;register&#39;</span><span class="p">,{</span><span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Tweetee&#39;</span><span class="p">,</span><span class="nx">message</span><span class="o">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">flash</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">)});</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+</div>
+<p>GET forgotlogin</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">forgotlogin</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">){</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;forgotlogin&#39;</span><span class="p">,{</span><span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Tweetee&#39;</span><span class="p">,</span> <span class="nx">message</span><span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">});</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Post forgotlogin page with respective error message if </p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">forgotloginProcess</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">email</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">email</span><span class="p">;</span>
+  <span class="nx">users</span><span class="p">.</span><span class="nx">lookupForgotLoginInfo</span><span class="p">(</span><span class="nx">email</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">req</span><span class="p">.</span><span class="nx">flash</span><span class="p">(</span><span class="s1">&#39;message&#39;</span><span class="p">,</span> <span class="nx">message</span><span class="p">);</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;forgotlogin&#39;</span><span class="p">,{</span><span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Tweetee&#39;</span><span class="p">,</span> <span class="nx">message</span><span class="o">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">flash</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">)});</span>
+  <span class="p">});</span>
+<span class="p">};</span>
+
+<span class="nx">exports</span><span class="p">.</span><span class="nx">verifyCode</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">){</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;verifyCode&#39;</span><span class="p">,{</span><span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Tweetee&#39;</span><span class="p">,</span> <span class="nx">message</span><span class="o">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">flash</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">)});</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-8" id="section-8">&#182;</a>
+</div>
+<p>Registration</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">verify</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">name</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">username</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">username</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">email</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">email</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">password</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">password</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">retypeP</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">retypeP</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">location</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">location</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">website</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">website</span><span class="p">;</span>
+    <span class="nx">users</span><span class="p">.</span><span class="nx">lookupRegistrationParams</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">username</span><span class="p">,</span> <span class="nx">email</span><span class="p">,</span> <span class="nx">password</span><span class="p">,</span> <span class="nx">retypeP</span><span class="p">,</span> <span class="nx">location</span><span class="p">,</span> <span class="nx">website</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="nx">message</span><span class="p">){</span>
+            <span class="nx">req</span><span class="p">.</span><span class="nx">flash</span><span class="p">(</span><span class="s1">&#39;message&#39;</span><span class="p">,</span> <span class="nx">message</span><span class="p">);</span>
+            <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;register&#39;</span><span class="p">,{</span><span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Tweetee&#39;</span><span class="p">,</span> <span class="nx">message</span><span class="o">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">flash</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">)});</span>
+        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+            <span class="nx">req</span><span class="p">.</span><span class="nx">flash</span><span class="p">(</span><span class="s1">&#39;message&#39;</span><span class="p">,</span> <span class="s2">&quot;A code has been sent out to the email provided.&quot;</span>
+              <span class="o">+</span><span class="s2">&quot;Submit it to confirm the account and complete the registration.&quot;</span><span class="p">);</span>
+            <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;verifyCode&#39;</span><span class="p">,{</span><span class="nx">title</span><span class="o">:</span><span class="s2">&quot;Tweetee&quot;</span><span class="p">,</span> <span class="nx">message</span><span class="o">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">flash</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">),</span> <span class="nx">email</span><span class="o">:</span><span class="nx">email</span><span class="p">});</span> 
+        <span class="p">}</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+
+<span class="nx">exports</span><span class="p">.</span><span class="nx">codeCheck</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="nx">res</span><span class="p">){</span>
+    <span class="nx">users</span><span class="p">.</span><span class="nx">lookupCodeCheck</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">code</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">message</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="nx">message</span><span class="p">){</span>
+            <span class="nx">req</span><span class="p">.</span><span class="nx">flash</span><span class="p">(</span><span class="s1">&#39;message&#39;</span><span class="p">,</span> <span class="nx">message</span><span class="p">);</span>
+            <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;verifyCode&#39;</span><span class="p">,{</span><span class="nx">title</span><span class="o">:</span><span class="s2">&quot;Tweetee&quot;</span><span class="p">,</span> <span class="nx">message</span><span class="o">:</span><span class="nx">req</span><span class="p">.</span><span class="nx">flash</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">)});</span>
+        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+            <span class="nx">req</span><span class="p">.</span><span class="nx">flash</span><span class="p">(</span><span class="s2">&quot;msg&quot;</span><span class="p">,</span> <span class="s2">&quot;The code is correct! Login to begin.&quot;</span><span class="p">);</span>
+            <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+  <span class="p">});</span>
+<span class="p">}</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+</div>
+<p>Send the following to the client (user's page)</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">home</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">userid</span><span class="o">=</span><span class="nx">req</span><span class="p">.</span><span class="nx">cookies</span><span class="p">.</span><span class="nx">userid</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">onlineUser</span><span class="o">=</span><span class="nx">online</span><span class="p">[</span><span class="nx">userid</span><span class="p">];</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">user</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">onlineUser</span><span class="p">.</span><span class="nx">username</span> <span class="o">==</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">user</span><span class="p">){</span>
+        <span class="kd">var</span> <span class="nx">username</span> <span class="o">=</span> <span class="nx">onlineUser</span><span class="p">.</span><span class="nx">username</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">u</span> <span class="o">=</span> <span class="nx">users</span><span class="p">.</span><span class="nx">getUserById</span><span class="p">(</span><span class="nx">username</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="nx">tweets</span><span class="p">.</span><span class="nx">tweets</span><span class="p">.</span><span class="nx">length</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">content</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">;</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
+</div>
+<p>display timeline tweets</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="nx">j</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="nx">j</span><span class="o">-</span><span class="mi">10</span> <span class="o">&amp;&amp;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
+</div>
+<p>console.log("i="+i);</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+          <span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">tweets</span><span class="p">.</span><span class="nx">tweets</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+          <span class="kd">var</span> <span class="nx">usr</span> <span class="o">=</span> <span class="nx">users</span><span class="p">.</span><span class="nx">getUserById</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">username</span><span class="p">);</span>
+          <span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">msg</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">);</span>
+          <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;split: &quot;</span><span class="o">+</span><span class="nx">a</span><span class="p">);</span>
+          <span class="nx">content</span> <span class="o">+=</span> <span class="s1">&#39;&lt;p&gt;&lt;b&gt;&#39;</span><span class="o">+</span><span class="nx">usr</span><span class="p">.</span><span class="nx">name</span><span class="o">+</span><span class="s1">&#39;&lt;/b&gt; &lt;a href=&quot;/&#39;</span><span class="o">+</span><span class="nx">t</span><span class="p">.</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;/profile&quot;&gt;@&#39;</span><span class="o">+</span><span class="nx">t</span><span class="p">.</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;&lt;/a&gt;&lt;br&gt;&#39;</span>
+                 <span class="o">+</span><span class="nx">users</span><span class="p">.</span><span class="nx">msgToHtml</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">msg</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;&lt;br&gt;&#39;</span>
+                 <span class="o">+</span><span class="nx">t</span><span class="p">.</span><span class="nx">date</span><span class="o">+</span><span class="s1">&#39;&lt;/p&gt;&#39;</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;home&#39;</span><span class="p">,</span> 
+               <span class="p">{</span> <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Home&#39;</span><span class="p">,</span>
+                <span class="nx">name</span><span class="o">:</span> <span class="nx">u</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span>
+                <span class="nx">username</span><span class="o">:</span> <span class="nx">username</span><span class="p">,</span>
+                <span class="nx">followerN</span><span class="o">:</span> <span class="nx">u</span><span class="p">.</span><span class="nx">follower</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span>
+                <span class="nx">followingN</span><span class="o">:</span> <span class="nx">u</span><span class="p">.</span><span class="nx">following</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span>
+                <span class="nx">tweets</span><span class="o">:</span> <span class="nx">content</span> <span class="p">}</span> <span class="p">);</span>
+    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;Page Access Not Authorized.&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="login">
+  <h2>
+    <a href="#login" class="pilcrow">&#182;</a>
+    login
+  </h2>
+</div>
+
+
+<p>Provides a user login/register view. Based on cookies example
+in lecture 18 by Timothy Richards.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">login</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">){</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-13" id="section-13">&#182;</a>
+</div>
+<p>Grab any messages being sent to use from redirect.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">var</span> <span class="nx">authmessage</span> <span class="o">=</span> <span class="nx">users</span><span class="p">.</span><span class="nx">flash</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="s1">&#39;userAuth&#39;</span><span class="p">)</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-14" id="section-14">&#182;</a>
+</div>
+<p>TDR: redirect if logged in:</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">var</span> <span class="nx">userid</span>  <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">cookies</span><span class="p">.</span><span class="nx">userid</span><span class="p">;</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Cookie userid:&quot;</span><span class="o">+</span><span class="nx">req</span><span class="p">.</span><span class="nx">cookies</span><span class="p">.</span><span class="nx">userid</span><span class="p">);</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-15" id="section-15">&#182;</a>
+</div>
+<p>TDR: If the user is already logged in - we redirect to the
+main application view. We must check both that the <code>userid</code>
+and the <code>online[userid]</code> are undefined. The reason is that
+the cookie may still be stored on the client even if the
+server has been restarted.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">userid</span> <span class="o">!==</span> <span class="kc">undefined</span> <span class="o">&amp;&amp;</span> <span class="nx">online</span><span class="p">[</span><span class="nx">userid</span><span class="p">]</span> <span class="o">!==</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">onlineUser</span><span class="o">=</span><span class="nx">online</span><span class="p">[</span><span class="nx">userid</span><span class="p">]</span> 
+    <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">onlineUser</span><span class="p">.</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;/home&#39;</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">else</span> <span class="p">{</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
+</div>
+<p>Render the login view if this is a new login.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">title</span>   <span class="o">:</span> <span class="s1">&#39;Tweetee&#39;</span><span class="p">,</span>
+                          <span class="nx">message</span> <span class="o">:</span> <span class="nx">authmessage</span><span class="p">,</span>
+                          <span class="nx">msg</span><span class="o">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">flash</span><span class="p">(</span><span class="s2">&quot;msg&quot;</span><span class="p">)</span> <span class="p">});</span><span class="c1">//For login username and password</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="authentication">
+  <h2>
+    <a href="#authentication" class="pilcrow">&#182;</a>
+    authentication
+  </h2>
+</div>
+
+
+<p>Performs <strong>basic</strong> user authentication. Based on cookies example
+in lecture 18 by Timothy Richards. </p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">userAuth</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
+</div>
+<p>TDR: redirect if logged in:</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">var</span> <span class="nx">userid</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">cookies</span><span class="p">.</span><span class="nx">userid</span><span class="p">;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
+</div>
+<p>TDR: do the check as described in the <code>exports.login</code> function.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">userid</span> <span class="o">!==</span> <span class="kc">undefined</span> <span class="o">&amp;&amp;</span> <span class="nx">online</span><span class="p">[</span><span class="nx">userid</span><span class="p">]</span> <span class="o">!==</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">onlineUser</span><span class="o">=</span><span class="nx">online</span><span class="p">[</span><span class="nx">userid</span><span class="p">]</span> 
+    <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">onlineUser</span><span class="p">.</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;/home&#39;</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">else</span> <span class="p">{</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
+</div>
+<p>Pull the values from the form.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="kd">var</span> <span class="nx">username</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">username</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">password</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">password</span><span class="p">;</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
+</div>
+<p>Perform the user lookup.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">users</span><span class="p">.</span><span class="nx">lookup</span><span class="p">(</span><span class="nx">username</span><span class="p">,</span> <span class="nx">password</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">user</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
+</div>
+<p>If there is an error we "flash" a message to the
+redirected route <code>/user/login</code>.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="nx">users</span><span class="p">.</span><span class="nx">flash</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="s1">&#39;userAuth&#39;</span><span class="p">,</span> <span class="nx">error</span><span class="p">);</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span>
+      <span class="p">}</span>
+      <span class="k">else</span> <span class="p">{</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
+</div>
+<p>TDR: use cookie to record stateful connection. Here
+we record the generated userid as a cookie to be
+passed back and forth between client and server.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="nx">userid</span> <span class="o">=</span> <span class="o">++</span><span class="nx">userids</span><span class="p">;</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">cookie</span><span class="p">(</span><span class="s1">&#39;userid&#39;</span><span class="p">,</span>
+                   <span class="nx">userid</span><span class="o">+</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+                   <span class="p">{</span> <span class="nx">maxAge</span> <span class="o">:</span> <span class="mi">900000</span> <span class="p">});</span> <span class="c1">// 15 minutes</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
+</div>
+<p>Store the user in our in memory database.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="nx">online</span><span class="p">[</span><span class="nx">userid</span><span class="p">]</span> <span class="o">=</span> <span class="nx">user</span><span class="p">;</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
+</div>
+<p>Redirect to main.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="kd">var</span> <span class="nx">onlineUser</span><span class="o">=</span><span class="nx">online</span><span class="p">[</span><span class="nx">userid</span><span class="p">]</span> 
+        <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">onlineUser</span><span class="p">.</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;/home&#39;</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="logout">
+  <h2>
+    <a href="#logout" class="pilcrow">&#182;</a>
+    logout
+  </h2>
+</div>
+
+
+<p>Deletes user info &amp; cookies - then redirects to login.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">logout</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
+</div>
+<p>TDR: handle cookies</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">var</span> <span class="nx">userid</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">cookies</span><span class="p">.</span><span class="nx">userid</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">online</span><span class="p">[</span><span class="nx">userid</span><span class="p">]</span> <span class="o">!==</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">clearCookie</span><span class="p">(</span><span class="s1">&#39;userid&#39;</span><span class="p">);</span>
+    <span class="k">delete</span> <span class="nx">online</span><span class="p">[</span><span class="nx">userid</span><span class="p">];</span>
+  <span class="p">}</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span>
+<span class="p">};</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>

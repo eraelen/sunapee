@@ -1,0 +1,37 @@
+<% include simpleheader %>
+
+<% include navbar %>
+
+<h1>Settings:</h1>
+<hr/>
+<div class="center">
+	<p>
+		<font color="red"><%- msg %></font>
+	</p>
+	<form method="post" id="editSettings" action="/<%= username %>/changeSettings">
+		Profile Visibility: <font color="gray"> <%- pv %> </font> <br>
+		<input type="radio" name="profVis" value="Public" /> Public <br>
+		<input type="radio" name="profVis" value="Followers Only" /> Followers Only <br>
+		<input type="radio" name="profVis" value="Only Me" /> Only Me <br>
+		Follower Permission: <font color="gray"> <%- fp %> </font> <br>
+		<input type="radio" name="folPerm" value="Public" /> Public <br>
+		<input type="radio" name="folPerm" value="Followers Only" /> Followers Only <br>
+		<input type="radio" name="folPerm" value="Only Me" /> Only Me <br>
+		Mention Permission: <font color="gray"> <%- mp %> </font> <br>
+		<input type="radio" name="mentionPerm" value="Public" /> Public <br>
+		<input type="radio" name="mentionPerm" value="Followers Only" /> Followers Only <br>
+		<input type="radio" name="mentionPerm" value="Only Me" /> Only Me <br>
+		Private Messaging Permission: <font color="gray"> <%- pm %> </font> <br>
+		<input type="radio" name="pmPerm" value="Public" /> Public <br>
+		<input type="radio" name="pmPerm" value="Followers Only" /> Followers Only <br>
+		<input type="radio" name="pmPerm" value="None" /> None <br>
+		<input type="submit" name="submit" value="Submit" /> <br>
+	</form>
+	
+	<br>
+	
+	<p>
+		<a href="/<%- username %>/editProfile">Edit Profile</a>
+	</p>
+</div>
+<% include footer %>

@@ -6,3 +6,123 @@ body {
 a {
   color: #00B7FF;
 }
+
+#navbar {
+    background-color:    #45c7b1;
+	height:				 35px;
+	margin-left:		 10px;
+	margin-right:		 10px;
+	width:				 100%;
+}
+
+#nbleft {
+	vertical-align:		 middle;
+	height:				 inherit;
+	width:		 		 40%;
+	float: 				 left;
+}
+
+#nbcenter1 {
+	vertical-align:		 0px;
+	height:				 inherit;
+	float:				 left;
+	width:				 20%;
+}
+
+#nbcenter2 {
+	vertical-align:		 0px;
+	height:				 inherit;
+	float:				 left;
+	width:				 20%;
+}
+
+#nbright {
+	vertical-align:		 middle;
+    height:              inherit;
+    float:               right;
+}
+
+#editInfo {
+    padding:             25px;
+    width:               400px;
+    height:              300px;
+    float:               left;
+}
+
+#editImg {
+    padding:             25px;
+    width:               400px;
+    height:              300px;
+    float:               left;
+}
+
+.center {
+	margin:auto;
+	width:40%;
+}
+
+#ubox_profilepic {
+    margin-top: 50px;
+    margin-left: 10%;
+    float: left;
+}
+
+#ubox_info {
+    margin-top: 60px;
+    margin-left: 30px;
+	height: 60px;
+	width: 300px;
+	float: left;
+}
+
+#conversation {
+	padding-top: 140px;
+}
+
+li.question {
+	text-decoration: underline;
+	font-weight: bold;
+}
+
+.entryBody {
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    min-height: 100%;
+}
+
+.indexBody{
+	padding: 50px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+.entryCSS {
+  position: relative;
+  padding: 40px 0;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 1px 3px rgba(0,0,0,.4), 0 0 30px rgba(0,0,0,.075);
+  background: #020031; /* Old browsers */
+  background: -moz-linear-gradient(45deg,  #00816B 0%, #63E5CF 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,#00816B), color-stop(100%,#63E5CF)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(45deg,  #00816B 0%,#63E5CF 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(45deg,  #00816B 0%,#63E5CF 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(45deg,  #00816B 0%,#63E5CF 100%); /* IE10+ */
+  background: linear-gradient(45deg,  #00816B 0%,#63E5CF 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#020031', endColorstr='#6d3353',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+  -webkit-box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
+     -moz-box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
+          box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
+}
+
+.entryCSS h1 {
+  font-size: 80px;
+  font-weight: bold;
+  letter-spacing: -1px;
+  line-height: 1;
+  text-shadow: 2px 2px black, -1px -1px #444;
+}
+.entryCSS p {
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 1.25;
+  margin-bottom: 30px;
+}
