@@ -1,36 +1,47 @@
-<% include simpleheader %>
-
+<% include userHeader %>
 <% include navbar %>
-
-<h1>Profile:</h1>
-<hr/>
-<div id="editInfo">
-	<p>
-		<font color="red"><%- msg %></font>
-	</p>
-	<form method="post" id="editProfileInfo" action="/<%= username %>/changeProfile">
-		Name: <input type="text" name="name" value="<%- name %>" /><font color="red">*</font> <br>
-		Username: <input type="text" name="username" value="<%- username %>" /><font color="red">*</font> <br>
-		Email: <input type="text" name="email" value="<%- email %>" /><font color="red">*</font> <br>
-		Location: <input type="text" name="location" value="<%- location %>" /> <br>
-		Website: <input type="text" name="website" value="<%- website %>" /> <br>
-		New Password: <input type="password" name="newpass" /> <br>
-		Retype New Password: <input type="password" name="newpassconfirm" /> <br>
-		<br>
-		Current Password: <input type="password" name="currentpass" /><font color="red">*</font> <br>
-		<br>
-		<font color="red">* Required</font> <br>
-		<input type="submit" name="submit" value="Submit" /> <br>
-	</form>
-</div>
-<div id="editImg">
-	<center>
-	<img src="/images/<%- profilePic %>" height="200" width="200" border="0"/> <br>
-	<form method="post" id="editProfilePic" action="/<%= username %>/changeProfilePic" enctype="multipart/form-data">
-		Select new profile picture from computer: <input type="file" name="profilepic" accept="image/*" />
-		<br><br>
-		<input type="submit" name="submit" value="Change Profile Picture" />
-	</form>
-	</center>
+<div class="center">
+	<h1>Profile:</h1>
+	<hr/>
+	<div id="allEditProfile">
+		<div id="editInfo">
+			<p>
+				<font color="red"><%- msg %></font>
+			</p>
+			<form method="post" id="editProfileInfo" action="/<%= username %>/changeProfile">
+				<table border="0">
+					<tr><td><b>Name</b></td><td><font color="gray"><%- name %></font></td></tr>
+					<tr><td></td><td><input type="text" name="name" /></td></tr>
+					<tr><td><b>Username</b></td><td><font color="gray"><%- username %></font></td></tr>
+					<tr><td></td><td><input type="text" name="username" /></td></tr>
+					<tr><td><b>Email</b></td><td><font color="gray"><%- email %></font></td></tr>
+					<tr><td></td><td><input type="email" name="email" /></td></tr>
+					<tr><td><b>Location</b></td><td><font color="gray"><%- location %></font></td></tr>
+					<tr><td></td><td><input type="text" name="location" /></td></tr>
+					<tr><td><b>Website</b></td><td><font color="gray"><%- website %></font></td></tr>
+					<tr><td></td><td><input type="text" name="website" /></td></tr>
+					<tr></tr>
+					<tr><td><b>New Password</b></td><td><input type="password" name="newpass" /></td></tr>
+					<tr><td><b>Retype New Password</b></td><td><input type="password" name="confirmnewpass" /></td></tr>
+					<tr></tr>
+					<tr><td><b>Current Password<font color="red">*</font></b></td><td><input type="password" name="currentpass" /></td></tr>
+				</table>
+				<br>
+				<font color="red">* Required</font>
+			</form>
+		</div>
+		<div id="editImg">
+			<center>
+			<img src="/images/<%- profilePic %>" height="200" width="200" border="0"/> <br>
+			<form method="post" id="editProfilePic" action="/<%= username %>/changeProfilePic" enctype="multipart/form-data">
+				Select new profile picture from computer: <br><input type="file" name="profilepic" accept="image/*" />	
+			</form>
+			</center>
+		</div>
+	</div>
+	<div id="submitEditProfile">
+		<input type="submit" name="submit" value="Change Profile Picture" form="editProfilePic"/><br>
+		<input type="submit" name="submit" value="Submit" form="editProfileInfo"/> <br>
+	</div>
 </div>
 <% include footer %>

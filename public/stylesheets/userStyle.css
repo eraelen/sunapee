@@ -1,0 +1,100 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.center {
+	margin:auto;
+	width:90%;
+}
+
+/* CSS for editing user settings */
+#formSettings {
+	margin: 30px;
+}
+
+#formSettings p { 
+	padding-left: 20px;
+}
+
+/* CSS for editing user profile */
+#allEditProfile {
+	width: inherit;
+	height: 300px;
+	padding: 25px;
+}
+
+#editInfo {
+    float: left;
+}
+
+#allEditProfile table { 
+	empty-cells: show; 
+}
+
+#editImg {
+    float: right;
+}
+
+#submitEditProfile {
+	padding: 25px;
+	float: right;
+}
+
+
+
+#navbar {
+    background-color:    #45c7b1;
+	height:				 35px;
+	margin-left:		 10px;
+	margin-right:		 10px;
+	width:				 100%;
+}
+
+#nbleft {
+	vertical-align:		 middle;
+	height:				 inherit;
+	width:		 		 40%;
+	float: 				 left;
+}
+
+#nbcenter1 {
+	vertical-align:		 0px;
+	height:				 inherit;
+	float:				 left;
+	width:				 20%;
+}
+
+#nbcenter2 {
+	vertical-align:		 0px;
+	height:				 inherit;
+	float:				 left;
+	width:				 20%;
+}
+
+#nbright {
+	vertical-align:		 middle;
+    height:              inherit;
+    float:               right;
+}
+
+
+
+
+#ubox_profilepic {
+    margin-top: 50px;
+    margin-left: 10%;
+    float: left;
+}
+
+#ubox_info {
+    margin-top: 60px;
+    margin-left: 30px;
+	height: 60px;
+	width: 300px;
+	float: left;
+}
