@@ -45,8 +45,33 @@ a {
 	float: right;
 }
 
+/* CSS for search result page */
+#searchResultCategory {
+	margin: 20px;
+	width: 30%;
+	float: left;
+	font-size: 125%;
+}
 
+#searchResults {
+	margin: 20px;
+	width: 50%;
+	float: right;
+	border-left: 2px dotted gray;
+	min-height: 500px;
+}
 
+#searchResults h3 {
+    padding-left: 20px;
+}
+
+.tweetSearchResult {
+    margin-left: 40px;
+	padding-left: 20px;
+	border-bottom: 1px solid gray;
+}
+
+/* CSS for nav bar */
 #navbar {
     background-color:    #45c7b1;
 	height:				 35px;

@@ -1,13 +1,33 @@
-<% include simpleheader %>
-
+<% include userHeader %>
 <% include navbar %>
-
-<h1>Search Result Page</h1>
-
-<h3>Results for " <%- searchPhrase %> " </h3>
-<script>
-	document.write('<p><b> <%- rname %> </b> <a href="/ <%- rusername %> ">@ <%- rusername %> </a><br> <%- rmsg %> <br> <%- rdate %> </p>');
-</script>
+<div class="center">
+	<div id="searchResultCategory">
+		<p>
+			<b>Tweets</b><br>
+			<font color="gray">------------------------------</font><br>
+			<b>Users</b><br>
+		</p>
+	</div>
+	
+	<div id="searchResults">
+		<h3>Results for <font color="red"><%- searchPhrase %></font> :</h3>
+		<div class="tweetSearchResult">
+			<script>
+				document.write('<p><b> <%- rname %> </b> <a href="/ <%- rusername %> ">@ <%- rusername %> </a><br> <%- rmsg %> <br> <%- rdate %> </p>');
+			</script>
+		</div>
+		<div class="tweetSearchResult">
+			<script>
+				document.write('<p><b> <%- rname %> </b> <a href="/ <%- rusername %> ">@ <%- rusername %> </a><br> <%- rmsg %> <br> <%- rdate %> </p>');
+			</script>
+		</div>
+		<div class="tweetSearchResult">
+			<script>
+				document.write('<p><b> <%- rname %> </b> <a href="/ <%- rusername %> ">@ <%- rusername %> </a><br> <%- rmsg %> <br> <%- rdate %> </p>');
+			</script>
+		</div>
+	</div>
+</div>
 
 
 <% include footer %>
