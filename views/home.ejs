@@ -1,24 +1,41 @@
-<% include simpleheader %>
-
+<% include userHeader %>
 <% include navbar %>
+<div class="center">
+	<div id="leftContainer">
+		<div id="userStats">
+			<table>
+				<tr height="175px">
+					<th><img src="/images/defaultProfilePic.jpg" width="120" height="120" /></th>
+					<th><%= name %><br><a href = "/<%= username %>/profile"> @<%= username %></th>
+					<!--<th><img src="/images/defaultProfilePic.jpg" width="100" height="30" /></th>-->
+				</tr>
+				<tr>
+					<th><a href="following">Tweets: <%= followingN %></a></th>
+					<th><a href="follower">Follower: <%= followerN %></a></th>
+					<th><a href="following">Following: <%= followingN %></a></th>
+				</tr>
+			</table>
+		</div>	
+		<div id="trendHashtags">
+			<p>THIS IS trending hash tags</p>
+		</div>
+	</div>
+	
+	<div id="rightContainer">
+		<div id="composeTweetBox">
+			<form method="post" id="compose" action="/<%= username %>/newtweet">
+				<textarea name="message" cols="50" rows="4">What's on your mind?</textarea>
+				<br>
+				<input type="submit" name="submit" value="Tweet!" />
+			</form>
+		</div>
+		
+		<div id="tweetListContainer">
+			<h2>Timeline:</h2>
+			<%- tweets %>
+		</div>
+	</div>
 
-<h1><%= title %></h1>
-<h2>Welcome <%= name %> <a href = "/<%= username %>/profile"> @<%= username %> </a></h2>
-<p><a href="follower">Follower: <%= followerN %> </a></p>
-<p><a href="following">Following: <%= followingN %> </a> </p>
-
-<h3>Compose a new tweet:</h3>
-<form method="post" id="compose" action="/<%= username %>/newtweet">
-<textarea name="message" cols="25" rows="4">
-What's in your mind?
-</textarea><br>
-<input type="submit" name="submit" value="Tweet!" />
-</form>
-
-<h3>Timeline</h3>
-<%- tweets %>
+</div>
 
 <% include footer %>
-
-
-

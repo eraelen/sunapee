@@ -65,11 +65,57 @@ a {
     padding-left: 20px;
 }
 
+/* CSS for individual tweets */
+
 .tweetSearchResult {
     margin-left: 40px;
 	padding-left: 20px;
 	border-bottom: 1px solid gray;
 }
+
+/* CSS for user home and profile */
+#leftContainer {
+	margin: 30px;
+	width: 35%;
+	min-height: 500px;
+	float: left;
+}
+
+#rightContainer {
+	margin: 30px;
+	padding-left: 20px;
+	width: 50%;
+	min-height: 500px;
+	float: right;
+	border-left: 2px dotted gray;
+}
+
+#userStats {
+	padding-bottom: 20px;
+	height: 200px;
+	border-bottom: 2px solid gray;
+}
+
+#userStats tr {
+	vertical-align: middle;
+	text-align: left;
+}
+
+#trendHashtags {
+	min-height: 300px;
+}
+
+#composeTweetBox {
+	margin-bottom: 20px;
+	padding-bottom: 20px;
+	min-height: 100px;
+	border-bottom: 2px solid gray;
+} 
+
+#tweetListContainer {
+    min-height: 400px;
+}  
+
 
 /* CSS for nav bar */
 #navbar {
