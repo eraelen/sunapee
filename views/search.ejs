@@ -1,35 +1,41 @@
 <% include userHeader %>
 <% include navbar %>
 <div class="center">
-	<div id="searchResultCategory">
-		<p>
-			<b>Tweets</b><br>
-			<font color="gray">------------------------------</font><br>
-			<b>Hashtags</b><br>
-			<font color="gray">------------------------------</font><br>
-			<b>People</b><br>
-		</p>
+	<div id="leftContainer">
+		<div id="searchResultCategory">
+			<p>
+				<b>Tweets</b><br>
+				<font color="gray">------------------------------</font><br>
+				<b>Hashtags</b><br>
+				<font color="gray">------------------------------</font><br>
+				<b>People</b><br>
+			</p>
+		</div>	
+		<div id="trendHashtags">
+			<p>THIS IS trending hash tags</p>
+		</div>
 	</div>
 	
-	<div id="searchResults">
-		<h3>Results for <font color="red"><%- searchPhrase %></font> :</h3>
-		<div class="tweetSearchResult">
-			<script>
-				document.write('<p><b> <%- rname %> </b> <a href="/ <%- rusername %> ">@ <%- rusername %> </a><br> <%- rmsg %> <br> <%- rdate %> </p>');
-			</script>
-		</div>
-		<div class="tweetSearchResult">
-			<script>
-				document.write('<p><b> <%- rname %> </b> <a href="/ <%- rusername %> ">@ <%- rusername %> </a><br> <%- rmsg %> <br> <%- rdate %> </p>');
-			</script>
-		</div>
-		<div class="tweetSearchResult">
-			<script>
-				document.write('<p><b> <%- rname %> </b> <a href="/ <%- rusername %> ">@ <%- rusername %> </a><br> <%- rmsg %> <br> <%- rdate %> </p>');
-			</script>
+	<div id="rightContainer">		
+		<div id="searchResults">
+			<h3>Results for <font color="red"><%- searchPhrase %></font> :</h3>
+			<div class="tweetSearchResult">
+				<script>
+					document.write('<p><b> <%- rname %> </b> <a href="/ <%- rusername %> ">@ <%- rusername %> </a><br> <%- rmsg %> <br> <%- rdate %> </p>');
+				</script>
+			</div>
+			<div class="tweetSearchResult">
+				<script>
+					document.write('<p><b> <%- rname %> </b> <a href="/ <%- rusername %> ">@ <%- rusername %> </a><br> <%- rmsg %> <br> <%- rdate %> </p>');
+				</script>
+			</div>
+			<div class="tweetSearchResult">
+				<script>
+					document.write('<p><b> <%- rname %> </b> <a href="/ <%- rusername %> ">@ <%- rusername %> </a><br> <%- rmsg %> <br> <%- rdate %> </p>');
+				</script>
+			</div>
 		</div>
 	</div>
 </div>
-
 
 <% include footer %>

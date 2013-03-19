@@ -1,10 +1,20 @@
-<% include simpleheader %>
-
+<% include userHeader %>
 <% include navbar %>
+<div class="center">
+	<div id="leftContainer">
+			
+		<div id="trendHashtags">
+			<p>THIS IS trending hash tags</p>
+		</div>
+	</div>
+	
+	<div id="rightContainer">
+		<div id="tweetListContainer">
+			<h2>Mentions:</h2>
+			<%- tweets %>
+		</div>
+	</div>
 
-<h1><%= title %></h1>
-<h2><%= name %> <a href = "/<%= username %>/profile"> @<%= username %> </a></h2>
-
-<%-tweets%>
+</div>
 
 <% include footer %>

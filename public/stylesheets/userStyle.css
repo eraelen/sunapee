@@ -47,18 +47,14 @@ a {
 
 /* CSS for search result page */
 #searchResultCategory {
-	margin: 20px;
-	width: 30%;
-	float: left;
+	padding-bottom: 20px;
+	height: 200px;
+	border-bottom: 2px solid gray;
 	font-size: 125%;
 }
 
 #searchResults {
-	margin: 20px;
-	width: 50%;
-	float: right;
-	border-left: 2px dotted gray;
-	min-height: 500px;
+	min-height: 400px;
 }
 
 #searchResults h3 {
@@ -116,6 +112,33 @@ a {
     min-height: 400px;
 }  
 
+/* CSS for user follower and following */
+#viewFOption {
+	padding-bottom: 20px;
+	height: 100px;
+	border-bottom: 2px solid gray;
+	font-size: 125%;
+}
+
+#viewFOption  a {
+	text-decoration: none;
+	color: black;
+}
+
+#viewFOption  a:hover {
+	text-decoration: underline;
+	color: black;
+}
+
+#userListContainer {
+	min-height: 400px;
+}
+
+/* CSS for help */
+li.question {
+	text-decoration: underline;
+	font-weight: bold;
+}
 
 /* CSS for nav bar */
 #navbar {

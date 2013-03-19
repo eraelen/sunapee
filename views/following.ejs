@@ -1,10 +1,26 @@
-<% include simpleheader %>
+<% include userHeader %>
 <% include navbar %>
+<div class="center">
+	<div id="leftContainer">
+		<div id="viewFOption">
+			<p>
+				<a href="follower"><b>Follower</b></a><br>
+				<font color="gray">------------------------------</font><br>
+				<a href="following"><font color="gray"><b>Following</b></font></a><br>
+			</p>
+		</div>	
+		<div id="trendHashtags">
+			<p>THIS IS trending hash tags</p>
+		</div>
+	</div>
+	
+	<div id="rightContainer">		
+		<div id="userListContainer">
+			<h2>Followers:</h2>
+			<%- content %>
+		</div>
+	</div>
 
-<h1><%= title %></h1>
-<h2><%= name %> <a href = "/<%= username %>/profile"> @<%= username %> </a></h2>
-
-<%- content %>
-
+</div>
 
 <% include footer %>
