@@ -140,6 +140,18 @@ li.question {
 	font-weight: bold;
 }
 
+/* CSS for detailed tweet */
+.center2 {
+	margin:auto;
+	width:50%;
+}
+
+#userInfo {
+	padding-top: 20px;
+	height: 150px;
+	border-bottom: 2px solid gray;
+}
+
 /* CSS for nav bar */
 #navbar {
     background-color:    #45c7b1;

@@ -1,25 +1,25 @@
-<% include simpleheader %>
-
+<% include userHeader %>
 <% include navbar %>
-
-<div class="center">
-	<div id="ubox_profilepic">
-		<img src="/images/<%- profilePic %>" height="50" width="50" border="0"/>
+<div class="center2">
+	<div id="userInfo">
+		<table>
+			<tr>
+				<td><img src="/images/defaultProfilePic.jpg" width="120" height="120" /></td>
+				<td><%= name %><br><a href = "/<%= username %>/profile"> @<%= username %></td>
+			</tr>
+		</table>
 	</div>
-	<div id="ubox_info">
-		<b><%- name %></b> <br>
-		<font color="gray"><a href="<<%- username %>>">@<%- username %></a> <br>
+	
+	<%- origTweet %>
+	
+	<div id="composeTweetBox">
+		<form method="post" id="compose" action="/<%= username %>/newtweet">
+			<textarea name="message" cols="60" rows="4">reply to @username</textarea>
+			<br>
+			<input type="submit" name="submit" value="Tweet!" />
+		</form>
 	</div>
-
-	<div id="conversation">
-		<hr>
-		<%- origTweet %>
-		<form method="post" action="/detailedTweetFakeReply">
-		<center>
-		<textarea name="replyTweet" rows="5" cols="60">@tim </textarea>
-		</center>
-		<input type="submit" value="Reply"/>
-		</form>		
+	<div id="tweetListContainer">
 		<%- convo %>
 	</div>
 </div>
