@@ -35,10 +35,10 @@ exports.home = function(req, res){
 * And redirect to Home page.
 */
 exports.newtweet = function(req, res) {
-  var username = req.params.id;
-  var u = users.getUserById(username);
-  tweets.addTweet(tweets.tweetdb.length, u.name, u.username, req.body.message, null, null, null);
-  users.addUserT(u.username, tweets.tweetdb.length-1);
+  var user = req.session.user;
+  var username = user.username
+  tweets.addTweet(tweets.tweetdb.length, user.name, username, req.body.message, null, null, null);
+  users.addUserT(username, tweets.tweetdb.length-1);
   res.redirect('/'+username+'/home');
 }
 

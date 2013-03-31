@@ -64,7 +64,7 @@ exports.codeCheck = function(req,res){
             res.render('verifyCode',{message:req.flash("message")});
         }else{
             req.flash("msg", "The code is correct! Login to begin.");
-            res.render('/', {msg: req.flash("msg")});
+            res.render('login', {message: "",msg:req.flash("msg")});
         }
   });
 }
