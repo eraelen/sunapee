@@ -58,11 +58,17 @@ a {
 
 .center {
 	margin:auto;
+<<<<<<< HEAD
 	width:60%;
 }
 
 
 
+=======
+	width:40%;
+}
+
+>>>>>>> assign3branch
 #ubox_profilepic {
     margin-top: 50px;
     margin-left: 10%;
@@ -93,7 +99,11 @@ li.question {
 
 .indexBody{
 	padding: 50px;
+<<<<<<< HEAD
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+=======
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+>>>>>>> assign3branch
 }
 
 .entryCSS {
@@ -102,6 +112,7 @@ li.question {
   color: #fff;
   text-align: center;
   text-shadow: 0 1px 3px rgba(0,0,0,.4), 0 0 30px rgba(0,0,0,.075);
+<<<<<<< HEAD
   background: #020031; /* Old browsers */
   background: -moz-linear-gradient(45deg,  #00816B 0%, #63E5CF 100%); /* FF3.6+ */
   background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,#00816B), color-stop(100%,#63E5CF)); /* Chrome,Safari4+ */
@@ -115,6 +126,21 @@ li.question {
           box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
 }
 
+=======
+  background: #00816B;
+  background-image: url("../images/flowerTest.png"); /* fallback */
+  background-image: url("../images/flowerTest.png"), -webkit-gradient(linear, left top, left bottom, from(#00816B), to(#63E5CF)); /* Saf4+, Chrome */
+  background-image: url("../images/flowerTest.png"), -webkit-linear-gradient(top, #00816B, #63E5CF); /* Chrome 10+, Saf5.1+ */
+  background-image: url("../images/flowerTest.png"),    -moz-linear-gradient(top, #00816B, #63E5CF); /* FF3.6+ */
+  background-image: url("../images/flowerTest.png"),     -ms-linear-gradient(top, #00816B, #63E5CF); /* IE10 */
+  background-image: url("../images/flowerTest.png"),      -o-linear-gradient(top, #00816B, #63E5CF); /* Opera 11.10+ */
+  background-image: url("../images/flowerTest.png"),         linear-gradient(top, #00816B, #63E5CF); /* W3C */
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+
+
+>>>>>>> assign3branch
 .entryCSS h1 {
   font-size: 80px;
   font-weight: bold;

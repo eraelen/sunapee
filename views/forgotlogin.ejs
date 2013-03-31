@@ -1,9 +1,10 @@
     <% include entryheader %>
     <div class="entryBody">
        <div class="entryCSS">
-        <h1><%= title %></h1>
+
+        <h1>Tweetee</h1>
         <p>Forgot your username or password?<p>
-        <h3>Enter your username or email linked to your <%= title %> account. <br> A link will be sent to your email. <br> Use it to reset your password, or be reminded of your username.</h3>
+        <h3>Enter your username or email linked to your Tweetee account. <br> A link will be sent to your email. <br> Use it to reset your password, or be reminded of your username.</h3>
         <%= message %>
         <form method="post" action="/forgotloginProcess">
            E-mail: <input type="text" name="email"/><br/>

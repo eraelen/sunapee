@@ -9,6 +9,7 @@ var online = entry.online;
  * GET home page.
  */
 exports.home = function(req, res){
+<<<<<<< HEAD
   var userid=req.cookies.userid;
   var onlineUser=online[userid];
   if ( onlineUser !== undefined && onlineUser.username == req.params.id){
@@ -24,6 +25,25 @@ exports.home = function(req, res){
     			   } );
   } else {
         res.send('Page Access Not Authorized.');
+=======
+  var user = req.session.user;
+  var username = user.username;
+  if (user === undefined || online[user.uid] === undefined) {
+    req.flash('userAuth', 'Not logged in!');
+    res.redirect('/');
+  }else if(username !== req.params.id){
+    res.redirect('/'+username+'/home');
+  }else {
+    var tl = tweets.getRecentT(username, user.following, 20);
+  	res.render('home', 
+    			{ title: 'Home',
+    			  name: user.name,
+    			  username: username,
+    			  followerN: user.follower.length,
+    			  followingN: user.following.length,
+                  tweets: tweetsToHtml(tl)
+    			   } );
+>>>>>>> assign3branch
   }
 }
 
@@ -43,6 +63,7 @@ exports.newtweet = function(req, res) {
 * GET Profile page
 */
 exports.profile = function(req, res) {
+<<<<<<< HEAD
   var username = req.params.id;
   var u = users.getUserById(username);
   if (u !== undefined ) {
@@ -54,6 +75,18 @@ exports.profile = function(req, res) {
                username: username,
                followerN: u.follower.length,
                followingN: u.following.length,
+=======
+  var user = users.getUserById(req.params.id);
+  if (user !== undefined ) {
+    var tl = tweets.getTByUser(user.username, 20);
+    var j = tl.length;
+    res.render('profile',
+              {title: 'Profile',
+               name: user.name,
+               username: user.username,
+               followerN: user.follower.length,
+               followingN: user.following.length,
+>>>>>>> assign3branch
                tweets: tweetsToHtml(tl)
                }
       );
@@ -68,17 +101,29 @@ exports.profile = function(req, res) {
 * GET Follower page
 */
 exports.follower = function(req, res) {
+<<<<<<< HEAD
   var username = req.params.id;
   var user = users.getUserById(username);
   var followerlist = user.follower;
   var content = '';
   if (followerlist.length !== 0) {
     content += userToHtml(followerlist, "Delete");
+=======
+  var user = users.getUserById(req.params.id);
+  var followerList = user.follower;
+  var content = '';
+  if (followerList.length !== 0) {
+    content += userToHtml(followerList, "Delete");
+>>>>>>> assign3branch
   }
 	res.render('follower', 
   			{ title: 'Follower',
   			  name: user.name,
+<<<<<<< HEAD
   			  username: username,
+=======
+  			  username: user.username,
+>>>>>>> assign3branch
   			  content: content
   			   } );
 }
@@ -88,9 +133,16 @@ exports.follower = function(req, res) {
 * GET Following page
 */
 exports.following = function(req, res) {
+<<<<<<< HEAD
 	var username = req.params.id;
   var user = users.getUserById(username);
   var followinglist = user.following;
+=======
+  var user = users.getUserById(req.params.id);
+  var username = user.username
+  var followinglist = user.following;
+  var user = users.getUserById(username);
+>>>>>>> assign3branch
   var content = '';
   if (followinglist.length !== 0) {
     content += userToHtml(followinglist, "Unfollow");
@@ -107,6 +159,7 @@ exports.following = function(req, res) {
 * GET Interaction page
 */
 exports.interaction = function(req, res) {
+<<<<<<< HEAD
   var username = req.params.id;
   var user = users.getUserById(username);
   var tl = tweets.getTByMention(username, 20);
@@ -118,6 +171,23 @@ exports.interaction = function(req, res) {
               tweets: tweetsToHtml(tl)
               });
 
+=======
+   var user = req.session.user;
+   var username = user.username
+  if (user === undefined || online[user.uid] === undefined) {
+    res.send("You can only view the interaction page in the account you are logged in with.");
+  }else if(username !== req.params.id){
+    res.redirect('/'+username+'/interaction');
+  }else {
+    var tl = tweets.getTByMention(username, 20);
+    res.render('interaction',
+            { title: 'Interaction',
+              name: user.name,
+              username: username,
+              tweets: tweetsToHtml(tl)
+              });
+  }
+>>>>>>> assign3branch
 }
 
 // ### *function*: userToHtml
