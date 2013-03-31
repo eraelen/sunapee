@@ -147,6 +147,16 @@ li.question {
 	border-bottom: 2px solid gray;
 }
 
+/* CSS for logged in user - Project 3 requirement */
+#loggedInUser {
+	position: absolute;
+	padding-top: 1000px;
+}
+
+#loggedInUser hr {
+	width: 1000px;
+}
+
 /* CSS for nav bar */
 #navbar {
     background-color:    #45c7b1;
