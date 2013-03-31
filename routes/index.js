@@ -24,7 +24,8 @@ exports.home = function(req, res){
     			  username: username,
     			  followerN: user.follower.length,
     			  followingN: user.following.length,
-                  tweets: tweetsToHtml(tl)
+                  tweets: tweetsToHtml(tl),
+				  loggedInUser: user.username
     			   } );
   }
 }
@@ -119,7 +120,8 @@ exports.interaction = function(req, res) {
             { title: 'Interaction',
               name: user.name,
               username: username,
-              tweets: tweetsToHtml(tl)
+              tweets: tweetsToHtml(tl),
+			  loggedInUser: user.username
               });
    }
 }
@@ -212,7 +214,9 @@ exports.help = function (req,res) {
 	if (user === undefined || online[user.uid] === undefined) {
         res.send("Login to view this page.");
     }else{
-    	res.render('help', {title: 'Help', username: user.username});
+    	res.render('help', {title: 'Help', username: 
+							user.username, 
+							loggedInUser: user.username});
     }
 }
 
