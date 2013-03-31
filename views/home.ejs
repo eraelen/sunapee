@@ -39,24 +39,3 @@
 </div>
 
 <% include footer %>
-<% include simpleheader %>
-
-<% include navbar %>
-
-<h1><%= title %></h1>
-<h2>Welcome <%= name %> <a href = "/<%= username %>/profile"> @<%= username %> </a></h2>
-<p><a href="follower">Follower: <%= followerN %> </a></p>
-<p><a href="following">Following: <%= followingN %> </a> </p>
-
-<h3>Compose a new tweet:</h3>
-<form method="post" id="compose" action="/<%= username %>/newtweet">
-<textarea name="message" cols="25" rows="4">
-What's in your mind?
-</textarea><br>
-<input type="submit" name="submit" value="Tweet!" />
-</form>
-
-<h3>Timeline</h3>
-<%- tweets %>
-
-<% include footer %>

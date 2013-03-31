@@ -9,23 +9,6 @@ var online = entry.online;
  * GET home page.
  */
 exports.home = function(req, res){
-<<<<<<< HEAD
-  var userid=req.cookies.userid;
-  var onlineUser=online[userid];
-  if ( onlineUser !== undefined && onlineUser.username == req.params.id){
-    var u = users.getUserById(onlineUser.username);
-    var tl = tweets.getRecentT(onlineUser.username, u.following, 20);
-  	res.render('home', 
-    			{ title: 'Home',
-    			  name: u.name,
-    			  username: u.username,
-    			  followerN: u.follower.length,
-    			  followingN: u.following.length,
-            tweets: tweetsToHtml(tl)
-    			   } );
-  } else {
-        res.send('Page Access Not Authorized.');
-=======
   var user = req.session.user;
   var username = user.username;
   if (user === undefined || online[user.uid] === undefined) {
@@ -43,7 +26,6 @@ exports.home = function(req, res){
     			  followingN: user.following.length,
                   tweets: tweetsToHtml(tl)
     			   } );
->>>>>>> assign3branch
   }
 }
 
@@ -63,19 +45,6 @@ exports.newtweet = function(req, res) {
 * GET Profile page
 */
 exports.profile = function(req, res) {
-<<<<<<< HEAD
-  var username = req.params.id;
-  var u = users.getUserById(username);
-  if (u !== undefined ) {
-    var tl = tweets.getTByUser(username, 20);
-    var j = tl.length;
-    res.render('profile',
-              {title: 'Profile',
-               name: u.name,
-               username: username,
-               followerN: u.follower.length,
-               followingN: u.following.length,
-=======
   var user = users.getUserById(req.params.id);
   if (user !== undefined ) {
     var tl = tweets.getTByUser(user.username, 20);
@@ -86,7 +55,6 @@ exports.profile = function(req, res) {
                username: user.username,
                followerN: user.follower.length,
                followingN: user.following.length,
->>>>>>> assign3branch
                tweets: tweetsToHtml(tl)
                }
       );
@@ -101,29 +69,16 @@ exports.profile = function(req, res) {
 * GET Follower page
 */
 exports.follower = function(req, res) {
-<<<<<<< HEAD
-  var username = req.params.id;
-  var user = users.getUserById(username);
-  var followerlist = user.follower;
-  var content = '';
-  if (followerlist.length !== 0) {
-    content += userToHtml(followerlist, "Delete");
-=======
   var user = users.getUserById(req.params.id);
   var followerList = user.follower;
   var content = '';
   if (followerList.length !== 0) {
     content += userToHtml(followerList, "Delete");
->>>>>>> assign3branch
   }
 	res.render('follower', 
   			{ title: 'Follower',
   			  name: user.name,
-<<<<<<< HEAD
-  			  username: username,
-=======
   			  username: user.username,
->>>>>>> assign3branch
   			  content: content
   			   } );
 }
@@ -133,16 +88,9 @@ exports.follower = function(req, res) {
 * GET Following page
 */
 exports.following = function(req, res) {
-<<<<<<< HEAD
-	var username = req.params.id;
-  var user = users.getUserById(username);
-  var followinglist = user.following;
-=======
   var user = users.getUserById(req.params.id);
   var username = user.username
   var followinglist = user.following;
-  var user = users.getUserById(username);
->>>>>>> assign3branch
   var content = '';
   if (followinglist.length !== 0) {
     content += userToHtml(followinglist, "Unfollow");
@@ -159,35 +107,21 @@ exports.following = function(req, res) {
 * GET Interaction page
 */
 exports.interaction = function(req, res) {
-<<<<<<< HEAD
-  var username = req.params.id;
-  var user = users.getUserById(username);
-  var tl = tweets.getTByMention(username, 20);
-
-  res.render('interaction',
-            { title: 'Interaction',
-              name: user.name,
-              username: user.username,
-              tweets: tweetsToHtml(tl)
-              });
-
-=======
    var user = req.session.user;
-   var username = user.username
-  if (user === undefined || online[user.uid] === undefined) {
-    res.send("You can only view the interaction page in the account you are logged in with.");
-  }else if(username !== req.params.id){
-    res.redirect('/'+username+'/interaction');
-  }else {
-    var tl = tweets.getTByMention(username, 20);
-    res.render('interaction',
+   var username = user.username;
+   if (user === undefined || online[user.uid] === undefined) {
+     res.send("You can only view the interaction page in the account you are logged in with.");
+   }else if(username !== req.params.id){
+     res.redirect('/'+username+'/interaction');
+   }else {
+     var tl = tweets.getTByMention(username, 20);
+     res.render('interaction',
             { title: 'Interaction',
               name: user.name,
               username: username,
               tweets: tweetsToHtml(tl)
               });
-  }
->>>>>>> assign3branch
+   }
 }
 
 // ### *function*: userToHtml
@@ -274,10 +208,12 @@ var profileMsg = '';
  * Renders Help Page
  */
 exports.help = function (req,res) {
-	var userid=req.cookies.userid;
-	var onlineUser=online[userid];
-	var u = users.getUserById(onlineUser.username);
-	res.render('help', {title: 'Help', username: u.username});
+	var user = req.session.user;
+	if (user === undefined || online[user.uid] === undefined) {
+        res.send("Login to view this page.");
+    }else{
+    	res.render('help', {title: 'Help', username: user.username});
+    }
 }
 
 // ## search
@@ -293,21 +229,22 @@ exports.help = function (req,res) {
  */
  
 exports.search = function (req,res) {
-	var userid=req.cookies.userid;
-	var onlineUser=online[userid];
-	var u = users.getUserById(onlineUser.username);
-	//console.log("username "+u.username);
-	var ht = '#ftw';
-	var query = "#"+req.params.query;
-	var results = tweets.searchTweetsByHT(ht);
-	res.render('search', {title: 'Search Result',
+   var user = req.session.user;
+   var username = user.username;
+   if (user === undefined || online[user.uid] === undefined) { //if a user is logged in, search works.
+     res.send("Login to view this page."); //Should we make it so that a search can only be conducted when a user is logged in?
+   }else{
+   	 var ht = '#ftw';
+	 var query = "#"+req.params.query;
+	 var results = tweets.searchTweetsByHT(ht);
+	 res.render('search', {title: 'Search Result',
 								searchPhrase: query,
 								rname : results[0].name,
 								rusername: results[0].username,
 								rmsg: msgToHtml(results[0].msg),
 								rdate: results[0].date,
-								username: u.username});	
-	
+								username: user.username});	
+   }
 };
 
 // ## searchBox
@@ -401,21 +338,22 @@ exports.detailedTweetFakeReply = function (req, res) {
  * Renders Edit Profile view
  */
 exports.editProfile = function (req, res){
-	var userid=req.cookies.userid;
-	var onlineUser=online[userid];
-	if ( onlineUser.username == req.params.id){
-		var u = users.getUserById(onlineUser.username);
-		res.render('editProfile', { title: 'Edit Profile',
+   var user = req.session.user;
+   var username = user.username;
+   if (user === undefined || online[user.uid] === undefined) {
+     res.send("Login to view this page.");
+   }else if(username !== req.params.id){
+     res.redirect('/'+username+'/editProfile');
+   }else {
+	 res.render('editProfile', { title: 'Edit Profile',
 			msg: profileMsg,
-			name: u.name,
-			username: u.username,
-			email: u.email,
-			location: u.location,
-			website: u.website,
-			profilePic: u.profilePic});
-	} else {
-        res.send('Page Access Not Authorized.');
-	}
+			name: user.name,
+			username: username,
+			email: user.email,
+			location: user.location,
+			website: user.website,
+			profilePic: user.profilePic});
+   }
 };
 
 // ## editSettings
@@ -426,47 +364,49 @@ exports.editProfile = function (req, res){
  * To get to this page, user can click on Tools icon.
  */
 exports.editSettings = function (req, res){
-	var userid=req.cookies.userid;
-	var onlineUser=online[userid];
-	if ( onlineUser.username == req.params.id){
-		var u = users.getUserById(onlineUser.username);
-		res.render('editSettings', {title: 'Edit Settings', 
+   var user = req.session.user;
+   var username = user.username;
+   if (user === undefined || online[user.uid] === undefined) {
+     res.send("Login to view this page.");
+   }else if(username !== req.params.id){
+	 res.redirect('/'+username+'/editSettings');
+   }else {
+     res.render('editSettings', {title: 'Edit Settings', 
 			msg: settingsMsg, 
-			pv: u.profVis, 
-			fp: u.folPerm, 
-			mp: u.mentionPerm, 
-			pm: u.pmPerm,
-			username: u.username});
-	} else {
-        res.send('Page Access Not Authorized.');
-	}
+			pv: user.profVis, 
+			fp: user.folPerm, 
+			mp: user.mentionPerm, 
+			pm: user.pmPerm,
+			username: user.username});
+   }
 };
 // ## changeSettings
 /**
  * Makes changes to user settings
  */
 exports.changeSettings = function (req, res){
-	var userid=req.cookies.userid;
-	var onlineUser=online[userid];
-	if ( onlineUser.username == req.params.id){
-		var u = users.getUserById(onlineUser.username);
-		if (req.body.profVis != undefined) {
-			u.profVis = req.body.profVis;
+   var user = req.session.user;
+   var username = user.username;
+   if (user === undefined || online[user.uid] === undefined) {
+     res.send("Login to view this page.");
+   }else if(username !== req.params.id){
+	  res.redirect('/'+username+'/editSettings'); //Direct to user's edit setting page
+   }else {
+     if (req.body.profVis != undefined) {
+			user.profVis = req.body.profVis;
 		}
 		if (req.body.folPerm != undefined) {
-			u.folPerm = req.body.folPerm;
+			user.folPerm = req.body.folPerm;
 		}
 		if (req.body.mentionPerm != undefined) {
-			u.mentionPerm = req.body.mentionPerm;
+			user.mentionPerm = req.body.mentionPerm;
 		}
 		if (req.body.pmPerm != undefined) {
-			u.pmPerm = req.body.pmPerm;
+			user.pmPerm = req.body.pmPerm;
 		}
 		settingsMsg = 'Changes saved.';
-		res.redirect('/'+u.username+'/editSettings');
-	} else {
-        res.send('Page Access Not Authorized.');
-	}
+		res.redirect('/'+username+'/editSettings');
+   }
 };
 
 // ## changeProfile
@@ -478,73 +418,73 @@ exports.changeSettings = function (req, res){
  * Another late information that I acquired is the required attribute for forms/input.
  */
 exports.changeProfile = function (req, res){
-	var flag = false;
-	
-	var userid=req.cookies.userid;
-	var onlineUser=online[userid];
-	if ( onlineUser.username == req.params.id){
-		var u = users.getUserById(onlineUser.username);
-	
-		//check if current password is entered
+   var flag = false;
+    
+   var user = req.session.user;
+   var username = user.username;
+   if (user === undefined || online[user.uid] === undefined) {
+     res.send("Login to view this page.");
+   }else if(username !== req.params.id){
+	 res.redirect('/'+username+'/editProfile'); //Change to another default if desired
+   }else {
+     //check if current password is entered
 		if (req.body.currentpass !== '') {
 			//check if current password entered matches saved password
-			if (req.body.currentpass === u.password) {
+			if (req.body.currentpass === user.password) {
 				//check if user wants to change password
 				if (req.body.newpass === req.body.newpassconfirm) {
 						//make changes to info
 						if (req.body.name == "") {
 							//don't allow empty change
 							flag = true;
-							res.redirect('/'+u.username+'/editProfile');
+							res.redirect('/'+user.username+'/editProfile');
 						} else {
-							u.name = req.body.name;
+							user.name = req.body.name;
 						}
 						if (req.body.username == "") {
 							//don't allow empty change
 							flag = true;
-							res.redirect('/'+u.username+'/editProfile');
+							res.redirect('/'+user.username+'/editProfile');
 						} else {
-							u.username = req.body.username;
+							user.username = req.body.username;
 						}
 						if (req.body.email == "") {
 							//don't allow empty change
 							flag = true;
-							res.redirect('/'+u.username+'/editProfile');
+							res.redirect('/'+user.username+'/editProfile');
 						} else {
-							u.email = req.body.email;
+							user.email = req.body.email;
 						}
-						u.location = req.body.location;
-						u.website = req.body.website;
+						user.location = req.body.location;
+						user.website = req.body.website;
 						
 						//check if np fields are not empty
 						if ((req.body.newpass !== '') && (req.body.newpassconfirm !== '')) {
 							//make changes, np fields not empty
-							u.password = req.body.newpass;
+							user.password = req.body.newpass;
 						};
 						if (flag) {
 							profileMsg = 'Cannot allow name, username, email to be empty.';
 						} else {
 							profileMsg = 'Changes saved.';
 						}
-						res.redirect('/'+u.username+'/editProfile');
+						res.redirect('/'+username+'/editProfile');
 				//np fields did not match or one of them empty
 				} else {
 					profileMsg = 'Incorrect new password confirmation. No changes made. Please try again.';
-					res.redirect('/'+u.username+'/editProfile');
+					res.redirect('/'+username+'/editProfile');
 				}
 			//if current password entered is incorrect, display error msg
 			} else {
 				profileMsg = 'Current password entered is incorrect. No changes made. Please try again.';
-				res.redirect('/'+u.username+'/editProfile');
+				res.redirect('/'+username+'/editProfile');
 			}
 		//if current password is not entered, display error msg
 		} else {
 			profileMsg = 'Must enter current password to make changes. No changes made. Please try again.';
-			res.redirect('/'+u.username+'/editProfile');
+			res.redirect('/'+username+'/editProfile');
 		}
-	} else {
-        res.send('Page Access Not Authorized.');
-	}
+   }
 };
 
 // ## changeProfilePic
@@ -562,15 +502,16 @@ exports.changeProfile = function (req, res){
  */
 exports.changeProfilePic = function (req, res) {
 	var flag = false;
-	
-	var userid=req.cookies.userid;
-	var onlineUser=online[userid];
-	if ( onlineUser.username == req.params.id){
-		var u = users.getUserById(onlineUser.username);
+	var user = req.session.user;
+    var username = user.username;
+    if (user === undefined || online[user.uid] === undefined) {
+      res.send("Login to view this page.");
+    }else if(username !== req.params.id){
+	   res.redirect('/'+username+'/editProfile'); //just go to the user's edit page
+    }else {
+       var u = users.getUserById(onlineUser.username);
 		u.profilePic = 'fakeChangedPic.jpg';
 		profileMsg = 'Fake image generated here.';
 		res.redirect('/'+u.username+'/editProfile');
-	} else {
-		res.send('Page Access Not Authorized.');
-	}
+    }
 };

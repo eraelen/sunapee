@@ -29,17 +29,4 @@
 	</div>
 
 </div>
-<% include simpleheader %>
-
-<% include navbar %>
-
-<h1><%= title %></h1>
-<h2><%= name %> <a href = "/<%= username %>/profile"> @<%= username %> </a></h2>
-<p><a href="follower">Follower: <%= followerN %> </a></p>
-<p><a href="following">Following: <%= followingN %> </a> </p>
-
-
-<h3><%= name %>'s Tweets</h3>
-<%- tweets %>
-
 <% include footer %>
