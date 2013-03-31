@@ -1,23 +1,20 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <div>
-        <h3>Registration</h3>
+
+    <% include entryheader %>
+    <div class="entryBody">
+      <div class="entryCSS">
+        <h1>Tweetee</h1>
+        <p>Registration</p>
+        <%=message %>
         <form method="post" action="/verify">
-           Name: <input type="text" name="name"/><br/>
-           Username: <input type="text" name="username"/><br/>
-           E-mail: <input type="text" name="email"/><br/>
-           Password: <input type="password" name="password"/><br/>
-           Retype P: <input type="password" name="retypeP"/><br/>
+           Name: <input type="text" name="name"/>*<br/>
+           Username: <input type="text" name="username"/>*<br/>
+           E-mail: <input type="text" name="email"/>*<br/>
+           Password: <input type="password" name="password"/>*<br/>
+           Retype P: <input type="password" name="retypeP"/>*<br/>
            Location: <input type="text" name="location"/><br/>
            Website: <input type="website" name="website"/><br/>
            <input type="submit" value="Submit"/>
         </form>
+      </div>
     </div>
-  </body>
-</html>
+    <% include footer %>

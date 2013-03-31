@@ -6,3 +6,123 @@ body {
 a {
   color: #00B7FF;
 }
+
+#navbar {
+    background-color:    #45c7b1;
+	height:				 35px;
+	margin-left:		 10px;
+	margin-right:		 10px;
+	width:				 100%;
+}
+
+#nbleft {
+	vertical-align:		 middle;
+	height:				 inherit;
+	width:		 		 40%;
+	float: 				 left;
+}
+
+#nbcenter1 {
+	vertical-align:		 0px;
+	height:				 inherit;
+	float:				 left;
+	width:				 20%;
+}
+
+#nbcenter2 {
+	vertical-align:		 0px;
+	height:				 inherit;
+	float:				 left;
+	width:				 20%;
+}
+
+#nbright {
+	vertical-align:		 middle;
+    height:              inherit;
+    float:               right;
+}
+
+#editInfo {
+    padding:             25px;
+    width:               400px;
+    height:              300px;
+    float:               left;
+}
+
+#editImg {
+    padding:             25px;
+    width:               400px;
+    height:              300px;
+    float:               left;
+}
+
+.center {
+	margin:auto;
+	width:40%;
+}
+
+#ubox_profilepic {
+    margin-top: 50px;
+    margin-left: 10%;
+    float: left;
+}
+
+#ubox_info {
+    margin-top: 60px;
+    margin-left: 30px;
+	height: 60px;
+	width: 300px;
+	float: left;
+}
+
+#conversation {
+	padding-top: 140px;
+}
+
+li.question {
+	text-decoration: underline;
+	font-weight: bold;
+}
+
+.entryBody {
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    min-height: 100%;
+}
+
+.indexBody{
+	padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+.entryCSS {
+  position: relative;
+  padding: 40px 0;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 1px 3px rgba(0,0,0,.4), 0 0 30px rgba(0,0,0,.075);
+  background: #00816B;
+  background-image: url("../images/flowerTest.png"); /* fallback */
+  background-image: url("../images/flowerTest.png"), -webkit-gradient(linear, left top, left bottom, from(#00816B), to(#63E5CF)); /* Saf4+, Chrome */
+  background-image: url("../images/flowerTest.png"), -webkit-linear-gradient(top, #00816B, #63E5CF); /* Chrome 10+, Saf5.1+ */
+  background-image: url("../images/flowerTest.png"),    -moz-linear-gradient(top, #00816B, #63E5CF); /* FF3.6+ */
+  background-image: url("../images/flowerTest.png"),     -ms-linear-gradient(top, #00816B, #63E5CF); /* IE10 */
+  background-image: url("../images/flowerTest.png"),      -o-linear-gradient(top, #00816B, #63E5CF); /* Opera 11.10+ */
+  background-image: url("../images/flowerTest.png"),         linear-gradient(top, #00816B, #63E5CF); /* W3C */
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+
+
+.entryCSS h1 {
+  font-size: 80px;
+  font-weight: bold;
+  letter-spacing: -1px;
+  line-height: 1;
+  text-shadow: 2px 2px black, -1px -1px #444;
+}
+.entryCSS p {
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 1.25;
+  margin-bottom: 30px;
+}

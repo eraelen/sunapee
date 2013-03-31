@@ -1,0 +1,27 @@
+    <% include entryheader %>
+    <div class="entryBody">
+    <div class="entryCSS">
+      <h1>Tweetee</h1>
+      <p>Welcome to Tweetee</p>
+      <%= msg %>
+      <div class = "registerSection">
+          <h3>New to Tweetee? Join the community by Registering:</h3>
+          <form method="get" action="/register">
+             <button type="submit">Register</button>
+          </form>
+      </div>
+      <div class = "loginSection">
+         <h3>Have an account? <b>Sign-in</b>:</h3>
+         <div><%= message %></div>
+         <form method="post" action="/userAuth">
+            Username: <input type="text" name="username"/><br/>
+            Password: <input type="password" name="password"/><br/>
+            <input type="submit" value="Login"/>
+         </form>
+         <a href="/forgotlogin">Forgot your username or password?</a>
+      </div>
+
+    </div>
+
+    </div>
+    <% include footer %>

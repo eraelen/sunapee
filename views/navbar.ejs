@@ -1,0 +1,21 @@
+<div id="navbar">
+	<div id="nbleft">
+		<a href="/<%= username %>/home"><img src="/images/navbar/homeIcon.png"></a>
+		<a href="/<%= username %>/interaction"><img src="/images/navbar/interactionIcon.png"></a>
+		<a href="/<%= username %>/profile"><img src="/images/navbar/profileIcon.png"></a>
+	</div>
+	<div id="nbcenter1">
+		<form method="post" id="search" action="/searchBox">
+		<input type="text" name="query" />
+		<input type="submit" name="submit" value="Search" /> <br>
+		</form>		
+	</div>
+	<div id="nbcenter2">
+		<img src="/images/navbar/composeIcon.png" alt="composing tweet not working yet"></a>
+		<img src="/images/navbar/messageIcon.png" alt="composing private message not working yet"></a>
+	</div>
+	<div id="nbright">
+		<a href="/<%= username %>/editSettings"><img src="/images/navbar/settingsIcon.png"></a>
+		<a href="/help"><img src="/images/navbar/helpIcon.png"></a>
+	</div>
+</div>
