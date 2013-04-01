@@ -149,12 +149,7 @@ li.question {
 
 /* CSS for logged in user - Project 3 requirement */
 #loggedInUser {
-	position: absolute;
-	padding-top: 1000px;
-}
-
-#loggedInUser hr {
-	width: 1000px;
+	padding: 5px;
 }
 
 /* CSS for nav bar */

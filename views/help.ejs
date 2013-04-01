@@ -1,4 +1,9 @@
 <% include userHeader %>
+<div id="loggedInUser">
+	<center> 
+		Logged in user: <%= loggedInUser %> [LOGOUT]
+	</center>
+</div>
 <% include navbar %>
 	<center><h1>TWEETEE HELP</h1></center>
 	<h2>Editing User Information</h2>
@@ -63,11 +68,5 @@
 	  You may add and delete users you are following in your interaction page by clicking on the interaction (callout) icon at the navigation bar.
 	  </p>
 	</ul>
-	
-	<div id="loggedInUser">
-	<center> 
-	Logged in user: <%= loggedInUser %>
-	</center>
-	</div>
 </div>
 <% include footer %>
