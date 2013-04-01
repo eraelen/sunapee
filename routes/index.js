@@ -10,23 +10,25 @@ var online = entry.online;
  */
 exports.home = function(req, res){
   var user = req.session.user;
-  var username = user.username;
   if (user === undefined || online[user.uid] === undefined) {
     req.flash('userAuth', 'Not logged in!');
     res.redirect('/');
-  }else if(username !== req.params.id){
-    res.redirect('/'+username+'/home');
-  }else {
-    var tl = tweets.getRecentT(username, user.following, 20);
-  	res.render('home', 
-    			{ title: 'Home',
-    			  name: user.name,
-    			  username: username,
-    			  followerN: user.follower.length,
-    			  followingN: user.following.length,
-                  tweets: tweetsToHtml(tl),
-				  loggedInUser: user.username
-    			   } );
+  } else {
+    var username = user.username;
+    if (username !== req.params.id){
+      res.redirect('/'+username+'/home');
+    }else {
+      var tl = tweets.getRecentT(username, user.following, 20);
+      res.render('home', 
+            { title: 'Home',
+              name: user.name,
+              username: username,
+              followerN: user.follower.length,
+              followingN: user.following.length,
+                    tweets: tweetsToHtml(tl),
+            loggedInUser: user.username
+               } );
+    }
   }
 }
 
@@ -49,11 +51,11 @@ exports.profile = function(req, res) {
   var user = users.getUserById(req.params.id);
   if (user !== undefined ) {
     var tl = tweets.getTByUser(user.username, 20);
-    var j = tl.length;
     res.render('profile',
               {title: 'Profile',
                name: user.name,
                username: user.username,
+               tweetN: tl.length,
                followerN: user.follower.length,
                followingN: user.following.length,
                tweets: tweetsToHtml(tl)
@@ -70,18 +72,23 @@ exports.profile = function(req, res) {
 * GET Follower page
 */
 exports.follower = function(req, res) {
-  var user = users.getUserById(req.params.id);
-  var followerList = user.follower;
-  var content = '';
-  if (followerList.length !== 0) {
-    content += userToHtml(followerList, "Delete");
+  var user = req.session.user;
+  if (user === undefined || online[user.uid] === undefined) {
+    res.redirect('/');
+  } else {
+    var user = users.getUserById(req.params.id);
+    var followerList = user.follower;
+    var content = '';
+    if (followerList.length !== 0) {
+      content += userToHtml(followerList, "Delete");
+    }
+  	res.render('follower', 
+    			{ title: 'Follower',
+    			  name: user.name,
+    			  username: user.username,
+    			  content: content
+    			   } );
   }
-	res.render('follower', 
-  			{ title: 'Follower',
-  			  name: user.name,
-  			  username: user.username,
-  			  content: content
-  			   } );
 }
 
 
@@ -89,19 +96,24 @@ exports.follower = function(req, res) {
 * GET Following page
 */
 exports.following = function(req, res) {
-  var user = users.getUserById(req.params.id);
-  var username = user.username
-  var followinglist = user.following;
-  var content = '';
-  if (followinglist.length !== 0) {
-    content += userToHtml(followinglist, "Unfollow");
+  var user = req.session.user;
+  if (user === undefined || online[user.uid] === undefined) {
+    res.redirect('/');
+  } else {
+    var user = users.getUserById(req.params.id);
+    var username = user.username
+    var followinglist = user.following;
+    var content = '';
+    if (followinglist.length !== 0) {
+      content += userToHtml(followinglist, "Unfollow");
+    }
+    res.render('following', 
+          { title: 'Following',
+            name: user.name,
+            username: username,
+            content: content
+             } );
   }
-  res.render('following', 
-        { title: 'Following',
-          name: user.name,
-          username: username,
-          content: content
-           } );
 }
 
 /*
@@ -109,20 +121,22 @@ exports.following = function(req, res) {
 */
 exports.interaction = function(req, res) {
    var user = req.session.user;
-   var username = user.username;
    if (user === undefined || online[user.uid] === undefined) {
      res.send("You can only view the interaction page in the account you are logged in with.");
-   }else if(username !== req.params.id){
-     res.redirect('/'+username+'/interaction');
-   }else {
-     var tl = tweets.getTByMention(username, 20);
-     res.render('interaction',
-            { title: 'Interaction',
-              name: user.name,
-              username: username,
-              tweets: tweetsToHtml(tl),
-			  loggedInUser: user.username
-              });
+   } else {
+      var username = user.username;
+      if(username !== req.params.id){
+        res.redirect('/'+username+'/interaction');
+      } else {
+       var tl = tweets.getTByMention(username, 20);
+       res.render('interaction',
+              { title: 'Interaction',
+                name: user.name,
+                username: username,
+                tweets: tweetsToHtml(tl),
+                loggedInUser: user.username
+                });
+     }
    }
 }
 
