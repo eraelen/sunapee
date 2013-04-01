@@ -23,6 +23,7 @@ exports.home = function(req, res){
             { title: 'Home',
               name: user.name,
               username: username,
+              tweetN: users.getTNumberById(username),
               followerN: user.follower.length,
               followingN: user.following.length,
                     tweets: tweetsToHtml(tl),
@@ -50,12 +51,13 @@ exports.newtweet = function(req, res) {
 exports.profile = function(req, res) {
   var user = users.getUserById(req.params.id);
   if (user !== undefined ) {
-    var tl = tweets.getTByUser(user.username, 20);
+    var username = user.username;
+    var tl = tweets.getTByUser(username, 20);
     res.render('profile',
               {title: 'Profile',
                name: user.name,
-               username: user.username,
-               tweetN: tl.length,
+               username: username,
+               tweetN: users.getTNumberById(username),
                followerN: user.follower.length,
                followingN: user.following.length,
                tweets: tweetsToHtml(tl)
