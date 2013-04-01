@@ -208,6 +208,7 @@ function msgToHtml(msg) {
   for (var i=0; i < len; i++) {
     var word = msg[i];
     //console.log("");
+    // word starting with @ && cannot have another @
     if (word.charAt(0) === "@" && word.split("\@").length === 2) {
       content += ' <a href="/'+word.substring(1)+'/profile">'+word+'</a> ';
     } else if (word.charAt(0) === "#" && word.split("\#").length === 2) { //#ford! <- !
@@ -304,7 +305,7 @@ exports.detailedTweet = function (req, res) {
 	var ot = '<p><b>' + name + '</b> <a href="/' + username + '/profile">@' + username
 			+ '</a><br>' + msgToHtml(tweetconvo[0].msg) + '<br>' 
 			+ tweetconvo[0].date + '</p>';
-	
+	// can use tweetsToHtml() for this piece of code
 	for (var i=1; i < tweetconvo.length; i++) {
 		username = tweetconvo[i].username;
 		name = users.get_user(username).name;
