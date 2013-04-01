@@ -49,12 +49,14 @@ exports.newtweet = function(req, res) {
 * GET Profile page
 */
 exports.profile = function(req, res) {
+  var user = req.session.user;
   var user = users.getUserById(req.params.id);
   if (user !== undefined ) {
     var username = user.username;
     var tl = tweets.getTByUser(username, 20);
     res.render('profile',
               {title: 'Profile',
+               loggedInUser: user.username,
                name: user.name,
                username: username,
                tweetN: users.getTNumberById(username),
@@ -74,8 +76,8 @@ exports.profile = function(req, res) {
 * GET Follower page
 */
 exports.follower = function(req, res) {
-  var user = req.session.user;
-  if (user === undefined || online[user.uid] === undefined) {
+  var userl = req.session.user;
+  if (userl === undefined || online[userl.uid] === undefined) {
     res.redirect('/');
   } else {
     var user = users.getUserById(req.params.id);
@@ -86,6 +88,7 @@ exports.follower = function(req, res) {
     }
   	res.render('follower', 
     			{ title: 'Follower',
+            loggedInUser: userl.username,
     			  name: user.name,
     			  username: user.username,
     			  content: content
@@ -111,6 +114,7 @@ exports.following = function(req, res) {
     }
     res.render('following', 
           { title: 'Following',
+            loggedInUser: username,
             name: user.name,
             username: username,
             content: content
@@ -258,6 +262,7 @@ exports.search = function (req,res) {
 	 var query = "#"+req.params.query;
 	 var results = tweets.searchTweetsByHT(ht);
 	 res.render('search', {title: 'Search Result',
+                loggedInUser: username,
 								searchPhrase: query,
 								rname : results[0].name,
 								rusername: results[0].username,
@@ -309,6 +314,7 @@ exports.detailedTweet = function (req, res) {
 	}
 	
 	res.render('detailedTweet',{title: 'Detailed Tweet', 
+            loggedInUser: "", //should fill this in later
 						convo: content, 
 						profilePic: userdb[0].profilePic,
 						name: users.get_user(tweetconvo[0].username).name,
@@ -345,6 +351,7 @@ exports.detailedTweetFakeReply = function (req, res) {
 	content += '<p><b>Hazel Rozetta</b><a href="/">@hazel</a><br>' + req.body.replyTweet + '<br>'+ tweetconvo[0].date +'</p>';
 	
 	res.render('detailedTweet',{title: 'Detailed Tweet Fake Reply', 
+            loggedInUser:"", //Should change this later
 						convo: content, 
 						profilePic: userdb[0].profilePic,
 						name: users.get_user(tweetconvo[0].username).name,
@@ -366,6 +373,7 @@ exports.editProfile = function (req, res){
      res.redirect('/'+username+'/editProfile');
    }else {
 	 res.render('editProfile', { title: 'Edit Profile',
+      loggedInUser: username,
 			msg: profileMsg,
 			name: user.name,
 			username: username,
@@ -392,6 +400,7 @@ exports.editSettings = function (req, res){
 	 res.redirect('/'+username+'/editSettings');
    }else {
      res.render('editSettings', {title: 'Edit Settings', 
+      loggedInUser: username,
 			msg: settingsMsg, 
 			pv: user.profVis, 
 			fp: user.folPerm, 
