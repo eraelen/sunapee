@@ -294,6 +294,7 @@ exports.searchBox = function (req,res) {
 exports.detailedTweet = function (req, res) {
 	var tweetId = req.params.tweetId;
 	var tweetconvo = tweets.getTweetConvoByTweetID(tweetId);
+	console.log("tweetconvo is" + tweetconvo);
 	if (tweetconvo === null) {
 		res.render('detailedTweet',{title: 'Detailed Tweet', 
 					loggedInUser: "", //fill in later
@@ -314,6 +315,15 @@ exports.detailedTweet = function (req, res) {
 
 }
 
+exports.detailedTweetReply = function (req, res) {
+	var user = req.session.user;
+	var tweetId = req.params.tweetId;	
+	tweets.addTweet(tweets.tweetdb.length, user.name, user.username, req.body.message, parseInt(tweetId), null);
+	console.log(tweets.tweetdb);
+	console.log(tweets.conversation);
+	users.addUserT(user.username, tweets.tweetdb.length-1);
+	res.redirect('/'+tweetId+'/detailedTweet');
+}
 // ## detailedTweetFakeReply
 /**
  * This version shows how the display looks like with a fake reply post to the original tweet.

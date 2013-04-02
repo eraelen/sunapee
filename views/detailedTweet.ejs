@@ -17,7 +17,7 @@
 	</p>
 	
 	<div id="composeTweetBox">
-		<form method="post" id="compose" action="/<%= origTweet.username %>/newtweet">
+		<form method="post" id="compose" action="/<%= origTweet.id %>/detailedTweetReply">
 			<textarea name="message" cols="60" rows="4">reply to @<%= username %></textarea>
 			<br>
 			<input type="submit" name="submit" value="Reply" />
