@@ -5,22 +5,34 @@
 		<table>
 			<tr>
 				<td><img src="/images/defaultProfilePic.jpg" width="120" height="120" /></td>
-				<td><%= name %><br><a href = "/<%= username %>/profile"> @<%= username %></td>
+				<td><%= origTweet.name %><br><a href = "/<%= origTweet.username %>/profile"> @<%= origTweet.username %></td>
 			</tr>
 		</table>
 	</div>
 	
-	<%- origTweet %>
+	<p>
+		<b><%= origTweet.name %></b> <a href="/<%= origTweet.username %>/profile"> @<%= origTweet.username %></a><br>
+		<%= origTweet.msg %><br>
+		<%= origTweet.date %>
+	</p>
 	
 	<div id="composeTweetBox">
-		<form method="post" id="compose" action="/<%= username %>/newtweet">
-			<textarea name="message" cols="60" rows="4">reply to @username</textarea>
+		<form method="post" id="compose" action="/<%= origTweet.username %>/newtweet">
+			<textarea name="message" cols="60" rows="4">reply to @<%= username %></textarea>
 			<br>
 			<input type="submit" name="submit" value="Reply" />
 		</form>
 	</div>
+	
 	<div id="tweetListContainer">
-		<%- convo %>
+		<!--<%- convo %>-->
+		<% for (var i=1; i < convo.length; i++) { %>
+			<p>
+				<b><%= convo[i].name %></b> <a href="/<%= convo[i].username %>/profile"> @<%= convo[i].username %></a><br>
+				<%= convo[i].msg %><br>
+				<%= convo[i].date %>
+			</p>
+		<% } %>		
 	</div>
 </div>
 

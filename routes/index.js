@@ -290,38 +290,29 @@ exports.searchBox = function (req,res) {
  * There is a default text box that allows users to reply to the "original" tweet.
  * The rest of the conversation appears below the box.
  *
- * This version shows how the display looks like.
- * It also supports a fake reply post to the original tweet.
  */
 exports.detailedTweet = function (req, res) {
-	//fetching conv1 using tweet2
 	var tweetId = req.params.tweetId;
-	var tweetId = 2;
 	var tweetconvo = tweets.getTweetConvoByTweetID(tweetId);
-	var content = '';
-	
-	var username = tweetconvo[0].username;
-	var name = users.get_user(username).name;
-	var ot = '<p><b>' + name + '</b> <a href="/' + username + '/profile">@' + username
-			+ '</a><br>' + msgToHtml(tweetconvo[0].msg) + '<br>' 
-			+ tweetconvo[0].date + '</p>';
-	// can use tweetsToHtml() for this piece of code
-	for (var i=1; i < tweetconvo.length; i++) {
-		username = tweetconvo[i].username;
-		name = users.get_user(username).name;
-		content += '<p><b>' + name + '</b> <a href="/' + username + '/profile">@' + username
-			+ '</a><br>' + msgToHtml(tweetconvo[i].msg) + '<br>' 
-			+ tweetconvo[i].date + '</p>';
+	if (tweetconvo === null) {
+		res.render('detailedTweet',{title: 'Detailed Tweet', 
+					loggedInUser: "", //fill in later
+					convo: "", 
+					profilePic: userdb[0].profilePic, //change later
+					origTweet: tweets.tweetdb[tweetId],
+					//had to include this because text area did not like <%= origTweet.username %>
+					username: tweets.tweetdb[tweetId].username});
+	} else {
+		res.render('detailedTweet',{title: 'Detailed Tweet', 
+					loggedInUser: "", //fill in later
+					convo: tweetconvo, 
+					profilePic: userdb[0].profilePic, //change later
+					origTweet: tweets.tweetdb[tweetId],
+					//had to include this because text area did not like <%= origTweet.username %>
+					username: tweets.tweetdb[tweetId].username});
 	}
-	
-	res.render('detailedTweet',{title: 'Detailed Tweet', 
-            loggedInUser: "", //should fill this in later
-						convo: content, 
-						profilePic: userdb[0].profilePic,
-						name: users.get_user(tweetconvo[0].username).name,
-						origTweet: ot,
-						username: tweetconvo[0].username});
-};
+
+}
 
 // ## detailedTweetFakeReply
 /**
