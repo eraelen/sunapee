@@ -304,6 +304,15 @@ exports.detailedTweet = function (req, res) {
 					//had to include this because text area did not like <%= origTweet.username %>
 					username: tweets.tweetdb[tweetId].username});
 	} else {
+		console.log("tweetconvo here is " + tweetconvo.length);
+		console.log("conversation so far...");
+		for (var i=0; i<tweets.conversation.length; i++) {
+			console.log("convolist " + i + " " + tweets.conversation[i].convlist);
+		}
+		for (var j=0; j<tweets.tweetdb.length; j++) {
+			console.log("tweet reply for " + j + " " + tweets.tweetdb[j].reply);
+			console.log("tweet convo for " + j + " " + tweets.tweetdb[j].convo);
+		}
 		res.render('detailedTweet',{title: 'Detailed Tweet', 
 					loggedInUser: user.username, 
 					convo: tweetconvo, 
@@ -312,7 +321,6 @@ exports.detailedTweet = function (req, res) {
 					//had to include this because text area did not like <%= origTweet.username %>
 					username: tweetconvo[0].username});
 	}
-
 }
 
 exports.detailedTweetReply = function (req, res) {
@@ -322,6 +330,20 @@ exports.detailedTweetReply = function (req, res) {
 	//users.addUserT(user.username, tweets.tweetdb.length-1);
 	res.redirect('/'+tweetId+'/detailedTweet');
 }
+
+exports.simpleReply = function (req, res) {
+	var user = req.session.user;
+	var tweetId = req.params.tweetId;
+	res.render('detailedTweet',{title: 'Detailed Tweet', 
+					loggedInUser: user.username, 
+					convo: "", 
+					profilePic: userdb[0].profilePic, //change later
+					origTweet: tweets.tweetdb[tweetId],
+					//had to include this because text area did not like <%= origTweet.username %>
+					username: tweets.tweetdb[tweetId].username});
+}
+
+
 // ## detailedTweetFakeReply
 /**
  * This version shows how the display looks like with a fake reply post to the original tweet.

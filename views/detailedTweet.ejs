@@ -25,13 +25,12 @@
 	</div>
 	
 	<div id="tweetListContainer">
-		<!--<%- convo %>-->
 		<% for (var i=1; i < convo.length; i++) { %>
 			<p>
 				<b><%= convo[i].name %></b> <a href="/<%= convo[i].username %>/profile"> @<%= convo[i].username %></a><br>
 				<%= convo[i].msg %><br>
 				<%= convo[i].date %><br>
-				<a href="/<%= convo[i].id %>/detailedTweet">Detail</a>
+				<a href="/<%= convo[i].id %>/detailedTweet">Detail</a> <a href="/<%= tweets[i].id %>/simpleReply">Reply</a>
 			</p>
 		<% } %>		
 	</div>

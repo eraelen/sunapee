@@ -58,6 +58,8 @@ app.get('/search/:query', routes.search);
 app.post('/searchBox',routes.searchBox);
 app.get('/:tweetId/detailedTweet', routes.detailedTweet);
 app.post('/:tweetId/detailedTweetReply', routes.detailedTweetReply);
+app.get('/:tweetId/simpleReply', routes.simpleReply);
+
 app.post('/detailedTweetFakeReply', routes.detailedTweetFakeReply);
 
 app.get('/:id/editProfile', routes.editProfile);
