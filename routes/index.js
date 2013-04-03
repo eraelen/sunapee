@@ -293,54 +293,69 @@ exports.searchBox = function (req,res) {
  */
 exports.detailedTweet = function (req, res) {
 	var user = req.session.user;
-	var tweetId = req.params.tweetId;
-	var tweetconvo = tweets.getTweetConvoByTweetID(tweetId);
-	if (tweetconvo === null) {
-		res.render('detailedTweet',{title: 'Detailed Tweet', 
-					loggedInUser: user.username, 
-					convo: "", 
-					profilePic: userdb[0].profilePic, //change later
-					origTweet: tweets.tweetdb[tweetId],
-					//had to include this because text area did not like <%= origTweet.username %>
-					username: tweets.tweetdb[tweetId].username});
+	if (user === undefined || online[user.uid] === undefined) {
+		req.flash('userAuth', 'Not logged in!');
+		res.redirect('/');
 	} else {
-		console.log("tweetconvo here is " + tweetconvo.length);
-		console.log("conversation so far...");
-		for (var i=0; i<tweets.conversation.length; i++) {
-			console.log("convolist " + i + " " + tweets.conversation[i].convlist);
+		var tweetId = req.params.tweetId;
+		var tweetconvo = tweets.getTweetConvoByTweetID(tweetId);
+		if (tweetconvo === null) {
+			res.render('detailedTweet',{title: 'Detailed Tweet', 
+						loggedInUser: user.username, 
+						convo: "", 
+						profilePic: userdb[0].profilePic, //change later
+						origTweet: tweets.tweetdb[tweetId],
+						//had to include this because text area did not like <%= origTweet.username %>
+						username: tweets.tweetdb[tweetId].username});
+		} else {
+			console.log("tweetconvo here is " + tweetconvo.length);
+			console.log("conversation so far...");
+			for (var i=0; i<tweets.conversation.length; i++) {
+				console.log("convolist " + i + " " + tweets.conversation[i].convlist);
+			}
+			for (var j=0; j<tweets.tweetdb.length; j++) {
+				console.log("tweet reply for " + j + " " + tweets.tweetdb[j].reply);
+				console.log("tweet convo for " + j + " " + tweets.tweetdb[j].convo);
+			}
+			res.render('detailedTweet',{title: 'Detailed Tweet', 
+						loggedInUser: user.username, 
+						convo: tweetconvo, 
+						profilePic: userdb[0].profilePic, //change later
+						origTweet: tweetconvo[0],
+						//had to include this because text area did not like <%= origTweet.username %>
+						username: tweetconvo[0].username});
 		}
-		for (var j=0; j<tweets.tweetdb.length; j++) {
-			console.log("tweet reply for " + j + " " + tweets.tweetdb[j].reply);
-			console.log("tweet convo for " + j + " " + tweets.tweetdb[j].convo);
-		}
-		res.render('detailedTweet',{title: 'Detailed Tweet', 
-					loggedInUser: user.username, 
-					convo: tweetconvo, 
-					profilePic: userdb[0].profilePic, //change later
-					origTweet: tweetconvo[0],
-					//had to include this because text area did not like <%= origTweet.username %>
-					username: tweetconvo[0].username});
 	}
 }
 
 exports.detailedTweetReply = function (req, res) {
 	var user = req.session.user;
-	var tweetId = req.params.tweetId;	
-	tweets.addTweet(user.name, user.username, req.body.message, parseInt(tweetId), null);
-	//users.addUserT(user.username, tweets.tweetdb.length-1);
-	res.redirect('/'+tweetId+'/detailedTweet');
+	if (user === undefined || online[user.uid] === undefined) {
+		req.flash('userAuth', 'Not logged in!');
+		res.redirect('/');
+	} else {
+		var tweetId = req.params.tweetId;	
+		tweets.addTweet(user.name, user.username, req.body.message, parseInt(tweetId), null);
+		//users.addUserT(user.username, tweets.tweetdb.length-1);
+		res.redirect('/'+tweetId+'/detailedTweet');
+	}
 }
 
 exports.simpleReply = function (req, res) {
 	var user = req.session.user;
-	var tweetId = req.params.tweetId;
-	res.render('detailedTweet',{title: 'Simple Reply', 
+	if (user === undefined || online[user.uid] === undefined) {
+		req.flash('userAuth', 'Not logged in!');
+		res.redirect('/');
+	} else {
+		var tweetId = req.params.tweetId;
+		res.render('detailedTweet',{title: 'Simple Reply', 
 					loggedInUser: user.username, 
 					convo: "", 
 					profilePic: userdb[0].profilePic, //change later
 					origTweet: tweets.tweetdb[tweetId],
 					//had to include this because text area did not like <%= origTweet.username %>
 					username: tweets.tweetdb[tweetId].username});
+	}
 }
 
 exports.displaySimpleReply = function (req, res) {
