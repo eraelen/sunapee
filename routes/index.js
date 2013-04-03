@@ -334,7 +334,7 @@ exports.detailedTweetReply = function (req, res) {
 exports.simpleReply = function (req, res) {
 	var user = req.session.user;
 	var tweetId = req.params.tweetId;
-	res.render('detailedTweet',{title: 'Detailed Tweet', 
+	res.render('detailedTweet',{title: 'Simple Reply', 
 					loggedInUser: user.username, 
 					convo: "", 
 					profilePic: userdb[0].profilePic, //change later
@@ -343,6 +343,13 @@ exports.simpleReply = function (req, res) {
 					username: tweets.tweetdb[tweetId].username});
 }
 
+exports.displaySimpleReply = function (req, res) {
+	var user = req.session.user;
+	var tweetId = req.params.tweetId;	
+	tweets.addTweet(user.name, user.username, req.body.message, parseInt(tweetId), null);
+	//users.addUserT(user.username, tweets.tweetdb.length-1);
+	res.redirect('/'+tweetId+'/simpleReply');
+}
 
 // ## detailedTweetFakeReply
 /**

@@ -59,6 +59,7 @@ app.post('/searchBox',routes.searchBox);
 app.get('/:tweetId/detailedTweet', routes.detailedTweet);
 app.post('/:tweetId/detailedTweetReply', routes.detailedTweetReply);
 app.get('/:tweetId/simpleReply', routes.simpleReply);
+app.post('/:tweetId/displaySimpleReply', routes.detailedTweetReply);
 
 app.post('/detailedTweetFakeReply', routes.detailedTweetFakeReply);
 
