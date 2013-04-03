@@ -40,8 +40,8 @@ exports.home = function(req, res){
 exports.newtweet = function(req, res) {
   var user = req.session.user;
   var username = user.username
-  tweets.addTweet(tweets.tweetdb.length, user.name, username, req.body.message, null, null, null);
-  users.addUserT(username, tweets.tweetdb.length-1);
+  tweets.addTweet(user.name, username, req.body.message, null, null);
+  //users.addUserT(username, tweets.tweetdb.length-1);
   res.redirect('/'+username+'/home');
 }
 
@@ -294,7 +294,6 @@ exports.searchBox = function (req,res) {
 exports.detailedTweet = function (req, res) {
 	var tweetId = req.params.tweetId;
 	var tweetconvo = tweets.getTweetConvoByTweetID(tweetId);
-	console.log("tweetconvo is" + tweetconvo);
 	if (tweetconvo === null) {
 		res.render('detailedTweet',{title: 'Detailed Tweet', 
 					loggedInUser: "", //fill in later
@@ -318,10 +317,8 @@ exports.detailedTweet = function (req, res) {
 exports.detailedTweetReply = function (req, res) {
 	var user = req.session.user;
 	var tweetId = req.params.tweetId;	
-	tweets.addTweet(tweets.tweetdb.length, user.name, user.username, req.body.message, parseInt(tweetId), null);
-	console.log(tweets.tweetdb);
-	console.log(tweets.conversation);
-	users.addUserT(user.username, tweets.tweetdb.length-1);
+	tweets.addTweet(user.name, user.username, req.body.message, parseInt(tweetId), null);
+	//users.addUserT(user.username, tweets.tweetdb.length-1);
 	res.redirect('/'+tweetId+'/detailedTweet');
 }
 // ## detailedTweetFakeReply
