@@ -30,7 +30,8 @@
 			<p>
 				<b><%= convo[i].name %></b> <a href="/<%= convo[i].username %>/profile"> @<%= convo[i].username %></a><br>
 				<%= convo[i].msg %><br>
-				<%= convo[i].date %>
+				<%= convo[i].date %><br>
+				<a href="/<%= convo[i].id %>/detailedTweet">Detail</a>
 			</p>
 		<% } %>		
 	</div>

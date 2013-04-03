@@ -32,7 +32,16 @@
 		
 		<div id="tweetListContainer">
 			<h2>Timeline:</h2>
-			<%- tweets %>
+			<!-- tweets %>-->
+			<% for (var i=0; i < tweets.length; i++) { %>
+			<p>
+				<b><%= tweets[i].name %></b> <a href="/<%= tweets[i].username %>/profile"> @<%= tweets[i].username %></a><br>
+				<%= tweets[i].msg %><br>
+				<%= tweets[i].date %><br>
+				<a href="/<%= tweets[i].id %>/detailedTweet">Detail</a>
+			</p>
+		<% } %>
+			
 		</div>
 	</div>
 </div>

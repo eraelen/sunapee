@@ -26,8 +26,8 @@ exports.home = function(req, res){
               tweetN: users.getTNumberById(username),
               followerN: user.follower.length,
               followingN: user.following.length,
-                    tweets: tweetsToHtml(tl),
-            loggedInUser: user.username
+              tweets: tl,//tweetsToHtml(tl),
+			  loggedInUser: user.username
                } );
     }
   }
@@ -292,11 +292,12 @@ exports.searchBox = function (req,res) {
  *
  */
 exports.detailedTweet = function (req, res) {
+	var user = req.session.user;
 	var tweetId = req.params.tweetId;
 	var tweetconvo = tweets.getTweetConvoByTweetID(tweetId);
 	if (tweetconvo === null) {
 		res.render('detailedTweet',{title: 'Detailed Tweet', 
-					loggedInUser: "", //fill in later
+					loggedInUser: user.username, 
 					convo: "", 
 					profilePic: userdb[0].profilePic, //change later
 					origTweet: tweets.tweetdb[tweetId],
@@ -304,12 +305,12 @@ exports.detailedTweet = function (req, res) {
 					username: tweets.tweetdb[tweetId].username});
 	} else {
 		res.render('detailedTweet',{title: 'Detailed Tweet', 
-					loggedInUser: "", //fill in later
+					loggedInUser: user.username, 
 					convo: tweetconvo, 
 					profilePic: userdb[0].profilePic, //change later
-					origTweet: tweets.tweetdb[tweetId],
+					origTweet: tweetconvo[0],
 					//had to include this because text area did not like <%= origTweet.username %>
-					username: tweets.tweetdb[tweetId].username});
+					username: tweetconvo[0].username});
 	}
 
 }
