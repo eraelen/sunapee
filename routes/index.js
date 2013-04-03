@@ -49,14 +49,17 @@ exports.newtweet = function(req, res) {
 * GET Profile page
 */
 exports.profile = function(req, res) {
-  var user = req.session.user;
+  var loggedInUserName = "";
+  if (req.session.user !== undefined) {
+    loggedInUserName = req.session.user.username;
+  }
   var user = users.getUserById(req.params.id);
   if (user !== undefined ) {
     var username = user.username;
     var tl = tweets.getTByUser(username, 20);
     res.render('profile',
               {title: 'Profile',
-               loggedInUser: user.username,
+               loggedInUser: loggedInUserName,
                name: user.name,
                username: username,
                tweetN: users.getTNumberById(username),
@@ -128,7 +131,8 @@ exports.following = function(req, res) {
 exports.interaction = function(req, res) {
    var user = req.session.user;
    if (user === undefined || online[user.uid] === undefined) {
-     res.send("You can only view the interaction page in the account you are logged in with.");
+     //res.send("You can only view the interaction page in the account you are logged in with.");
+     res.redirect('/');
    } else {
       var username = user.username;
       if(username !== req.params.id){
@@ -233,7 +237,8 @@ var profileMsg = '';
 exports.help = function (req,res) {
 	var user = req.session.user;
 	if (user === undefined || online[user.uid] === undefined) {
-        res.send("Login to view this page.");
+        //res.send("Login to view this page.");
+        res.redirect('/');
     }else{
     	res.render('help', {title: 'Help', username: 
 							user.username, 
@@ -437,21 +442,24 @@ exports.editProfile = function (req, res){
  */
 exports.editSettings = function (req, res){
    var user = req.session.user;
-   var username = user.username;
    if (user === undefined || online[user.uid] === undefined) {
-     res.send("Login to view this page.");
-   }else if(username !== req.params.id){
-	 res.redirect('/'+username+'/editSettings');
-   }else {
-     res.render('editSettings', {title: 'Edit Settings', 
+     //res.send("Login to view this page.");
+     res.redirect('/');
+   } else {
+    var username = user.username;
+    if(username !== req.params.id){
+      res.redirect('/'+username+'/editSettings');
+    } else {
+      res.render('editSettings', {title: 'Edit Settings', 
       loggedInUser: username,
-			msg: settingsMsg, 
-			pv: user.profVis, 
-			fp: user.folPerm, 
-			mp: user.mentionPerm, 
-			pm: user.pmPerm,
-			username: user.username});
-   }
+      msg: settingsMsg, 
+      pv: user.profVis, 
+      fp: user.folPerm, 
+      mp: user.mentionPerm, 
+      pm: user.pmPerm,
+      username: user.username});
+    }
+   } 
 };
 // ## changeSettings
 /**
