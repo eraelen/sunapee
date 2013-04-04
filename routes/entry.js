@@ -10,13 +10,14 @@ var online = {};
 exports.online = online; 
 
 
-// # User Server-Side Route-Handler
+// ## User Server-Side Route-Handlers
 
-// ## Forgot Login
+// ### forgotlogin
 //GET forgotlogin.ejs
 exports.forgotlogin = function(req, res){
   res.render('forgotlogin',{message: ""});
 };
+// ### forgotloginProcess
 //Post forgotlogin.ejs with respective message, either error or success.
 exports.forgotloginProcess = function(req, res){
   var email = req.body.email;
@@ -26,11 +27,12 @@ exports.forgotloginProcess = function(req, res){
   });
 };
 
-// ## Registration
+// ### register
 //GET rsegister.ejs
 exports.register = function(req, res){
   res.render('register',{message: req.flash("error")});
 };
+// ### verify
 //POST to registration.ejs a message indicating if the registration information provided is valid
 exports.verify = function(req, res){
     var name = req.body.name;
@@ -51,10 +53,12 @@ exports.verify = function(req, res){
         }
     });
 }
+// ### verifyCode
 //GET verifyCode.js
 exports.verifyCode = function(req, res){
   res.render('verifyCode',{message: req.flash("message")});
 };
+// ### codeCheck
 //Post to login.ejs or verifyCode.ejs based on the code submitted
 exports.codeCheck = function(req,res){
     users.lookupCodeCheck(req.body.code, function(message){
@@ -68,7 +72,7 @@ exports.codeCheck = function(req,res){
   });
 }
 
-// ## login, userAuth, Logout
+// ### login
 //GET login.ejs. Based on sessions example from lecture 18 examples by 
 //Timothy Richards. 
 // There is a check to see if the user is already logged in. If they are, the user's
@@ -85,8 +89,8 @@ exports.login = function(req, res){
   }
 };
 
-
-// POST, Performs **basic** user authentication. Based on sessions example 
+// ### userAuth
+// POST, Performs **basic** user authentication. Based on sessions examples 
 //from lecture 18 examples by Timothy Richards. 
 //Redirects if logged-in. If not then the username and password is 
 //checked. 
@@ -112,6 +116,7 @@ exports.userAuth = function(req, res) {
   }
 };
 
+// ### logout
 // Get login.ejs again. Deletes user info & session - then redirects to login.
 exports.logout = function(req, res) {
   var user = req.session.user;

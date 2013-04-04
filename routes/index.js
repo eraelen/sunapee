@@ -15,9 +15,9 @@ var conversation = tweets.conversation;
 var settingsMsg = '';
 var profileMsg = '';
 
-// # User Server-Side Route-Handler
+// ## User Server-Side Route-Handlers
 
-// ## 
+// ### home
 /*
 *GET home page.
 */
@@ -47,6 +47,7 @@ exports.home = function(req, res){
   }
 }
 
+// ### newtweet
 /*
 * POST newtweet.
 * Handles submiting request from new tweet button on Home page.
@@ -59,6 +60,7 @@ exports.newtweet = function(req, res) {
   res.redirect('/'+username+'/home');
 }
 
+// ### profile
 /*
 * GET profile page.
 */
@@ -90,6 +92,7 @@ exports.profile = function(req, res) {
   }
 }
 
+// ### follower
 /* 
 * GET follower page.
 */
@@ -115,7 +118,7 @@ exports.follower = function(req, res) {
   }
 }
 
-
+// ### following
 /* 
 * GET following page
 */
@@ -141,6 +144,7 @@ exports.following = function(req, res) {
   }
 }
 
+// ### unfollow
 /* 
 * POST unfollow contents of the following/follower page by redirect
 */
@@ -155,6 +159,7 @@ exports.unfollow = function(req, res){
 
 }
 
+// ### follow
 /* 
 * POST follow contents of the following/follower page by redirect
 */
@@ -169,8 +174,9 @@ exports.follow = function(req, res){
 
 }
 
+// ### interaction
 /* 
-* GET Interaction page
+* GET interaction page
 */
 exports.interaction = function(req, res) {
    var user = req.session.user;
@@ -301,7 +307,6 @@ exports.detailedTweetReply = function (req, res) {
 	} else {
 		var tweetId = req.params.tweetId;	
 		tweets.addTweet(user.name, user.username, req.body.message, parseInt(tweetId), null);
-		//users.addUserT(user.username, tweets.tweetdb.length-1);
 		res.redirect('/'+tweetId+'/detailedTweet');
 	}
 }
@@ -316,7 +321,7 @@ exports.simpleReply = function (req, res) {
 		res.render('detailedTweet',{title: 'Simple Reply', 
 					loggedInUser: user.username, 
 					convo: "", 
-					profilePic: userdb[0].profilePic, //change later
+					profilePic: userdb[0].profilePic, 
 					origTweet: tweets.tweetdb[tweetId],
 					//had to include this because text area did not like <%= origTweet.username %>
 					username: tweets.tweetdb[tweetId].username});
@@ -327,7 +332,6 @@ exports.displaySimpleReply = function (req, res) {
 	var user = req.session.user;
 	var tweetId = req.params.tweetId;	
 	tweets.addTweet(user.name, user.username, req.body.message, parseInt(tweetId), null);
-	//users.addUserT(user.username, tweets.tweetdb.length-1);
 	res.redirect('/'+tweetId+'/simpleReply');
 }
 
@@ -360,7 +364,7 @@ exports.detailedTweetFakeReply = function (req, res) {
 	content += '<p><b>Hazel Rozetta</b><a href="/">@hazel</a><br>' + req.body.replyTweet + '<br>'+ tweetconvo[0].date +'</p>';
 	
 	res.render('detailedTweet',{title: 'Detailed Tweet Fake Reply', 
-            loggedInUser:"", //Should change this later
+            loggedInUser:"", //will change this later
 						convo: content, 
 						profilePic: userdb[0].profilePic,
 						name: users.get_user(tweetconvo[0].username).name,
@@ -403,7 +407,6 @@ exports.editProfile = function (req, res){
 exports.editSettings = function (req, res){
    var user = req.session.user;
    if (user === undefined || online[user.uid] === undefined) {
-     //res.send("Login to view this page.");
      res.redirect('/');
    } else {
     var username = user.username;
@@ -431,7 +434,7 @@ exports.changeSettings = function (req, res){
    if (user === undefined || online[user.uid] === undefined) {
      res.send("Login to view this page.");
    }else if(username !== req.params.id){
-	  res.redirect('/'+username+'/editSettings'); //Direct to user's edit setting page
+	  res.redirect('/'+username+'/editSettings'); 
    }else {
      if (req.body.profVis != undefined) {
 			user.profVis = req.body.profVis;
@@ -548,7 +551,7 @@ exports.changeProfilePic = function (req, res) {
     if (user === undefined || online[user.uid] === undefined) {
       res.send("Login to view this page.");
     }else if(username !== req.params.id){
-	   res.redirect('/'+username+'/editProfile'); //just go to the user's edit page
+	   res.redirect('/'+username+'/editProfile'); 
     }else {
        var u = users.getUserById(user.username);
 		u.profilePic = 'fakeChangedPic.jpg';
@@ -576,7 +579,6 @@ function userToHtml(loggedInUser, user, userlist, redir) {
     var u = users.getUserById(userlist[i]);
     var btntext;
     if (u.username === loggedInUser.username) { 
-      // if it's loggedInUser, don't display button
       content += '<p><b>'+u.name+'</b> <a href="/'+u.username+'/profile">@'+u.username+'</a></p>';
     } else {
       if (users.isFollowing(loggedInUser, u)) {
@@ -610,7 +612,6 @@ function tweetsToHtml(tl) {
     var usr = users.getUserById(t.username);
     var a = t.msg.split(" ");
     content += '<p><b>'+t.name+'</b> <a href="/'+t.username+'/profile">@'+t.username+'</a><br>'
-              //+t.msg+'<br>'
               +msgToHtml(t.msg)+'<br>'
               +t.date+'<br>'
               +'<a href="/'+t.id+'/detailedTweet">Detail</a></p>';
@@ -623,7 +624,8 @@ function tweetsToHtml(tl) {
  * Find @username and #hashtag in a tweet message and convert them to a html href link.
  * In order to be recognized as a @username mention, @ symbol must be the start
  * of a word. And @username@username is considered invalid and is ignored.
- * #hashtag starts with # and end before a space. #ford! is considered a hashtag.
+ * hashtag starts with # and end before a space. #ford! is considered a hashtag.
+ * Note: word starting with @ && cannot have another @, #ford! <- ! in else if statement.
  */
 function msgToHtml(msg) {
   msg = msg.split(" ");
@@ -631,10 +633,9 @@ function msgToHtml(msg) {
   var len = msg.length;
   for (var i=0; i < len; i++) {
     var word = msg[i];
-    // word starting with @ && cannot have another @
     if (word.charAt(0) === "@" && word.split("\@").length === 2) {
       content += ' <a href="/'+word.substring(1)+'/profile">'+word+'</a> ';
-    } else if (word.charAt(0) === "#" && word.split("\#").length === 2) { //#ford! <- !
+    } else if (word.charAt(0) === "#" && word.split("\#").length === 2) {
       content += ' <a href="/search/'+word.substring(1)+'">'+word+'</a> ';
     } else {
       content += word+" ";
