@@ -104,7 +104,7 @@ exports.follower = function(req, res) {
 * GET Following page
 */
 exports.following = function(req, res) {
-  var user = req.session.user;
+  var userl = req.session.user;
   if (user === undefined || online[user.uid] === undefined) {
     res.redirect('/');
   } else {
@@ -117,7 +117,7 @@ exports.following = function(req, res) {
     }
     res.render('following', 
           { title: 'Following',
-            loggedInUser: username,
+            loggedInUser: userl.username,
             name: user.name,
             username: username,
             userList: user.following,
