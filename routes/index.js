@@ -533,7 +533,7 @@ exports.changeProfilePic = function (req, res) {
     }else if(username !== req.params.id){
 	   res.redirect('/'+username+'/editProfile'); //just go to the user's edit page
     }else {
-       var u = users.getUserById(onlineUser.username);
+       var u = users.getUserById(user.username);
 		u.profilePic = 'fakeChangedPic.jpg';
 		profileMsg = 'Fake image generated here.';
 		res.redirect('/'+u.username+'/editProfile');
