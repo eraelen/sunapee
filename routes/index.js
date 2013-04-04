@@ -94,19 +94,20 @@ exports.profile = function(req, res) {
 * GET follower page.
 */
 exports.follower = function(req, res) {
-  var userl = req.session.user;
-  if (userl === undefined || online[userl.uid] === undefined) {
+  var loggedInUser = req.session.user;
+  if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
     res.redirect('/');
   } else {
+  	loggedInUser = users.getUserById(loggedInUser.username);
     var user = users.getUserById(req.params.id);
     var followerList = user.follower;
     var content = '';
     if (followerList.length !== 0) {
-      content += userToHtml(followerList, "Delete");
+      content += userToHtml(loggedInUser, user, followerList, "follower");
     }
   	res.render('follower', 
     			{ title: 'Follower',
-            loggedInUser: userl.username,
+            	  loggedInUser: loggedInUser.username,
     			  name: user.name,
     			  username: user.username,
     			  content: content
@@ -128,7 +129,7 @@ exports.following = function(req, res) {
     var followinglist = user.following;
     var content = '';
     if (followinglist.length !== 0) {
-      content += userToHtml(loggedInUser, user, followinglist);
+      content += userToHtml(loggedInUser, user, followinglist, "following");
     }
     res.render('following', 
           { title: 'Following',
@@ -141,7 +142,7 @@ exports.following = function(req, res) {
 }
 
 /* 
-* POST changed contents of the following/follower page by redirect
+* POST unfollow contents of the following/follower page by redirect
 */
 exports.unfollow = function(req, res){
   var loggedInUser = req.session.user;
@@ -149,10 +150,25 @@ exports.unfollow = function(req, res){
      res.redirect('/');
   } else {
       users.unfollow(loggedInUser.username, req.params.rmuname);
-      res.redirect('/'+req.params.uname+'/following');
+      res.redirect('/'+req.params.uname+'/'+req.params.redir);
   }
 
 }
+
+/* 
+* POST follow contents of the following/follower page by redirect
+*/
+exports.follow = function(req, res){
+  var loggedInUser = req.session.user;
+  if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
+     res.redirect('/');
+  } else {
+      users.follow(loggedInUser.username, req.params.adduname);
+      res.redirect('/'+req.params.uname+'/'+req.params.redir);
+  }
+
+}
+
 /* 
 * GET Interaction page
 */
@@ -553,14 +569,15 @@ exports.changeProfilePic = function (req, res) {
 * @param btntext, text on the button displayed
 * @return content, generated HTML
 */
-function userToHtml(loggedInUser, user, userlist) {
+function userToHtml(loggedInUser, user, userlist, redir) {
   var content = '';
   var len = userlist.length-1;
   for (var i=len; i >= 0; i--) {
     var u = users.getUserById(userlist[i]);
     var btntext;
-    if (u.username === loggedInUser.username) {
-      content += '<b>'+u.name+'</b> <a href="/'+u.username+'/profile">@'+u.username+'</a><br>';
+    if (u.username === loggedInUser.username) { 
+      // if it's loggedInUser, don't display button
+      content += '<p><b>'+u.name+'</b> <a href="/'+u.username+'/profile">@'+u.username+'</a></p>';
     } else {
       if (users.isFollowing(loggedInUser, u)) {
       btntext = "unfollow";
@@ -568,7 +585,8 @@ function userToHtml(loggedInUser, user, userlist) {
         btntext = "follow";
       }
       content += '<b>'+u.name+'</b> <a href="/'+u.username+'/profile">@'+u.username+'</a>';
-      content += '<form method="post" id="unfollow" action="/'+user.username+'/'+btntext+'/'+u.username+'">'+
+      content += '<form method="post" id="unfollow" action="/'
+      				+user.username+'/'+btntext+'/'+u.username+'/'+redir+'">'+
                   '<input type="submit" name="submit" value="'+btntext+'" />'+
                   '</form><br>';
     }

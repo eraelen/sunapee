@@ -51,9 +51,9 @@ app.get('/:id/home', routes.home);
 app.get('/:id/interaction', routes.interaction);
 app.get('/:id/profile', routes.profile);
 app.get('/:id/follower', routes.follower);
-app.post('/:id/follower', routes.follower);
+app.post('/:uname/follow/:adduname/:redir', routes.follow);
 app.get('/:id/following', routes.following);
-app.post('/:uname/unfollow/:rmuname', routes.unfollow);
+app.post('/:uname/unfollow/:rmuname/:redir', routes.unfollow);
 app.post('/:id/newtweet', routes.newtweet);
 
 //###2. Search, Help, Tweet Routes
