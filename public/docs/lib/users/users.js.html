@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>users.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../../doc-style.css" />
+  <script src="../../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../../", thisFile = "lib/users/users.js", defaultSidebar = true;
+  </script>
+  <script src="../../doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+      <div class="heading h1">
+        <a href="#users-module">Users Module</a>
+      </div>
+      <div class="heading h2">
+        <a href="#in-memory-user-database">In Memory User Database</a>
+      </div>
+      <div class="heading h2">
+        <a href="#functions">Functions</a>
+      </div>
+      <div class="heading h3">
+        <a href="#function-delfromcodelist">function:delFromCodeList</a>
+      </div>
+      <div class="heading h3">
+        <a href="#function-lookup">function:lookup</a>
+      </div>
+      <div class="heading h3">
+        <a href="#function-lookupforgotlogininfo">function:lookupForgotLoginInfo</a>
+      </div>
+      <div class="heading h3">
+        <a href="#function-lookupregistrationparams">function:lookupRegistrationParams</a>
+      </div>
+      <div class="heading h4">
+        <a href="#current-register-requirements--">Current Register Requirements -</a>
+      </div>
+      <div class="heading h3">
+        <a href="#function-lookupcodecheck">function:lookupCodeCheck</a>
+      </div>
+      <div class="heading h3">
+        <a href="#function-checkusername">function:checkUsername</a>
+      </div>
+      <div class="heading h3">
+        <a href="#function-checkemail">function:checkEmail</a>
+      </div>
+      <div class="heading h3">
+        <a href="#function-checkpassword">function:checkPassword</a>
+      </div>
+      <div class="heading h3">
+        <a href="#function-containschar">function:containsChar</a>
+      </div>
+      <div class="heading h3">
+        <a href="#function-makecode">function:makeCode</a>
+      </div>
+      <div class="heading h3">
+        <a href="#function-emailcode">function:emailCode</a>
+      </div>
+      <div class="heading h3">
+        <a href="#function--emaillogininfo">function: emailLoginInfo</a>
+      </div>
+      <div class="heading h3">
+        <a href="#function-get_user">function:get_user</a>
+      </div>
+      <div class="heading h3">
+        <a href="#function--getuserbyid">function: getUserById</a>
+      </div>
+      <div class="heading h3">
+        <a href="#function--gettnumberbyid">function: getTNumberById</a>
+      </div>
+      <div class="heading h3">
+        <a href="#function--addusert">function: addUserT</a>
+      </div>
+      <div class="heading h3">
+        <a href="#function--unfollow">function: unfollow</a>
+      </div>
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="users-module">
+  <h1>
+    <a href="#users-module" class="pilcrow">&#182;</a>
+    Users Module
+  </h1>
+</div>
+
+
+<p>This is a module for accessing user data and functions.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="in-memory-user-database">
+  <h2>
+    <a href="#in-memory-user-database" class="pilcrow">&#182;</a>
+    In Memory User Database
+  </h2>
+</div>
+
+
+<p>Note: Create a real user database later-on. The number of users in test data is stored for userid continuation.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">var</span> <span class="nx">userdb</span> <span class="o">=</span> <span class="p">[</span>
+<span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Tim Berners-Lee&#39;</span> <span class="p">,</span><span class="nx">username</span><span class="o">:</span> <span class="s1">&#39;tim&#39;</span><span class="p">,</span> <span class="nx">password</span><span class="o">:</span> <span class="s1">&#39;mit&#39;</span><span class="p">,</span> <span class="nx">uid</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">email</span><span class="o">:</span> <span class="s2">&quot;aqua_manga@yahoo.com&quot;</span><span class="p">,</span> <span class="nx">location</span><span class="o">:</span> <span class="s2">&quot;Massachusetts&quot;</span><span class="p">,</span> <span class="nx">website</span><span class="o">:</span> <span class="s2">&quot;amazon.com&quot;</span><span class="p">,</span> <span class="nx">profilePic</span><span class="o">:</span> <span class="s2">&quot;defaultProfilePic.jpg&quot;</span><span class="p">,</span> <span class="nx">follower</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;caleb&quot;</span><span class="p">,</span><span class="s2">&quot;hazel&quot;</span><span class="p">],</span> <span class="nx">following</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;caleb&quot;</span><span class="p">,</span><span class="s2">&quot;hazel&quot;</span><span class="p">],</span> <span class="nx">tweets</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span> <span class="nx">profVis</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">,</span> <span class="nx">folPerm</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">,</span> <span class="nx">mentionPerm</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">,</span> <span class="nx">pmPerm</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">},</span>
+<span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Hazel Rozetta&#39;</span><span class="p">,</span> <span class="nx">username</span><span class="o">:</span> <span class="s1">&#39;hazel&#39;</span><span class="p">,</span> <span class="nx">password</span><span class="o">:</span> <span class="s1">&#39;lezah&#39;</span><span class="p">,</span> <span class="nx">uid</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">email</span><span class="o">:</span> <span class="s2">&quot;ysasaki@smith.edu&quot;</span><span class="p">,</span> <span class="nx">location</span><span class="o">:</span> <span class="s2">&quot;United States&quot;</span><span class="p">,</span> <span class="nx">website</span><span class="o">:</span> <span class="s2">&quot;petco.com&quot;</span><span class="p">,</span> <span class="nx">profilePic</span><span class="o">:</span> <span class="s2">&quot;defaultProfilePic.jpg&quot;</span><span class="p">,</span> <span class="nx">follower</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;tim&quot;</span><span class="p">,</span><span class="s2">&quot;caleb&quot;</span><span class="p">],</span> <span class="nx">following</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;tim&quot;</span><span class="p">,</span> <span class="s2">&quot;caleb&quot;</span><span class="p">],</span> <span class="nx">tweets</span><span class="o">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="nx">profVis</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">,</span> <span class="nx">folPerm</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">,</span> <span class="nx">mentionPerm</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">,</span> <span class="nx">pmPerm</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">},</span>
+<span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Caleb Marks&#39;</span><span class="p">,</span> <span class="nx">username</span><span class="o">:</span> <span class="s1">&#39;caleb&#39;</span><span class="p">,</span> <span class="nx">password</span><span class="o">:</span> <span class="s1">&#39;belac&#39;</span><span class="p">,</span> <span class="nx">uid</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span> <span class="nx">email</span><span class="o">:</span> <span class="s2">&quot;ysasaki2014@gmail.com&quot;</span><span class="p">,</span> <span class="nx">location</span><span class="o">:</span> <span class="s2">&quot;Asia&quot;</span><span class="p">,</span> <span class="nx">website</span><span class="o">:</span> <span class="s2">&quot;ebay.com&quot;</span><span class="p">,</span> <span class="nx">profilePic</span><span class="o">:</span> <span class="s2">&quot;defaultProfilePic.jpg&quot;</span><span class="p">,</span> <span class="nx">follower</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;hazel&quot;</span><span class="p">,</span><span class="s2">&quot;tim&quot;</span><span class="p">],</span> <span class="nx">following</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;hazel&quot;</span><span class="p">,</span><span class="s2">&quot;tim&quot;</span><span class="p">],</span> <span class="nx">tweets</span><span class="o">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="nx">profVis</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">,</span> <span class="nx">folPerm</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">,</span> <span class="nx">mentionPerm</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">,</span> <span class="nx">pmPerm</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">}</span>
+<span class="p">];</span>
+
+<span class="kd">var</span> <span class="nx">usersInTestData</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span> 
+<span class="nx">exports</span><span class="p">.</span><span class="nx">userdb</span> <span class="o">=</span> <span class="nx">userdb</span><span class="p">;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<p>List of usernames that are pending verification codes for registration</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">var</span> <span class="nx">codeUserList</span> <span class="o">=</span> <span class="p">[];</span>
+
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="functions">
+  <h2>
+    <a href="#functions" class="pilcrow">&#182;</a>
+    Functions
+  </h2>
+</div>
+
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function-delfromcodelist">
+  <h3>
+    <a href="#function-delfromcodelist" class="pilcrow">&#182;</a>
+    <em>function</em>:delFromCodeList
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>Deletes a user from the CodeUserList
+ after verification of the account.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">username
+</span>
+      <span class="dox_type">string</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">delFromCodeList</span><span class="p">(</span><span class="nx">username</span><span class="p">){</span>
+    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">codeUserList</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="nx">codeUserList</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">===</span> <span class="nx">username</span><span class="p">){</span>
+            <span class="k">delete</span> <span class="nx">codeUserList</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+            <span class="nx">codeUserList</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function-lookup">
+  <h3>
+    <a href="#function-lookup" class="pilcrow">&#182;</a>
+    <em>function</em>:lookup
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>A function to confirm the username and password for the
+user account. A callback function is used in the third 
+parameter where an error message is sent if any feild is 
+empty, the password entered is not correct, or the username
+is not found.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">username</span>
+      <span class="dox_type">string</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">password</span>
+      <span class="dox_type">string</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">cb
+</span>
+      <span class="dox_type">function</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">lookup</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">username</span><span class="p">,</span> <span class="nx">password</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">userdb</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">((</span><span class="nx">username</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span> <span class="o">||</span> <span class="nx">password</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">)){</span>
+       <span class="nx">cb</span><span class="p">(</span><span class="s1">&#39;Enter both the username and password.&#39;</span><span class="p">);</span>
+  <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+     <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+       <span class="kd">var</span> <span class="nx">u</span> <span class="o">=</span> <span class="nx">userdb</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+       <span class="k">if</span> <span class="p">(</span><span class="nx">u</span><span class="p">.</span><span class="nx">username</span> <span class="o">===</span> <span class="nx">username</span><span class="p">)</span> <span class="p">{</span>
+         <span class="k">if</span> <span class="p">(</span><span class="nx">u</span><span class="p">.</span><span class="nx">password</span> <span class="o">===</span> <span class="nx">password</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">cb</span><span class="p">(</span><span class="kc">undefined</span><span class="p">,</span> <span class="nx">u</span><span class="p">);</span>
+         <span class="p">}</span>
+         <span class="k">else</span> <span class="p">{</span>
+            <span class="nx">cb</span><span class="p">(</span><span class="s1">&#39;Password is not correct.&#39;</span><span class="p">);</span>
+         <span class="p">}</span>
+         <span class="k">return</span><span class="p">;</span>
+       <span class="p">}</span>
+     <span class="p">}</span>
+     <span class="nx">cb</span><span class="p">(</span><span class="s1">&#39;User not found&#39;</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function-lookupforgotlogininfo">
+  <h3>
+    <a href="#function-lookupforgotlogininfo" class="pilcrow">&#182;</a>
+    <em>function</em>:lookupForgotLoginInfo
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>A function used to check whether or not anything was entered
+and if the email exists in the database. If a matching email 
+is found, an email is sent out to the username with the login 
+information. A callback function is used in the second 
+parameter where the success or failure message is sent. </p>
+  </div>
+  <div class="body"><p>Note: Potentially changing this funtion so that the sent email contains 
+     a reset password page specific for the user. The user
+     will be able to change the password at the link provided.
+     (The link will only be usable one time.)</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">email</span>
+      <span class="dox_type">string</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">cb
+</span>
+      <span class="dox_type">function</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">lookupForgotLoginInfo</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">email</span><span class="p">,</span> <span class="nx">cb</span><span class="p">){</span>
+   <span class="k">if</span><span class="p">(</span><span class="nx">email</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">){</span>
+     <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">userdb</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="nx">userdb</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">email</span> <span class="o">===</span> <span class="nx">email</span><span class="p">){</span>
+           <span class="kd">var</span> <span class="nx">name</span> <span class="o">=</span> <span class="nx">userdb</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">username</span><span class="p">;</span>
+           <span class="kd">var</span> <span class="nx">username</span> <span class="o">=</span> <span class="nx">userdb</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">username</span><span class="p">;</span>
+           <span class="kd">var</span> <span class="nx">password</span> <span class="o">=</span> <span class="nx">userdb</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">password</span><span class="p">;</span>
+           <span class="nx">emailLoginInfo</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">username</span><span class="p">,</span> <span class="nx">email</span><span class="p">,</span> <span class="nx">password</span><span class="p">);</span>
+           <span class="nx">cb</span><span class="p">(</span><span class="s2">&quot;An email has been sent out with the information.&quot;</span><span class="p">);</span>
+          <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">i</span> <span class="o">==</span> <span class="nx">userdb</span><span class="p">.</span><span class="nx">length</span><span class="o">-</span><span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="nx">userdb</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">email</span> <span class="o">!=</span> <span class="nx">email</span><span class="p">){</span>
+           <span class="nx">cb</span><span class="p">(</span><span class="s2">&quot;The email is not associated with any Tweetee account.&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+   <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+     <span class="nx">cb</span><span class="p">(</span><span class="s2">&quot;Please make sure that all of the required  are filled&quot;</span><span class="p">);</span>
+   <span class="p">}</span>
+<span class="p">};</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function-lookupregistrationparams">
+  <h3>
+    <a href="#function-lookupregistrationparams" class="pilcrow">&#182;</a>
+    <em>function</em>:lookupRegistrationParams
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>A function used to check if the parameters entered from the registration form 
+meets certain requirements to create a new user. If requirements are met, then the
+user object is created, and pushed in the codeUserList, which stores all of the users
+pending for verification. A verification code is generated and sent to the email provided. 
+An error message is sent if different checks are not met, and undefined is sent if 
+there are no problems with the information. </p>
+  </div>
+  <div class="body">
+<div class="pilwrap" id="current-register-requirements--">
+  <h4>
+    <a href="#current-register-requirements--" class="pilcrow">&#182;</a>
+    Current Register Requirements -
+  </h4>
+</div>
+
+
+<ol>
+<li>The fields of: Name, Username, E-mail, Password, Retype P are filled (astarisk indicated)</li>
+<li>The username is not already taken and no spaces</li>
+<li>The email is valid (with @ symbol)</li>
+<li>The password is a minimum of 6 characters and the retype matches
+ People can reference any location and website.</li>
+</ol>
+
+<p>If requirements are not fulfiled then the respective error message is displayed </p>
+
+<p>Note: Increase the number of checks, such as the confirming if an email exists, 
+      require different characters for the password, etc. 
+      Have a timelimit from when the registration code is sent to account verification. </p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">name</span>
+      <span class="dox_type">string</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">username</span>
+      <span class="dox_type">string</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">email</span>
+      <span class="dox_type">string</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">password</span>
+      <span class="dox_type">string</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">retypeP</span>
+      <span class="dox_type">string</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">location</span>
+      <span class="dox_type">string</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">website</span>
+      <span class="dox_type">string</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">cb
+</span>
+      <span class="dox_type">function</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+ <span class="nx">exports</span><span class="p">.</span><span class="nx">lookupRegistrationParams</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">username</span><span class="p">,</span> <span class="nx">email</span><span class="p">,</span> <span class="nx">password</span><span class="p">,</span> <span class="nx">retypeP</span><span class="p">,</span> <span class="nx">location</span><span class="p">,</span> <span class="nx">website</span><span class="p">,</span> <span class="nx">cb</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">name</span><span class="p">.</span><span class="nx">length</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">username</span><span class="p">.</span><span class="nx">length</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">email</span><span class="p">.</span><span class="nx">length</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">password</span><span class="p">.</span><span class="nx">length</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+        <span class="nx">cb</span><span class="p">(</span><span class="s2">&quot;Please make sure that all of the required fields are filled&quot;</span><span class="p">);</span>
+    <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">checkUsername</span><span class="p">(</span><span class="nx">username</span><span class="p">)){</span>
+        <span class="nx">cb</span><span class="p">(</span><span class="s2">&quot;The username is currently taken. Please chose another and try again.&quot;</span><span class="p">);</span>
+    <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">checkEmail</span><span class="p">(</span><span class="nx">email</span><span class="p">)){</span>
+        <span class="nx">cb</span><span class="p">(</span><span class="s2">&quot;The email is invalid. Please try again.&quot;</span><span class="p">);</span>
+    <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">checkPassword</span><span class="p">(</span><span class="nx">password</span><span class="p">,</span> <span class="nx">retypeP</span><span class="p">)){</span>
+        <span class="nx">cb</span><span class="p">(</span><span class="s2">&quot;The passwords must match and be at least 6 characters long.&quot;</span><span class="p">);</span>
+    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+        <span class="nx">cb</span><span class="p">(</span><span class="kc">undefined</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">randVarCode</span> <span class="o">=</span> <span class="nx">makeCode</span><span class="p">();</span>
+        <span class="kd">var</span> <span class="nx">newUid</span> <span class="o">=</span> <span class="nx">usersInTestData</span><span class="o">++</span>
+        <span class="nx">usersInTestData</span> <span class="o">=</span> <span class="nx">newUid</span>
+        <span class="kd">var</span> <span class="nx">userVerObj</span> <span class="o">=</span> <span class="p">{</span>
+               <span class="nx">name</span><span class="o">:</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">username</span><span class="o">:</span> <span class="nx">username</span><span class="p">,</span>
+               <span class="nx">password</span><span class="o">:</span> <span class="nx">password</span><span class="p">,</span> 
+               <span class="nx">uid</span><span class="o">:</span> <span class="nx">newUid</span><span class="p">,</span>
+               <span class="nx">email</span><span class="o">:</span><span class="nx">email</span><span class="p">,</span> 
+               <span class="nx">code</span><span class="o">:</span><span class="nx">randVarCode</span><span class="p">,</span> 
+               <span class="nx">location</span><span class="o">:</span><span class="nx">location</span><span class="p">,</span> 
+               <span class="nx">website</span><span class="o">:</span><span class="nx">website</span><span class="p">,</span>
+               <span class="nx">profileImage</span><span class="o">:</span> <span class="s2">&quot;defaultProfilePic.jpg&quot;</span><span class="p">,</span> 
+               <span class="nx">follower</span><span class="o">:</span> <span class="p">[],</span> 
+               <span class="nx">following</span><span class="o">:</span> <span class="p">[],</span> 
+               <span class="nx">tweets</span><span class="o">:</span> <span class="p">[],</span>
+               <span class="nx">profVis</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">,</span>
+               <span class="nx">folPerm</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">,</span>
+               <span class="nx">mentionPerm</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">,</span>
+               <span class="nx">pmPerm</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span>
+        <span class="p">};</span> 
+        <span class="nx">codeUserList</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">userVerObj</span><span class="p">);</span>
+        <span class="nx">emailCode</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">username</span><span class="p">,</span> <span class="nx">password</span><span class="p">,</span> <span class="nx">email</span><span class="p">,</span> <span class="nx">randVarCode</span><span class="p">);</span>
+        <span class="nx">codeUserList</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">username</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function-lookupcodecheck">
+  <h3>
+    <a href="#function-lookupcodecheck" class="pilcrow">&#182;</a>
+    <em>function</em>:lookupCodeCheck
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>A function used to check if the verification code entered matches
+one stored in the pending verification users list. If there is 
+a match, undefined is sent back in the callback funtion. If the code 
+does match, then the user is deleted from the codeUserList and put in 
+the user database. 
+Note: There may be a way to make the verification process more secure.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">code</span>
+      <span class="dox_type">string</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">cb
+</span>
+      <span class="dox_type">function</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">lookupCodeCheck</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">code</span><span class="p">,</span> <span class="nx">cb</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">userToVerify</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nx">i</span><span class="o">&lt;</span><span class="nx">codeUserList</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span><span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="nx">codeUserList</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">code</span> <span class="o">==</span> <span class="nx">code</span><span class="p">){</span>
+          <span class="nx">b</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+          <span class="nx">userToVerify</span> <span class="o">=</span> <span class="nx">codeUserList</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+          <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">b</span><span class="p">){</span>
+      <span class="nx">cb</span><span class="p">(</span><span class="s2">&quot;The code is incorrect! Try Again.&quot;</span><span class="p">);</span>
+    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
+</div>
+<p>Create the new user</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="nx">delFromCodeList</span><span class="p">(</span><span class="nx">userToVerify</span><span class="p">);</span>
+      <span class="nx">userdb</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">userToVerify</span><span class="p">);</span>
+      <span class="nx">cb</span><span class="p">(</span><span class="kc">undefined</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function-checkusername">
+  <h3>
+    <a href="#function-checkusername" class="pilcrow">&#182;</a>
+    <em>function</em>:checkUsername
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>A function used to check if the username is valid for registration.
+If there is a username that is already in the database, contains a space
+or if the username is in the pending verification list. </p>
+  </div>
+  <div class="body"><p>Note: Set limit to username length so 'a' or '3' won't be available
+      Organize the code for logical boolean values</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">username</span>
+      <span class="dox_type">string</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">checkUsername</span><span class="p">(</span><span class="nx">username</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nx">i</span><span class="o">&lt;</span><span class="nx">userdb</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span><span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="nx">userdb</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">username</span><span class="o">==</span><span class="nx">username</span> <span class="o">||</span> <span class="nx">containsChar</span><span class="p">(</span><span class="nx">username</span><span class="p">,</span><span class="s1">&#39; &#39;</span><span class="p">)){</span>
+            <span class="nx">b</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nx">j</span><span class="o">&lt;</span><span class="nx">userdb</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span><span class="nx">j</span><span class="o">++</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="nx">codeUserList</span><span class="p">[</span><span class="nx">j</span><span class="p">]</span><span class="o">==</span><span class="nx">username</span><span class="p">){</span>
+            <span class="nx">b</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">b</span>
+<span class="p">}</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function-checkemail">
+  <h3>
+    <a href="#function-checkemail" class="pilcrow">&#182;</a>
+    <em>function</em>:checkEmail
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>A function used to check if the email is valid for registration.
+It checks if there is a @ character. A boolean value is returned.
+Note: Check to see if the email is already contained in the database to 
+      allow users to have only one account per username for the login information
+      retreival. Or the format of the data retrieval will need to be 
+      changed. 
+      Organize the code for logical boolean values</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">email</span>
+      <span class="dox_type">string</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">checkEmail</span><span class="p">(</span><span class="nx">email</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="nx">containsChar</span><span class="p">(</span><span class="nx">email</span><span class="p">,</span> <span class="s1">&#39;@&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="o">!</span><span class="nx">b</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function-checkpassword">
+  <h3>
+    <a href="#function-checkpassword" class="pilcrow">&#182;</a>
+    <em>function</em>:checkPassword
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>A function used to check if the password is valid for registration.
+It checks if the password and reentered password match and check if 
+the length is 6 characters. A boolean value is returned.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">email</span>
+      <span class="dox_type">string</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">checkPassword</span><span class="p">(</span><span class="nx">password</span><span class="p">,</span><span class="nx">retypeP</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="kc">false</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">password</span> <span class="o">!=</span> <span class="nx">retypeP</span> <span class="o">||</span> <span class="nx">password</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">){</span> <span class="nx">b</span><span class="o">=</span><span class="kc">true</span> <span class="p">};</span>
+    <span class="k">return</span> <span class="nx">b</span><span class="p">;</span>
+<span class="p">}</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function-containschar">
+  <h3>
+    <a href="#function-containschar" class="pilcrow">&#182;</a>
+    <em>function</em>:containsChar
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>A function that checks if a string contains a character
+ returns a boolean value.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">char</span>
+      <span class="dox_type">string</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">containsChar</span><span class="p">(</span><span class="nx">string</span><span class="p">,</span> <span class="kr">char</span><span class="p">){</span>
+   <span class="kd">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+   <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">string</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+      <span class="kd">var</span> <span class="nx">l</span> <span class="o">=</span> <span class="nx">string</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">l</span> <span class="o">==</span> <span class="kr">char</span><span class="p">){</span>
+         <span class="nx">b</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">b</span>
+<span class="p">}</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function-makecode">
+  <h3>
+    <a href="#function-makecode" class="pilcrow">&#182;</a>
+    <em>function</em>:makeCode
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>Creates a random 10 char code for verification.
+ Returns the code as a string.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">char</span>
+      <span class="dox_type">string</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">makeCode</span><span class="p">(){</span>
+    <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">possible</span> <span class="o">=</span> <span class="s2">&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789&quot;</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span> <span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">)</span>
+        <span class="nx">text</span> <span class="o">+=</span> <span class="nx">possible</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="nx">possible</span><span class="p">.</span><span class="nx">length</span><span class="p">));</span>
+    <span class="k">return</span> <span class="nx">text</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">makeCode</span> <span class="o">=</span> <span class="nx">makeCode</span><span class="p">;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function-emailcode">
+  <h3>
+    <a href="#function-emailcode" class="pilcrow">&#182;</a>
+    <em>function</em>:emailCode
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>Sends tweetee verification email for registration with Alpha Mail (node_modules -> alphamail)</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">name</span>
+      <span class="dox_type">string</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">username</span>
+      <span class="dox_type">string</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">password</span>
+      <span class="dox_type">string</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">email</span>
+      <span class="dox_type">string</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">code
+</span>
+      <span class="dox_type">string</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">emailCode</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">username</span><span class="p">,</span> <span class="nx">password</span><span class="p">,</span> <span class="nx">email</span><span class="p">,</span> <span class="nx">code</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">alphamail</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;alphamail&#39;</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">emailService</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">alphamail</span><span class="p">.</span><span class="nx">EmailService</span><span class="p">(</span><span class="s2">&quot;513cedbd564467-24442067&quot;</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">message</span> <span class="o">=</span> <span class="p">{</span>
+       <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="nx">name</span><span class="p">,</span>
+       <span class="s2">&quot;username&quot;</span><span class="o">:</span> <span class="nx">username</span><span class="p">,</span>
+       <span class="s2">&quot;code&quot;</span><span class="o">:</span> <span class="nx">code</span><span class="p">,</span>
+       <span class="s2">&quot;url&quot;</span><span class="o">:</span> <span class="s2">&quot;http:\/\/localhost:3000/verifyCode\/&quot;</span>
+    <span class="p">};</span>
+    <span class="kd">var</span> <span class="nx">payload</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">alphamail</span><span class="p">.</span><span class="nx">EmailMessagePayload</span><span class="p">()</span>
+       <span class="p">.</span><span class="nx">setProjectId</span><span class="p">(</span><span class="mi">1452</span><span class="p">)</span> <span class="c1">// ID of &quot;Tweetee Registration Code&quot; project</span>
+       <span class="p">.</span><span class="nx">setSender</span><span class="p">(</span><span class="k">new</span> <span class="nx">alphamail</span><span class="p">.</span><span class="nx">EmailContact</span><span class="p">(</span><span class="s2">&quot;ysasaki2014@gmail.com&quot;</span><span class="p">,</span> <span class="s2">&quot;ysasaki2014@gmail.com&quot;</span><span class="p">))</span>
+       <span class="p">.</span><span class="nx">setReceiver</span><span class="p">(</span><span class="k">new</span> <span class="nx">alphamail</span><span class="p">.</span><span class="nx">EmailContact</span><span class="p">(</span><span class="nx">email</span><span class="p">,</span> <span class="nx">email</span><span class="p">))</span>
+       <span class="p">.</span><span class="nx">setBodyObject</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>
+
+    <span class="nx">emailService</span><span class="p">.</span><span class="nx">queue</span><span class="p">(</span><span class="nx">payload</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">result</span><span class="p">){</span>
+       <span class="k">if</span><span class="p">(</span><span class="nx">error</span><span class="p">){</span>
+           <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Error! &quot;</span> <span class="o">+</span> <span class="nx">result</span> <span class="o">+</span> <span class="s2">&quot; (&quot;</span> <span class="o">+</span> <span class="nx">error</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span><span class="p">);</span>
+       <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+           <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Mail successfully sent! ID = &quot;</span> <span class="o">+</span> <span class="nx">result</span><span class="p">);</span>
+       <span class="p">}</span>
+    <span class="p">});</span>
+<span class="p">};</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function--emaillogininfo">
+  <h3>
+    <a href="#function--emaillogininfo" class="pilcrow">&#182;</a>
+    <em>function</em>: emailLoginInfo
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>Sends tweetee login information with Alpha Mail (node_modules -> alphamail)</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">name</span>
+      <span class="dox_type">string</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">username</span>
+      <span class="dox_type">string</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">password</span>
+      <span class="dox_type">string</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">email</span>
+      <span class="dox_type">string</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">code
+function</span>
+      <span class="dox_type">string</span>
+      <span>emailLoginInfo(name, username, email, password){</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="kd">var</span> <span class="nx">alphamail</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;alphamail&#39;</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">emailService</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">alphamail</span><span class="p">.</span><span class="nx">EmailService</span><span class="p">(</span><span class="s2">&quot;513cedbd564467-24442067&quot;</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">message</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="nx">name</span><span class="p">,</span>
+        <span class="s2">&quot;username&quot;</span><span class="o">:</span> <span class="nx">username</span><span class="p">,</span>
+        <span class="s2">&quot;password&quot;</span><span class="o">:</span> <span class="nx">password</span><span class="p">,</span>
+        <span class="s2">&quot;url&quot;</span><span class="o">:</span> <span class="s2">&quot;http:\/\/localhost:3000\/&quot;</span>
+    <span class="p">};</span>
+    <span class="kd">var</span> <span class="nx">payload</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">alphamail</span><span class="p">.</span><span class="nx">EmailMessagePayload</span><span class="p">()</span>
+        <span class="p">.</span><span class="nx">setProjectId</span><span class="p">(</span><span class="mi">1456</span><span class="p">)</span> <span class="c1">// ID of &quot;Tweetee Login Assistance&quot; project</span>
+        <span class="p">.</span><span class="nx">setSender</span><span class="p">(</span><span class="k">new</span> <span class="nx">alphamail</span><span class="p">.</span><span class="nx">EmailContact</span><span class="p">(</span><span class="s2">&quot;ysasaki2014@gmail.com&quot;</span><span class="p">,</span> <span class="s2">&quot;ysasaki2014@gmail.com&quot;</span><span class="p">))</span>
+        <span class="p">.</span><span class="nx">setReceiver</span><span class="p">(</span><span class="k">new</span> <span class="nx">alphamail</span><span class="p">.</span><span class="nx">EmailContact</span><span class="p">(</span><span class="nx">email</span><span class="p">,</span> <span class="nx">email</span><span class="p">))</span>
+        <span class="p">.</span><span class="nx">setBodyObject</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>
+    <span class="nx">emailService</span><span class="p">.</span><span class="nx">queue</span><span class="p">(</span><span class="nx">payload</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">result</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="nx">error</span><span class="p">){</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Error! &quot;</span> <span class="o">+</span> <span class="nx">result</span> <span class="o">+</span> <span class="s2">&quot; (&quot;</span> <span class="o">+</span> <span class="nx">error</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span><span class="p">);</span>
+        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Mail successfully sent! ID = &quot;</span> <span class="o">+</span> <span class="nx">result</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function-get_user">
+  <h3>
+    <a href="#function-get_user" class="pilcrow">&#182;</a>
+    <em>function</em>:get_user
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>A function that gets the user by username.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">username</span>
+      <span class="dox_type">string</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">get_user</span><span class="p">(</span><span class="nx">user</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">u</span> <span class="o">=</span> <span class="kc">undefined</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">userdb</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">userdb</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">username</span> <span class="o">===</span> <span class="nx">user</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">u</span> <span class="o">=</span> <span class="nx">userdb</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">u</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">get_user</span> <span class="o">=</span> <span class="nx">get_user</span><span class="p">;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function--getuserbyid">
+  <h3>
+    <a href="#function--getuserbyid" class="pilcrow">&#182;</a>
+    <em>function</em>: getUserById
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>Gets the user object by username.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">username</span>
+      <span class="dox_type">string</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">object</span>
+      <span>user object</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">getUserById</span><span class="p">(</span><span class="nx">username</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">userdb</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">userdb</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">username</span> <span class="o">===</span> <span class="nx">username</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">userdb</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+<span class="p">}</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">getUserById</span> <span class="o">=</span> <span class="nx">getUserById</span><span class="p">;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function--gettnumberbyid">
+  <h3>
+    <a href="#function--gettnumberbyid" class="pilcrow">&#182;</a>
+    <em>function</em>: getTNumberById
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>Gets the user's tweets number.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">username</span>
+      <span class="dox_type">string</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span class="dox_type">string</span>
+      <span>user's tweet number</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">getTNumberById</span><span class="p">(</span><span class="nx">username</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">userdb</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">userdb</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">username</span> <span class="o">===</span> <span class="nx">username</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">userdb</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">tweets</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">getTNumberById</span> <span class="o">=</span> <span class="nx">getTNumberById</span><span class="p">;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function--addusert">
+  <h3>
+    <a href="#function--addusert" class="pilcrow">&#182;</a>
+    <em>function</em>: addUserT
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>Adds a new tweetID to user's tweetID field.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">username
+</span>
+      <span class="dox_type">string</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">addUserT</span><span class="p">(</span><span class="nx">username</span><span class="p">,</span> <span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">getUserById</span><span class="p">(</span><span class="nx">username</span><span class="p">).</span><span class="nx">tweets</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">addUserT</span> <span class="o">=</span> <span class="nx">addUserT</span><span class="p">;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function--unfollow">
+  <h3>
+    <a href="#function--unfollow" class="pilcrow">&#182;</a>
+    <em>function</em>: unfollow
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>Deletes a user in the following list of the logged-in user.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">username</span>
+      <span class="dox_type">string</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">username</span>
+      <span class="dox_type">string</span>
+      <span>of the user that is to be removed from the following list</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">unfollow</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">username</span><span class="p">,</span> <span class="nx">rmuname</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;unfollow loggedin &quot;</span><span class="o">+</span><span class="nx">username</span><span class="o">+</span><span class="s2">&quot; rmuname &quot;</span><span class="o">+</span><span class="nx">rmuname</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">fl</span> <span class="o">=</span> <span class="nx">getUserById</span><span class="p">(</span><span class="nx">username</span><span class="p">).</span><span class="nx">following</span><span class="p">;</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">fl</span><span class="p">);</span>
+  <span class="nx">fl</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">fl</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">rmuname</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span> <span class="c1">//remove rmuname from fl</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;after deletion &quot;</span><span class="o">+</span><span class="nx">fl</span><span class="p">);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;.following &quot;</span><span class="o">+</span><span class="nx">getUserById</span><span class="p">(</span><span class="nx">username</span><span class="p">).</span><span class="nx">following</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">exports</span><span class="p">.</span><span class="nx">isFollowing</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">u</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">following</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">u</span><span class="p">.</span><span class="nx">username</span><span class="p">)</span> <span class="o">===</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">getFollowingNum</span> <span class="p">(</span><span class="nx">username</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">uid</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">userdb</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">username</span> <span class="o">===</span> <span class="nx">userdb</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">username</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">uid</span> <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;uid is &quot;</span> <span class="o">+</span> <span class="nx">uid</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nx">userdb</span><span class="p">[</span><span class="nx">uid</span><span class="p">].</span><span class="nx">following</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">getFollowingNum</span> <span class="o">=</span> <span class="nx">getFollowingNum</span><span class="p">;</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>

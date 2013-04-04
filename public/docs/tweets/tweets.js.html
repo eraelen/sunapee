@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>tweets.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../", thisFile = "Users/yoshiesasaki/sunapee//tweets/tweets.js", defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+      <div class="heading h1">
+        <a href="#tweets-module">Tweets Module</a>
+      </div>
+      <div class="heading h2">
+        <a href="#in-memory-tweet-database">In Memory Tweet Database</a>
+      </div>
+      <div class="heading h3">
+        <a href="#function--addtweet">function: addTweet</a>
+      </div>
+      <div class="heading h3">
+        <a href="#function--updatehashtags">function: updateHashtags</a>
+      </div>
+      <div class="heading h3">
+        <a href="#function--gettbyuser">function: getTByUser</a>
+      </div>
+      <div class="heading h3">
+        <a href="#function--gettbyhashtag">function: getTByHashtag</a>
+      </div>
+      <div class="heading h3">
+        <a href="#function--gettbymention">function: getTByMention</a>
+      </div>
+      <div class="heading h3">
+        <a href="#function--getrecentt">function: getRecentT</a>
+      </div>
+      <div class="heading h3">
+        <a href="#function-searchtweetsbyht">function:searchTweetsByHT</a>
+      </div>
+      <div class="heading h3">
+        <a href="#function-gettweetconvobytweetid">function:getTweetConvoByTweetID</a>
+      </div>
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="tweets-module">
+  <h1>
+    <a href="#tweets-module" class="pilcrow">&#182;</a>
+    Tweets Module
+  </h1>
+</div>
+
+        </td>
+        <td class="code highlight"><div class="highlight"><pre></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="in-memory-tweet-database">
+  <h2>
+    <a href="#in-memory-tweet-database" class="pilcrow">&#182;</a>
+    In Memory Tweet Database
+  </h2>
+</div>
+
+
+<p>We will use a simple array <code>tweetdb</code> to record user data.
+We could easily replace this with calls to a <em>database layer</em></p>
+
+<div class="dox">
+  <div class="summary"><p>Fake tweets database</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">var</span> <span class="nx">tweetdb</span> <span class="o">=</span> <span class="p">[</span>
+<span class="p">{</span><span class="nx">id</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Tim Berners-Lee&#39;</span><span class="p">,</span> <span class="nx">username</span><span class="o">:</span> <span class="s2">&quot;tim&quot;</span><span class="p">,</span> <span class="nx">date</span><span class="o">:</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="nx">msg</span><span class="o">:</span> <span class="s2">&quot;I&#39;m in #Ford !&quot;</span><span class="p">,</span> <span class="nx">mention</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">reply</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">retweet</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">hashtag</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;#Ford&quot;</span><span class="p">],</span> <span class="nx">convo</span><span class="o">:</span><span class="mi">0</span><span class="p">},</span>
+<span class="p">{</span><span class="nx">id</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Hazel Rozetta&#39;</span><span class="p">,</span> <span class="nx">username</span><span class="o">:</span> <span class="s2">&quot;hazel&quot;</span><span class="p">,</span> <span class="nx">date</span><span class="o">:</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="nx">msg</span><span class="o">:</span> <span class="s2">&quot;@tim Good for you! Let&#39;s meet in CC tmr for web programming. @caleb&quot;</span><span class="p">,</span> <span class="nx">mention</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;@tim&quot;</span><span class="p">,</span><span class="s2">&quot;@caleb&quot;</span><span class="p">],</span> <span class="nx">reply</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">retweet</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">hashtag</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">convo</span><span class="o">:</span><span class="mi">0</span><span class="p">},</span>
+<span class="p">{</span><span class="nx">id</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Caleb Marks&#39;</span><span class="p">,</span> <span class="nx">username</span><span class="o">:</span> <span class="s2">&quot;caleb&quot;</span><span class="p">,</span> <span class="nx">date</span><span class="o">:</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="nx">msg</span><span class="o">:</span> <span class="s2">&quot;@tim @hazel Got it! See you both there!&quot;</span><span class="p">,</span> <span class="nx">mention</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;@tim&quot;</span><span class="p">,</span><span class="s2">&quot;@hazel&quot;</span><span class="p">],</span> <span class="nx">reply</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">retweet</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">hashtag</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">convo</span><span class="o">:</span><span class="mi">0</span><span class="p">},</span>
+<span class="p">{</span><span class="nx">id</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Caleb Marks&#39;</span><span class="p">,</span> <span class="nx">username</span><span class="o">:</span> <span class="s2">&quot;caleb&quot;</span><span class="p">,</span> <span class="nx">date</span><span class="o">:</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="nx">msg</span><span class="o">:</span> <span class="s2">&quot;Web programming #ftw&quot;</span><span class="p">,</span> <span class="nx">mention</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">reply</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">retweet</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">hashtag</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;#ftw&quot;</span><span class="p">],</span> <span class="nx">convo</span><span class="o">:</span><span class="kc">null</span><span class="p">},</span>
+<span class="p">{</span><span class="nx">id</span><span class="o">:</span> <span class="mi">4</span><span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Tim Berners-Lee&#39;</span><span class="p">,</span> <span class="nx">username</span><span class="o">:</span> <span class="s2">&quot;tim&quot;</span><span class="p">,</span> <span class="nx">date</span><span class="o">:</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="nx">msg</span><span class="o">:</span> <span class="s2">&quot;#Nutella is great! Another all nighter!&quot;</span><span class="p">,</span> <span class="nx">mention</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">reply</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">retweet</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">hashtag</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;#Nutella&quot;</span><span class="p">],</span> <span class="nx">convo</span><span class="o">:</span><span class="kc">null</span><span class="p">},</span>
+<span class="p">{</span><span class="nx">id</span><span class="o">:</span> <span class="mi">5</span><span class="p">,</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Hazel Rozetta&#39;</span><span class="p">,</span> <span class="nx">username</span><span class="o">:</span> <span class="s2">&quot;hazel&quot;</span><span class="p">,</span> <span class="nx">date</span><span class="o">:</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="nx">msg</span><span class="o">:</span> <span class="s2">&quot;This is just a boring tweet. You got some problem with that?&quot;</span><span class="p">,</span> <span class="nx">mention</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">reply</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">retweet</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">hashtag</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">convo</span><span class="o">:</span><span class="kc">null</span><span class="p">}</span>
+<span class="p">];</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">tweetdb</span> <span class="o">=</span> <span class="nx">tweetdb</span><span class="p">;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Fake conversation list.
+id: tweetID for original tweet of the conversation
+convlist: list of tweetID that belongs to this conversation</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">var</span> <span class="nx">conversation</span> <span class="o">=</span> <span class="p">[</span>
+<span class="p">{</span><span class="nx">id</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">convlist</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]}</span>
+<span class="p">];</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">conversation</span> <span class="o">=</span> <span class="nx">conversation</span><span class="p">;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Fake hashtag list</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">var</span> <span class="nx">hashtags</span> <span class="o">=</span> <span class="p">[</span>
+<span class="p">{</span><span class="nx">label</span><span class="o">:</span> <span class="s2">&quot;#Ford&quot;</span><span class="p">,</span> <span class="nx">tweetID</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]},</span>
+<span class="p">{</span><span class="nx">label</span><span class="o">:</span> <span class="s2">&quot;#ftw&quot;</span><span class="p">,</span> <span class="nx">tweetID</span><span class="o">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">]},</span>
+<span class="p">{</span><span class="nx">label</span><span class="o">:</span> <span class="s2">&quot;#Nutella&quot;</span><span class="p">,</span> <span class="nx">tweetID</span><span class="o">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">]}</span>
+<span class="p">];</span>
+
+<span class="kd">var</span> <span class="nx">users</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;../users&#39;</span><span class="p">);</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function--addtweet">
+  <h3>
+    <a href="#function--addtweet" class="pilcrow">&#182;</a>
+    <em>function</em>: addTweet
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>Adds a tweet to tweetdb, and update conversation and hashtags list</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">inid,</span>
+      <span>tweetId</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">inname,</span>
+      <span>name</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">inuser,</span>
+      <span>username</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">inmsg,</span>
+      <span>tweet message</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">inrep,</span>
+      <span>tweetId that this tweet replies to, null if none</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">inret,</span>
+      <span>tweetId that this tweet retweets from, null if none</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">inconvo,</span>
+      <span>tweetId of original tweet for the conversation, null if none</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">addTweetOld</span><span class="p">(</span><span class="nx">inid</span><span class="p">,</span> <span class="nx">inname</span><span class="p">,</span> <span class="nx">inuser</span><span class="p">,</span> <span class="nx">inmsg</span><span class="p">,</span> <span class="nx">inrep</span><span class="p">,</span> <span class="nx">inret</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;in&quot;</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">tweet</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">id</span><span class="o">:</span> <span class="nx">inid</span><span class="p">,</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="nx">inname</span><span class="p">,</span>
+    <span class="nx">username</span><span class="o">:</span> <span class="nx">inuser</span><span class="p">,</span>
+    <span class="nx">date</span><span class="o">:</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span>
+    <span class="nx">msg</span><span class="o">:</span> <span class="nx">inmsg</span><span class="p">,</span> 
+    <span class="nx">mention</span><span class="o">:</span> <span class="nx">inmsg</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/@\b[\w]*/gi</span><span class="p">),</span> <span class="c1">//only allow underscore in username, returns null if no match</span>
+    <span class="nx">reply</span><span class="o">:</span> <span class="nx">inrep</span><span class="p">,</span>
+    <span class="nx">retweet</span><span class="o">:</span> <span class="nx">inret</span><span class="p">,</span>
+    <span class="nx">hashtag</span><span class="o">:</span> <span class="nx">inmsg</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/#\b[\w]*/gi</span><span class="p">),</span>
+    <span class="nx">convo</span><span class="o">:</span> <span class="kc">null</span><span class="p">};</span> <span class="c1">// #one#two -&gt; #one, #two //changed to null</span>
+  <span class="nx">tweetdb</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">tweet</span><span class="p">);</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+</div>
+<p>add to hashtag</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">tweet</span><span class="p">.</span><span class="nx">hashtag</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">tweet</span><span class="p">.</span><span class="nx">hashtag</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">updateHashtags</span><span class="p">(</span><span class="nx">tweet</span><span class="p">.</span><span class="nx">hashtag</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">id</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  
+  <span class="kd">var</span> <span class="nx">found</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+</div>
+<p>add to conversation</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">tweet</span><span class="p">.</span><span class="nx">reply</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">conversation</span><span class="p">.</span><span class="nx">length</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">cl</span> <span class="o">=</span> <span class="nx">conversation</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">convlist</span><span class="p">;</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">cl</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">reply</span><span class="p">)</span> <span class="o">!==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">conversation</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">convlist</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">tweet</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
+        <span class="nx">found</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="k">break</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">found</span> <span class="o">===</span> <span class="kc">false</span><span class="p">)</span> <span class="p">{</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-8" id="section-8">&#182;</a>
+</div>
+<p>didn't find tweet in any current convo</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="nx">conversation</span><span class="p">[</span><span class="nx">conversation</span><span class="p">.</span><span class="nx">length</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="nx">id</span><span class="o">:</span> <span class="nx">conversation</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span> <span class="nx">convlist</span><span class="o">:</span> <span class="p">[</span><span class="nx">tweet</span><span class="p">.</span><span class="nx">reply</span><span class="p">,</span> <span class="nx">tweet</span><span class="p">.</span><span class="nx">id</span><span class="p">]};</span>
+      <span class="nx">tweetdb</span><span class="p">[</span><span class="nx">tweet</span><span class="p">.</span><span class="nx">convo</span><span class="p">].</span><span class="nx">convo</span> <span class="o">=</span> <span class="nx">conversation</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+    <span class="p">}</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+</div>
+<p>for (var i=conversation.length-1; i >= 0; i--) {
+if (conversation[i] === tweet.convo) {
+    tweet.convo.convlist.push(tweet.id);
+    break;
+}
+}</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
+</div>
+<p>exports.addTweet = addTweet;</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+
+<span class="kd">function</span> <span class="nx">addTweet</span> <span class="p">(</span><span class="nx">nname</span><span class="p">,</span> <span class="nx">nusername</span><span class="p">,</span> <span class="nx">nmsg</span><span class="p">,</span> <span class="nx">nreply</span><span class="p">,</span> <span class="nx">nretweet</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">nid</span> <span class="o">=</span> <span class="nx">tweetdb</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
+</div>
+<p>check if replying</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">nreply</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
+</div>
+<p>check if that tweet is already in a convo</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">tweetdb</span><span class="p">[</span><span class="nx">nreply</span><span class="p">].</span><span class="nx">convo</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">tweetdb</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">createNewTweet</span><span class="p">(</span><span class="nx">nid</span><span class="p">,</span> <span class="nx">nname</span><span class="p">,</span> <span class="nx">nusername</span><span class="p">,</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="nx">nmsg</span><span class="p">,</span> <span class="nx">nreply</span><span class="p">,</span> <span class="nx">nretweet</span><span class="p">,</span> <span class="nx">tweetdb</span><span class="p">[</span><span class="nx">nreply</span><span class="p">].</span><span class="nx">convo</span><span class="p">));</span>
+      <span class="nx">conversation</span><span class="p">[</span><span class="nx">tweetdb</span><span class="p">[</span><span class="nx">nreply</span><span class="p">].</span><span class="nx">convo</span><span class="p">].</span><span class="nx">convlist</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">nid</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-13" id="section-13">&#182;</a>
+</div>
+<p>if not yet in a convo, add new convo</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="nx">nconvo</span> <span class="o">=</span> <span class="nx">conversation</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+      <span class="nx">tweetdb</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">createNewTweet</span><span class="p">(</span><span class="nx">nid</span><span class="p">,</span> <span class="nx">nname</span><span class="p">,</span> <span class="nx">nusername</span><span class="p">,</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="nx">nmsg</span><span class="p">,</span> <span class="nx">nreply</span><span class="p">,</span> <span class="nx">nretweet</span><span class="p">,</span> <span class="nx">nconvo</span><span class="p">));</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-14" id="section-14">&#182;</a>
+</div>
+<p>update old tweet</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="nx">tweetdb</span><span class="p">[</span><span class="nx">nreply</span><span class="p">].</span><span class="nx">convo</span> <span class="o">=</span> <span class="nx">nconvo</span><span class="p">;</span>
+      <span class="nx">conversation</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span><span class="nx">id</span><span class="o">:</span> <span class="nx">nconvo</span><span class="p">,</span> <span class="nx">convlist</span><span class="o">:</span> <span class="p">[</span><span class="nx">nreply</span><span class="p">,</span> <span class="nx">nid</span><span class="p">]});</span>
+      
+    <span class="p">}</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-15" id="section-15">&#182;</a>
+</div>
+<p>this tweet is not a reply to anything</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">tweetdb</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">createNewTweet</span><span class="p">(</span><span class="nx">nid</span><span class="p">,</span> <span class="nx">nname</span><span class="p">,</span> <span class="nx">nusername</span><span class="p">,</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="nx">nmsg</span><span class="p">,</span> <span class="nx">nreply</span><span class="p">,</span> <span class="nx">nretweet</span><span class="p">,</span> <span class="kc">null</span><span class="p">));</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">addTweet</span> <span class="o">=</span> <span class="nx">addTweet</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">createNewTweet</span> <span class="p">(</span><span class="nx">nid</span><span class="p">,</span> <span class="nx">nname</span><span class="p">,</span> <span class="nx">nusername</span><span class="p">,</span> <span class="nx">ndate</span><span class="p">,</span> <span class="nx">nmsg</span><span class="p">,</span> <span class="nx">nreply</span><span class="p">,</span> <span class="nx">nretweet</span><span class="p">,</span> <span class="nx">nconvo</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">ntweet</span> <span class="o">=</span> <span class="p">{</span><span class="nx">id</span><span class="o">:</span> <span class="nx">nid</span><span class="p">,</span>
+          <span class="nx">name</span><span class="o">:</span> <span class="nx">nname</span><span class="p">,</span>
+          <span class="nx">username</span><span class="o">:</span> <span class="nx">nusername</span><span class="p">,</span>
+          <span class="nx">date</span><span class="o">:</span> <span class="nx">ndate</span><span class="p">,</span>
+          <span class="nx">msg</span><span class="o">:</span> <span class="nx">nmsg</span><span class="p">,</span>
+          <span class="nx">mention</span><span class="o">:</span> <span class="nx">nmsg</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/@\b[\w]*/gi</span><span class="p">),</span>
+          <span class="nx">reply</span><span class="o">:</span> <span class="nx">nreply</span><span class="p">,</span>
+          <span class="nx">retweet</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+          <span class="nx">hashtag</span><span class="o">:</span> <span class="nx">nmsg</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/#\b[\w]*/gi</span><span class="p">),</span>
+          <span class="nx">convo</span><span class="o">:</span> <span class="nx">nconvo</span><span class="p">};</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
+</div>
+<p>add any hashtag</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">ntweet</span><span class="p">.</span><span class="nx">hashtag</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">ntweet</span><span class="p">.</span><span class="nx">hashtag</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">updateHashtags</span><span class="p">(</span><span class="nx">ntweet</span><span class="p">.</span><span class="nx">hashtag</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">nid</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
+</div>
+<p>add tweet to user's tweets</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nx">users</span><span class="p">.</span><span class="nx">addUserT</span><span class="p">(</span><span class="nx">nusername</span><span class="p">,</span> <span class="nx">nid</span><span class="p">);</span>
+  
+  <span class="k">return</span> <span class="nx">ntweet</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function--updatehashtags">
+  <h3>
+    <a href="#function--updatehashtags" class="pilcrow">&#182;</a>
+    <em>function</em>: updateHashtags
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>Updates hashtags list</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">hashtag,</span>
+      <span>hashtag</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">tweetid,</span>
+      <span>tweetID of tweet that contains this hashtag</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">updateHashtags</span> <span class="p">(</span><span class="nx">hashtag</span><span class="p">,</span> <span class="nx">tweetid</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="nx">hashtags</span><span class="p">.</span><span class="nx">length</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">hashtags</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">===</span> <span class="nx">hashtag</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">hashtags</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">tweetID</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">tweetid</span><span class="p">);</span>
+      <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function--gettbyuser">
+  <h3>
+    <a href="#function--gettbyuser" class="pilcrow">&#182;</a>
+    <em>function</em>: getTByUser
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>Get list of tweets by username</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">username,</span>
+      <span>username</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">number,</span>
+      <span>number of most recent tweets requested</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span>tlist, list of tweets requested</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">getTByUser</span><span class="p">(</span><span class="nx">username</span><span class="p">,</span> <span class="nx">number</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">tweetdb</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">tlist</span> <span class="o">=</span> <span class="p">[];</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="nx">len</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="nx">len</span><span class="o">-</span><span class="nx">number</span><span class="p">;</span> <span class="nx">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">tweetdb</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">username</span> <span class="o">===</span> <span class="nx">username</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">tlist</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">t</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">tlist</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">getTByUser</span> <span class="o">=</span> <span class="nx">getTByUser</span><span class="p">;</span>
+
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function--gettbyhashtag">
+  <h3>
+    <a href="#function--gettbyhashtag" class="pilcrow">&#182;</a>
+    <em>function</em>: getTByHashtag
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>Get list of tweets by hashtag</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">hashtag,</span>
+      <span>hashtag</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">number,</span>
+      <span>number of most recent tweets requested</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span>tlist, list of tweets requested</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">getTByHashtag</span><span class="p">(</span><span class="nx">hashtag</span><span class="p">,</span> <span class="nx">number</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">hashtags</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">tlist</span> <span class="o">=</span> <span class="p">[];</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="nx">len</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">ht</span> <span class="o">=</span> <span class="nx">hashtags</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">ht</span><span class="p">.</span><span class="nx">label</span> <span class="o">===</span> <span class="nx">hashtag</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">tl</span> <span class="o">=</span> <span class="nx">ht</span><span class="p">.</span><span class="nx">tweetID</span><span class="p">;</span>
+      <span class="kd">var</span> <span class="nx">l</span> <span class="o">=</span> <span class="nx">tl</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+      <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">n</span><span class="o">=</span><span class="nx">l</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="nx">n</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="nx">len</span><span class="o">-</span><span class="nx">number</span><span class="p">;</span> <span class="nx">n</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">tlist</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">tweetdb</span><span class="p">[</span><span class="nx">tl</span><span class="p">[</span><span class="nx">n</span><span class="p">]]);</span>
+      <span class="p">}</span>
+      <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">tlist</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">getTByHashtag</span> <span class="o">=</span> <span class="nx">getTByHashtag</span><span class="p">;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function--gettbymention">
+  <h3>
+    <a href="#function--gettbymention" class="pilcrow">&#182;</a>
+    <em>function</em>: getTByMention
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>Get list of tweets by mention (tweets that mentions the user, i.e. has @username).
+To display on Interaction page</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">username,</span>
+      <span>username</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">number,</span>
+      <span>number of most recent tweets requested</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span>tlist, list of tweets requested</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">getTByMention</span><span class="p">(</span><span class="nx">username</span><span class="p">,</span> <span class="nx">number</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">tweetdb</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">tlist</span> <span class="o">=</span> <span class="p">[];</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">len</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="nx">len</span><span class="o">-</span><span class="nx">number</span><span class="p">;</span> <span class="nx">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">tweetdb</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">mention</span> <span class="o">!==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">tweetdb</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">mention</span><span class="p">).</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">&quot;@&quot;</span><span class="o">+</span><span class="nx">username</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">tlist</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">tweetdb</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;mention: &quot;</span><span class="o">+</span><span class="nx">tlist</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nx">tlist</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">getTByMention</span> <span class="o">=</span> <span class="nx">getTByMention</span><span class="p">;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function--getrecentt">
+  <h3>
+    <a href="#function--getrecentt" class="pilcrow">&#182;</a>
+    <em>function</em>: getRecentT
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>Get most recent tweets from followings, including user's own tweets.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">selfname,</span>
+      <span>username of the useritself</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">following,</span>
+      <span>list of the users the current user is following</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">number,</span>
+      <span>number of most recent tweets requested</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span>tlist, list of tweets requested</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">getRecentT</span><span class="p">(</span><span class="nx">selfname</span><span class="p">,</span> <span class="nx">following</span><span class="p">,</span> <span class="nx">number</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">tweetdb</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">tlist</span> <span class="o">=</span> <span class="p">[];</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">len</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="nx">len</span><span class="o">-</span><span class="nx">number</span><span class="p">;</span> <span class="nx">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">((</span><span class="nx">following</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">tweetdb</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">username</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span> <span class="o">||</span> <span class="nx">selfname</span> <span class="o">===</span> <span class="nx">tweetdb</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">username</span><span class="p">)</span> 
+      <span class="o">&amp;&amp;</span> <span class="nx">tweetdb</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">reply</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
+</div>
+<p>if this tweet is from whom the user is following, or from the user itself</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="nx">tlist</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">tweetdb</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">tlist</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">getRecentT</span> <span class="o">=</span> <span class="nx">getRecentT</span><span class="p">;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function-searchtweetsbyht">
+  <h3>
+    <a href="#function-searchtweetsbyht" class="pilcrow">&#182;</a>
+    <em>function</em>:searchTweetsByHT
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>This function searches tweets by hashtag. Used by search functionality.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">ht</span>
+      <span><ul>
+<li>hashtag search keyword, excludes #</li>
+</ul></span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">searchTweetsByHT</span> <span class="p">(</span><span class="nx">ht</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">tweetList</span> <span class="o">=</span> <span class="p">[];</span>
+  <span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="kd">var</span> <span class="nx">found</span> <span class="o">=</span> <span class="p">[];</span>
+  
+  <span class="k">if</span> <span class="p">(</span><span class="nx">len</span> <span class="o">!==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
+</div>
+<p>try to look for ht in hashtags </p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">while</span> <span class="p">(</span><span class="nx">hashtags</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">label</span> <span class="o">!==</span> <span class="nx">ht</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">i</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="nx">hashtags</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">label</span> <span class="o">===</span> <span class="nx">ht</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">found</span> <span class="o">=</span> <span class="nx">hashtags</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">tweetID</span><span class="p">;</span>
+      <span class="kd">var</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">found</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+      <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">j</span><span class="o">&lt;=</span><span class="nx">len</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">tweetList</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">tweetdb</span><span class="p">[</span><span class="nx">found</span><span class="p">[</span><span class="nx">j</span><span class="p">]]);</span>
+      <span class="p">}</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">tweetList</span><span class="p">);</span>
+      <span class="k">return</span> <span class="nx">tweetList</span><span class="p">;</span>
+    <span class="p">}</span> 
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-26" id="section-26">&#182;</a>
+</div>
+<p>return null if no tweets have hashtag ht</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+    
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
+</div>
+<p>return null if there are no hashtags in the db</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">searchTweetsByHT</span> <span class="o">=</span> <span class="nx">searchTweetsByHT</span><span class="p">;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function-gettweetconvobytweetid">
+  <h3>
+    <a href="#function-gettweetconvobytweetid" class="pilcrow">&#182;</a>
+    <em>function</em>:getTweetConvoByTweetID
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>This function gets conversation thread given a single tweet in that thread.</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">tweetID</span>
+      <span><ul>
+<li>id of the tweet being searched</li>
+</ul></span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">getTweetConvoByTweetID</span><span class="p">(</span><span class="nx">tweetID</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">tweetList</span> <span class="o">=</span> <span class="p">[];</span>
+  <span class="kd">var</span> <span class="nx">myConvo</span> <span class="o">=</span> <span class="nx">tweetdb</span><span class="p">[</span><span class="nx">tweetID</span><span class="p">].</span><span class="nx">convo</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">myConvo</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">myConvList</span> <span class="o">=</span> <span class="nx">conversation</span><span class="p">[</span><span class="nx">myConvo</span><span class="p">].</span><span class="nx">convlist</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">myConvList</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">tweetList</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">tweetdb</span><span class="p">[</span><span class="nx">myConvList</span><span class="p">[</span><span class="nx">i</span><span class="p">]]);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">tweetList</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">getTweetConvoByTweetID</span> <span class="o">=</span> <span class="nx">getTweetConvoByTweetID</span><span class="p">;</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>

@@ -3,12 +3,12 @@
 <head>
   <title>app.js</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <link rel="stylesheet" media="all" href="../../../../../doc-style.css" />
-  <script src="../../../../../doc-filelist.js"></script>
+  <link rel="stylesheet" media="all" href="../../../../doc-style.css" />
+  <script src="../../../../doc-filelist.js"></script>
   <script>
-    var relativeDir = "../../../../../", thisFile = "Users/yoshiesasaki/Downloads/test1/", defaultSidebar = true;
+    var relativeDir = "../../../../", thisFile = "Users/yoshiesasaki/sunapee/", defaultSidebar = true;
   </script>
-  <script src="../../../../../doc-script.js"></script>
+  <script src="../../../../doc-script.js"></script>
 </head>
 <body>
   <div id="sidebar_wrapper">
@@ -19,13 +19,22 @@
     <div id="tree"></div>
     <div id="headings">
       <div class="heading h1">
-        <a href="#--tweetee-application--">--Tweetee Application--</a>
+        <a href="#tweetee-application">Tweetee Application</a>
       </div>
       <div class="heading h2">
-        <a href="#entry-related-routes">Entry-related Routes</a>
+        <a href="#entry-related-routes">Entry Related Routes</a>
       </div>
       <div class="heading h2">
         <a href="#user-related-routes">User Related Routes</a>
+      </div>
+      <div class="heading h3">
+        <a href="#1.-main-routes">1. Main Routes</a>
+      </div>
+      <div class="heading h3">
+        <a href="#2.-search--help--tweet-routes">2. Search, Help, Tweet Routes</a>
+      </div>
+      <div class="heading h3">
+        <a href="#3.-edit-content-routes">3. Edit Content Routes</a>
       </div>
     </div>
   </div>
@@ -36,10 +45,10 @@
       <tr>
         <td class="docs"><div class="dox">
   <div class="summary">
-<div class="pilwrap" id="--tweetee-application--">
+<div class="pilwrap" id="tweetee-application">
   <h1>
-    <a href="#--tweetee-application--" class="pilcrow">&#182;</a>
-    --Tweetee Application--
+    <a href="#tweetee-application" class="pilcrow">&#182;</a>
+    Tweetee Application
   </h1>
 </div>
 
@@ -85,7 +94,7 @@
 <div class="pilwrap" id="entry-related-routes">
   <h2>
     <a href="#entry-related-routes" class="pilcrow">&#182;</a>
-    Entry-related Routes
+    Entry Related Routes
   </h2>
 </div>
 
@@ -117,23 +126,73 @@
 
         </td>
         <td class="code highlight"><div class="highlight"><pre>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="1.-main-routes">
+  <h3>
+    <a href="#1.-main-routes" class="pilcrow">&#182;</a>
+    1. Main Routes
+  </h3>
+</div>
+
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
 <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/:id/home&#39;</span><span class="p">,</span> <span class="nx">routes</span><span class="p">.</span><span class="nx">home</span><span class="p">);</span>
 <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/:id/interaction&#39;</span><span class="p">,</span> <span class="nx">routes</span><span class="p">.</span><span class="nx">interaction</span><span class="p">);</span>
 <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/:id/profile&#39;</span><span class="p">,</span> <span class="nx">routes</span><span class="p">.</span><span class="nx">profile</span><span class="p">);</span>
 <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/:id/follower&#39;</span><span class="p">,</span> <span class="nx">routes</span><span class="p">.</span><span class="nx">follower</span><span class="p">);</span>
 <span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/:id/follower&#39;</span><span class="p">,</span> <span class="nx">routes</span><span class="p">.</span><span class="nx">follower</span><span class="p">);</span>
 <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/:id/following&#39;</span><span class="p">,</span> <span class="nx">routes</span><span class="p">.</span><span class="nx">following</span><span class="p">);</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/:uname/unfollow/:rmuname&#39;</span><span class="p">,</span> <span class="nx">routes</span><span class="p">.</span><span class="nx">unfollow</span><span class="p">);</span>
 <span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/:id/newtweet&#39;</span><span class="p">,</span> <span class="nx">routes</span><span class="p">.</span><span class="nx">newtweet</span><span class="p">);</span>
 
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="2.-search--help--tweet-routes">
+  <h3>
+    <a href="#2.-search--help--tweet-routes" class="pilcrow">&#182;</a>
+    2. Search, Help, Tweet Routes
+  </h3>
+</div>
+
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/:id/newtweet&#39;</span><span class="p">,</span> <span class="nx">routes</span><span class="p">.</span><span class="nx">newtweet</span><span class="p">);</span>
 <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/help&#39;</span><span class="p">,</span><span class="nx">routes</span><span class="p">.</span><span class="nx">help</span><span class="p">);</span>
 <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/search/:query&#39;</span><span class="p">,</span> <span class="nx">routes</span><span class="p">.</span><span class="nx">search</span><span class="p">);</span>
 <span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/searchBox&#39;</span><span class="p">,</span><span class="nx">routes</span><span class="p">.</span><span class="nx">searchBox</span><span class="p">);</span>
 <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/:tweetId/detailedTweet&#39;</span><span class="p">,</span> <span class="nx">routes</span><span class="p">.</span><span class="nx">detailedTweet</span><span class="p">);</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/:tweetId/detailedTweetReply&#39;</span><span class="p">,</span> <span class="nx">routes</span><span class="p">.</span><span class="nx">detailedTweetReply</span><span class="p">);</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/:tweetId/simpleReply&#39;</span><span class="p">,</span> <span class="nx">routes</span><span class="p">.</span><span class="nx">simpleReply</span><span class="p">);</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/:tweetId/displaySimpleReply&#39;</span><span class="p">,</span> <span class="nx">routes</span><span class="p">.</span><span class="nx">detailedTweetReply</span><span class="p">);</span>
 <span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/detailedTweetFakeReply&#39;</span><span class="p">,</span> <span class="nx">routes</span><span class="p">.</span><span class="nx">detailedTweetFakeReply</span><span class="p">);</span>
 
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="3.-edit-content-routes">
+  <h3>
+    <a href="#3.-edit-content-routes" class="pilcrow">&#182;</a>
+    3. Edit Content Routes
+  </h3>
+</div>
+
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
 <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/:id/editProfile&#39;</span><span class="p">,</span> <span class="nx">routes</span><span class="p">.</span><span class="nx">editProfile</span><span class="p">);</span>
 <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/:id/editSettings&#39;</span><span class="p">,</span> <span class="nx">routes</span><span class="p">.</span><span class="nx">editSettings</span><span class="p">);</span>
-
 <span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/:id/changeSettings&#39;</span><span class="p">,</span> <span class="nx">routes</span><span class="p">.</span><span class="nx">changeSettings</span><span class="p">);</span>
 <span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/:id/changeProfile&#39;</span><span class="p">,</span> <span class="nx">routes</span><span class="p">.</span><span class="nx">changeProfile</span><span class="p">);</span>
 <span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/:id/changeProfilePic&#39;</span><span class="p">,</span> <span class="nx">routes</span><span class="p">.</span><span class="nx">changeProfilePic</span><span class="p">);</span>

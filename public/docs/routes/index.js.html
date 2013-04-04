@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>index.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../", thisFile = "routes/index.js", defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+      <div class="heading h1">
+        <a href="#route-handler--index.js">Route Handler: index.js</a>
+      </div>
+      <div class="heading h2">
+        <a href="#handles-routes-related-to-post-user-login.">Handles routes related to post user login.</a>
+      </div>
+      <div class="heading h2">
+        <a href="#global-variables">Global variables</a>
+      </div>
+      <div class="heading h1">
+        <a href="#user-server-side-route-handler">User Server-Side Route-Handler</a>
+      </div>
+      <div class="heading h2">
+        <a href="#-"> </a>
+      </div>
+      <div class="heading h3">
+        <a href="#help">help</a>
+      </div>
+      <div class="heading h3">
+        <a href="#search">search</a>
+      </div>
+      <div class="heading h3">
+        <a href="#searchbox">searchBox</a>
+      </div>
+      <div class="heading h3">
+        <a href="#detailedtweet">detailedTweet</a>
+      </div>
+      <div class="heading h3">
+        <a href="#detailedtweetfakereply">detailedTweetFakeReply</a>
+      </div>
+      <div class="heading h3">
+        <a href="#editprofile">editProfile</a>
+      </div>
+      <div class="heading h3">
+        <a href="#editsettings">editSettings</a>
+      </div>
+      <div class="heading h3">
+        <a href="#changesettings">changeSettings</a>
+      </div>
+      <div class="heading h3">
+        <a href="#changeprofile">changeProfile</a>
+      </div>
+      <div class="heading h3">
+        <a href="#changeprofilepic">changeProfilePic</a>
+      </div>
+      <div class="heading h2">
+        <a href="#functions">Functions</a>
+      </div>
+      <div class="heading h3">
+        <a href="#function--usertohtml">function: userToHtml</a>
+      </div>
+      <div class="heading h3">
+        <a href="#function--tweetstohtml">function: tweetsToHtml</a>
+      </div>
+      <div class="heading h3">
+        <a href="#function--msgtohtml">function: msgToHtml</a>
+      </div>
+      <div class="heading h1">
+        <a href="#hashtag-starts-with---and-end-before-a-space.--ford--is-considered-a-hashtag.">hashtag starts with # and end before a space. #ford! is considered a hashtag.</a>
+      </div>
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="route-handler--index.js">
+  <h1>
+    <a href="#route-handler--index.js" class="pilcrow">&#182;</a>
+    Route Handler: index.js
+  </h1>
+</div>
+
+
+
+<div class="pilwrap" id="handles-routes-related-to-post-user-login.">
+  <h2>
+    <a href="#handles-routes-related-to-post-user-login." class="pilcrow">&#182;</a>
+    Handles routes related to post user login.
+  </h2>
+</div>
+
+        </td>
+        <td class="code highlight"><div class="highlight"><pre></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="global-variables">
+  <h2>
+    <a href="#global-variables" class="pilcrow">&#182;</a>
+    Global variables
+  </h2>
+</div>
+
+
+<p>The user and tweet files in the lib directory is accessed. 
+Variable 'online' is a logged in database.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">var</span> <span class="nx">users</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;../lib/users&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">tweets</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;../lib/tweets&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">entry</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;../routes/entry&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">online</span> <span class="o">=</span> <span class="nx">entry</span><span class="p">.</span><span class="nx">online</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">userdb</span> <span class="o">=</span> <span class="nx">users</span><span class="p">.</span><span class="nx">userdb</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">mytweets</span> <span class="o">=</span> <span class="nx">tweets</span><span class="p">.</span><span class="nx">tweetdb</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">conversation</span> <span class="o">=</span> <span class="nx">tweets</span><span class="p">.</span><span class="nx">conversation</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">settingsMsg</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">profileMsg</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="user-server-side-route-handler">
+  <h1>
+    <a href="#user-server-side-route-handler" class="pilcrow">&#182;</a>
+    User Server-Side Route-Handler
+  </h1>
+</div>
+
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="-">
+  <h2>
+    <a href="#-" class="pilcrow">&#182;</a>
+     
+  </h2>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>GET home page.</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">home</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">user</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">user</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="o">||</span> <span class="nx">online</span><span class="p">[</span><span class="nx">user</span><span class="p">.</span><span class="nx">uid</span><span class="p">]</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">req</span><span class="p">.</span><span class="nx">flash</span><span class="p">(</span><span class="s1">&#39;userAuth&#39;</span><span class="p">,</span> <span class="s1">&#39;Not logged in!&#39;</span><span class="p">);</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">username</span> <span class="o">=</span> <span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">username</span> <span class="o">!==</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">){</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;/home&#39;</span><span class="p">);</span>
+    <span class="p">}</span><span class="k">else</span> <span class="p">{</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">username</span><span class="o">+</span><span class="s2">&quot; &quot;</span><span class="o">+</span><span class="nx">user</span><span class="p">.</span><span class="nx">following</span><span class="p">);</span>
+      <span class="kd">var</span> <span class="nx">tl</span> <span class="o">=</span> <span class="nx">tweets</span><span class="p">.</span><span class="nx">getRecentT</span><span class="p">(</span><span class="nx">username</span><span class="p">,</span> <span class="nx">user</span><span class="p">.</span><span class="nx">following</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;home&#39;</span><span class="p">,</span> 
+            <span class="p">{</span> <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Home&#39;</span><span class="p">,</span>
+              <span class="nx">name</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span>
+              <span class="nx">username</span><span class="o">:</span> <span class="nx">username</span><span class="p">,</span>
+              <span class="nx">tweetN</span><span class="o">:</span> <span class="nx">users</span><span class="p">.</span><span class="nx">getTNumberById</span><span class="p">(</span><span class="nx">username</span><span class="p">),</span>
+              <span class="nx">followerN</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">follower</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span>
+              <span class="nx">followingN</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">following</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span>
+              <span class="nx">tweets</span><span class="o">:</span> <span class="nx">tl</span><span class="p">,</span>
+        <span class="nx">loggedInUser</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">username</span>
+               <span class="p">}</span> <span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>POST newtweet.
+Handles submiting request from new tweet button on Home page.
+And redirect to Home page.</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">newtweet</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">user</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">username</span> <span class="o">=</span> <span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="p">;</span>
+  <span class="nx">tweets</span><span class="p">.</span><span class="nx">addTweet</span><span class="p">(</span><span class="nx">user</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span> <span class="nx">username</span><span class="p">,</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">message</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="kc">null</span><span class="p">);</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;/home&#39;</span><span class="p">);</span>
+<span class="p">}</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>GET profile page.</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">profile</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">loggedInUserName</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">user</span> <span class="o">!==</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">loggedInUserName</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">users</span><span class="p">.</span><span class="nx">getUserById</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">user</span> <span class="o">!==</span> <span class="kc">undefined</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">username</span> <span class="o">=</span> <span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="p">;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">username</span><span class="o">+</span><span class="s2">&quot; &quot;</span><span class="o">+</span><span class="nx">user</span><span class="p">.</span><span class="nx">following</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">tl</span> <span class="o">=</span> <span class="nx">tweets</span><span class="p">.</span><span class="nx">getTByUser</span><span class="p">(</span><span class="nx">username</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;profile&#39;</span><span class="p">,</span>
+              <span class="p">{</span><span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Profile&#39;</span><span class="p">,</span>
+               <span class="nx">loggedInUser</span><span class="o">:</span> <span class="nx">loggedInUserName</span><span class="p">,</span>
+               <span class="nx">name</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span>
+               <span class="nx">username</span><span class="o">:</span> <span class="nx">username</span><span class="p">,</span>
+               <span class="nx">tweetN</span><span class="o">:</span> <span class="nx">users</span><span class="p">.</span><span class="nx">getTNumberById</span><span class="p">(</span><span class="nx">username</span><span class="p">),</span>
+               <span class="nx">followerN</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">follower</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span>
+               <span class="nx">followingN</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">following</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span>
+               <span class="nx">tweets</span><span class="o">:</span> <span class="nx">tweetsToHtml</span><span class="p">(</span><span class="nx">tl</span><span class="p">)</span>
+               <span class="p">}</span>
+      <span class="p">);</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span>
+               <span class="p">{</span><span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Error&#39;</span><span class="p">,</span>
+                <span class="nx">msg</span><span class="o">:</span> <span class="s2">&quot;Oops, this user does not exist.&quot;</span><span class="p">});</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>GET follower page.</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">follower</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">userl</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">user</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">userl</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="o">||</span> <span class="nx">online</span><span class="p">[</span><span class="nx">userl</span><span class="p">.</span><span class="nx">uid</span><span class="p">]</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">users</span><span class="p">.</span><span class="nx">getUserById</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">followerList</span> <span class="o">=</span> <span class="nx">user</span><span class="p">.</span><span class="nx">follower</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">content</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">followerList</span><span class="p">.</span><span class="nx">length</span> <span class="o">!==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">content</span> <span class="o">+=</span> <span class="nx">userToHtml</span><span class="p">(</span><span class="nx">followerList</span><span class="p">,</span> <span class="s2">&quot;Delete&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;follower&#39;</span><span class="p">,</span> 
+          <span class="p">{</span> <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Follower&#39;</span><span class="p">,</span>
+            <span class="nx">loggedInUser</span><span class="o">:</span> <span class="nx">userl</span><span class="p">.</span><span class="nx">username</span><span class="p">,</span>
+            <span class="nx">name</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span>
+            <span class="nx">username</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="p">,</span>
+            <span class="nx">content</span><span class="o">:</span> <span class="nx">content</span>
+             <span class="p">}</span> <span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-8" id="section-8">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>GET following page</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">following</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">loggedInUser</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">user</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">loggedInUser</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="o">||</span> <span class="nx">online</span><span class="p">[</span><span class="nx">loggedInUser</span><span class="p">.</span><span class="nx">uid</span><span class="p">]</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">users</span><span class="p">.</span><span class="nx">getUserById</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">followinglist</span> <span class="o">=</span> <span class="nx">user</span><span class="p">.</span><span class="nx">following</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">content</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">followinglist</span><span class="p">.</span><span class="nx">length</span> <span class="o">!==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">content</span> <span class="o">+=</span> <span class="nx">userToHtml</span><span class="p">(</span><span class="nx">loggedInUser</span><span class="p">,</span> <span class="nx">user</span><span class="p">,</span> <span class="nx">followinglist</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;following&#39;</span><span class="p">,</span> 
+          <span class="p">{</span> <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Following&#39;</span><span class="p">,</span>
+            <span class="nx">loggedInUser</span><span class="o">:</span> <span class="nx">loggedInUser</span><span class="p">.</span><span class="nx">username</span><span class="p">,</span>
+            <span class="nx">name</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span>
+            <span class="nx">username</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="p">,</span>
+            <span class="nx">content</span><span class="o">:</span> <span class="nx">content</span>
+             <span class="p">}</span> <span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>POST changed contents of the following/follower page by redirect</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">unfollow</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">loggedInUser</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">user</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">loggedInUser</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="o">||</span> <span class="nx">online</span><span class="p">[</span><span class="nx">loggedInUser</span><span class="p">.</span><span class="nx">uid</span><span class="p">]</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+     <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="nx">users</span><span class="p">.</span><span class="nx">unfollow</span><span class="p">(</span><span class="nx">loggedInUser</span><span class="p">.</span><span class="nx">username</span><span class="p">,</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">rmuname</span><span class="p">);</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">uname</span><span class="o">+</span><span class="s1">&#39;/following&#39;</span><span class="p">);</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>GET Interaction page</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">interaction</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+   <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">user</span><span class="p">;</span>
+   <span class="k">if</span> <span class="p">(</span><span class="nx">user</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="o">||</span> <span class="nx">online</span><span class="p">[</span><span class="nx">user</span><span class="p">.</span><span class="nx">uid</span><span class="p">]</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+     <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span>
+   <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">username</span> <span class="o">=</span> <span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="p">;</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">username</span> <span class="o">!==</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">){</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;/interaction&#39;</span><span class="p">);</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+       <span class="kd">var</span> <span class="nx">tl</span> <span class="o">=</span> <span class="nx">tweets</span><span class="p">.</span><span class="nx">getTByMention</span><span class="p">(</span><span class="nx">username</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
+       <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;interaction&#39;</span><span class="p">,</span>
+              <span class="p">{</span> <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Interaction&#39;</span><span class="p">,</span>
+                <span class="nx">name</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span>
+                <span class="nx">username</span><span class="o">:</span> <span class="nx">username</span><span class="p">,</span>
+                <span class="nx">tweets</span><span class="o">:</span> <span class="nx">tweetsToHtml</span><span class="p">(</span><span class="nx">tl</span><span class="p">),</span>
+                <span class="nx">loggedInUser</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">username</span>
+                <span class="p">});</span>
+     <span class="p">}</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="help">
+  <h3>
+    <a href="#help" class="pilcrow">&#182;</a>
+    help
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>Renders Help Page</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">help</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">user</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">user</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="o">||</span> <span class="nx">online</span><span class="p">[</span><span class="nx">user</span><span class="p">.</span><span class="nx">uid</span><span class="p">]</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
+</div>
+<p>res.send("Login to view this page.");</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span>
+    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;help&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Help&#39;</span><span class="p">,</span> <span class="nx">username</span><span class="o">:</span> 
+              <span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="p">,</span> 
+              <span class="nx">loggedInUser</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="p">});</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="search">
+  <h3>
+    <a href="#search" class="pilcrow">&#182;</a>
+    search
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>Renders Search Result Page</p>
+  </div>
+  <div class="body"><p>At the moment, only searches through hashtags. What is displayed is not what is returned, however.
+We still need to figure out how to manipulate arrays in ejs.
+Need also to add search through users, actual message content of tweets and possibly the help page.</p>
+
+<p>This current version displays the first tweet from the result of searching tweets for hashtag "#ftw".
+It is also able to recognize active hashtags clicked/searched in a tweet.</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+ 
+<span class="nx">exports</span><span class="p">.</span><span class="nx">search</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+   <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">user</span><span class="p">;</span>
+   <span class="kd">var</span> <span class="nx">username</span> <span class="o">=</span> <span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="p">;</span>
+   <span class="k">if</span> <span class="p">(</span><span class="nx">user</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="o">||</span> <span class="nx">online</span><span class="p">[</span><span class="nx">user</span><span class="p">.</span><span class="nx">uid</span><span class="p">]</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//if a user is logged in, search works.</span>
+     <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s2">&quot;Login to view this page.&quot;</span><span class="p">);</span> <span class="c1">//Should we make it so that a search can only be conducted when a user is logged in?</span>
+   <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+     <span class="kd">var</span> <span class="nx">ht</span> <span class="o">=</span> <span class="s1">&#39;#ftw&#39;</span><span class="p">;</span>
+   <span class="kd">var</span> <span class="nx">query</span> <span class="o">=</span> <span class="s2">&quot;#&quot;</span><span class="o">+</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">query</span><span class="p">;</span>
+   <span class="kd">var</span> <span class="nx">results</span> <span class="o">=</span> <span class="nx">tweets</span><span class="p">.</span><span class="nx">searchTweetsByHT</span><span class="p">(</span><span class="nx">ht</span><span class="p">);</span>
+   <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;search&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Search Result&#39;</span><span class="p">,</span>
+                <span class="nx">loggedInUser</span><span class="o">:</span> <span class="nx">username</span><span class="p">,</span>
+                <span class="nx">searchPhrase</span><span class="o">:</span> <span class="nx">query</span><span class="p">,</span>
+                <span class="nx">rname</span> <span class="o">:</span> <span class="nx">results</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">name</span><span class="p">,</span>
+                <span class="nx">rusername</span><span class="o">:</span> <span class="nx">results</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">username</span><span class="p">,</span>
+                <span class="nx">rmsg</span><span class="o">:</span> <span class="nx">msgToHtml</span><span class="p">(</span><span class="nx">results</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">msg</span><span class="p">),</span>
+                <span class="nx">rdate</span><span class="o">:</span> <span class="nx">results</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">date</span><span class="p">,</span>
+                <span class="nx">username</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="p">});</span>  
+   <span class="p">}</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="searchbox">
+  <h3>
+    <a href="#searchbox" class="pilcrow">&#182;</a>
+    searchBox
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>Supports searching using the search box. Simply passes query string from search box to search.</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">searchBox</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/search/&#39;</span><span class="o">+</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">query</span><span class="p">);</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="detailedtweet">
+  <h3>
+    <a href="#detailedtweet" class="pilcrow">&#182;</a>
+    detailedTweet
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>Renders Detailed Tweet Page</p>
+  </div>
+  <div class="body"><p>Renders detailed conversation. A conversation is a thread of tweets through replies.
+The page displays the first "original" tweet in the conversation and the user information of who posted that tweet.
+There is a default text box that allows users to reply to the "original" tweet.
+The rest of the conversation appears below the box.</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">detailedTweet</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">user</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">user</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="o">||</span> <span class="nx">online</span><span class="p">[</span><span class="nx">user</span><span class="p">.</span><span class="nx">uid</span><span class="p">]</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">req</span><span class="p">.</span><span class="nx">flash</span><span class="p">(</span><span class="s1">&#39;userAuth&#39;</span><span class="p">,</span> <span class="s1">&#39;Not logged in!&#39;</span><span class="p">);</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">tweetId</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">tweetId</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">tweetconvo</span> <span class="o">=</span> <span class="nx">tweets</span><span class="p">.</span><span class="nx">getTweetConvoByTweetID</span><span class="p">(</span><span class="nx">tweetId</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">tweetconvo</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;detailedTweet&#39;</span><span class="p">,{</span><span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Detailed Tweet&#39;</span><span class="p">,</span> 
+            <span class="nx">loggedInUser</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="p">,</span> 
+            <span class="nx">convo</span><span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> 
+            <span class="nx">profilePic</span><span class="o">:</span> <span class="nx">userdb</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">profilePic</span><span class="p">,</span> <span class="c1">//change later</span>
+            <span class="nx">origTweet</span><span class="o">:</span> <span class="nx">tweets</span><span class="p">.</span><span class="nx">tweetdb</span><span class="p">[</span><span class="nx">tweetId</span><span class="p">],</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
+</div>
+<p>had to include this because text area did not like &lt;%= origTweet.username %></p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+            <span class="nx">username</span><span class="o">:</span> <span class="nx">tweets</span><span class="p">.</span><span class="nx">tweetdb</span><span class="p">[</span><span class="nx">tweetId</span><span class="p">].</span><span class="nx">username</span><span class="p">});</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">tweets</span><span class="p">.</span><span class="nx">conversation</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+      <span class="p">}</span>
+      <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">j</span><span class="o">&lt;</span><span class="nx">tweets</span><span class="p">.</span><span class="nx">tweetdb</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;tweet reply for &quot;</span> <span class="o">+</span> <span class="nx">j</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nx">tweets</span><span class="p">.</span><span class="nx">tweetdb</span><span class="p">[</span><span class="nx">j</span><span class="p">].</span><span class="nx">reply</span><span class="p">);</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;tweet convo for &quot;</span> <span class="o">+</span> <span class="nx">j</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nx">tweets</span><span class="p">.</span><span class="nx">tweetdb</span><span class="p">[</span><span class="nx">j</span><span class="p">].</span><span class="nx">convo</span><span class="p">);</span>
+      <span class="p">}</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;detailedTweet&#39;</span><span class="p">,{</span><span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Detailed Tweet&#39;</span><span class="p">,</span> 
+            <span class="nx">loggedInUser</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="p">,</span> 
+            <span class="nx">convo</span><span class="o">:</span> <span class="nx">tweetconvo</span><span class="p">,</span> 
+            <span class="nx">profilePic</span><span class="o">:</span> <span class="nx">userdb</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">profilePic</span><span class="p">,</span> <span class="c1">//change later</span>
+            <span class="nx">origTweet</span><span class="o">:</span> <span class="nx">tweetconvo</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
+</div>
+<p>had to include this because text area did not like &lt;%= origTweet.username %></p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+            <span class="nx">username</span><span class="o">:</span> <span class="nx">tweetconvo</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">username</span><span class="p">});</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">exports</span><span class="p">.</span><span class="nx">detailedTweetReply</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">user</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">user</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="o">||</span> <span class="nx">online</span><span class="p">[</span><span class="nx">user</span><span class="p">.</span><span class="nx">uid</span><span class="p">]</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">req</span><span class="p">.</span><span class="nx">flash</span><span class="p">(</span><span class="s1">&#39;userAuth&#39;</span><span class="p">,</span> <span class="s1">&#39;Not logged in!&#39;</span><span class="p">);</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">tweetId</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">tweetId</span><span class="p">;</span> 
+    <span class="nx">tweets</span><span class="p">.</span><span class="nx">addTweet</span><span class="p">(</span><span class="nx">user</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span> <span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="p">,</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">message</span><span class="p">,</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">tweetId</span><span class="p">),</span> <span class="kc">null</span><span class="p">);</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
+</div>
+<p>users.addUserT(user.username, tweets.tweetdb.length-1);</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">tweetId</span><span class="o">+</span><span class="s1">&#39;/detailedTweet&#39;</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">exports</span><span class="p">.</span><span class="nx">simpleReply</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">user</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">user</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="o">||</span> <span class="nx">online</span><span class="p">[</span><span class="nx">user</span><span class="p">.</span><span class="nx">uid</span><span class="p">]</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">req</span><span class="p">.</span><span class="nx">flash</span><span class="p">(</span><span class="s1">&#39;userAuth&#39;</span><span class="p">,</span> <span class="s1">&#39;Not logged in!&#39;</span><span class="p">);</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">tweetId</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">tweetId</span><span class="p">;</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;detailedTweet&#39;</span><span class="p">,{</span><span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Simple Reply&#39;</span><span class="p">,</span> 
+          <span class="nx">loggedInUser</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="p">,</span> 
+          <span class="nx">convo</span><span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> 
+          <span class="nx">profilePic</span><span class="o">:</span> <span class="nx">userdb</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">profilePic</span><span class="p">,</span> <span class="c1">//change later</span>
+          <span class="nx">origTweet</span><span class="o">:</span> <span class="nx">tweets</span><span class="p">.</span><span class="nx">tweetdb</span><span class="p">[</span><span class="nx">tweetId</span><span class="p">],</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
+</div>
+<p>had to include this because text area did not like &lt;%= origTweet.username %></p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+          <span class="nx">username</span><span class="o">:</span> <span class="nx">tweets</span><span class="p">.</span><span class="nx">tweetdb</span><span class="p">[</span><span class="nx">tweetId</span><span class="p">].</span><span class="nx">username</span><span class="p">});</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">exports</span><span class="p">.</span><span class="nx">displaySimpleReply</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">user</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">tweetId</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">tweetId</span><span class="p">;</span> 
+  <span class="nx">tweets</span><span class="p">.</span><span class="nx">addTweet</span><span class="p">(</span><span class="nx">user</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span> <span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="p">,</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">message</span><span class="p">,</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">tweetId</span><span class="p">),</span> <span class="kc">null</span><span class="p">);</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
+</div>
+<p>users.addUserT(user.username, tweets.tweetdb.length-1);</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">tweetId</span><span class="o">+</span><span class="s1">&#39;/simpleReply&#39;</span><span class="p">);</span>
+<span class="p">}</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="detailedtweetfakereply">
+  <h3>
+    <a href="#detailedtweetfakereply" class="pilcrow">&#182;</a>
+    detailedTweetFakeReply
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>This version shows how the display looks like with a fake reply post to the original tweet.
+It allows the user to send a tweet reply but reply is stored in static position in the conversation,
+i.e. the last position.</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">detailedTweetFakeReply</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>  
+  <span class="kd">var</span> <span class="nx">tweetId</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">tweetconvo</span> <span class="o">=</span> <span class="nx">tweets</span><span class="p">.</span><span class="nx">getTweetConvoByTweetID</span><span class="p">(</span><span class="nx">tweetId</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">content</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+  
+  <span class="kd">var</span> <span class="nx">username</span> <span class="o">=</span> <span class="nx">tweetconvo</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">username</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">name</span> <span class="o">=</span> <span class="nx">users</span><span class="p">.</span><span class="nx">get_user</span><span class="p">(</span><span class="nx">username</span><span class="p">).</span><span class="nx">name</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">ot</span> <span class="o">=</span> <span class="s1">&#39;&lt;p&gt;&lt;b&gt;&#39;</span> <span class="o">+</span> <span class="nx">name</span> <span class="o">+</span> <span class="s1">&#39;&lt;/b&gt; &lt;a href=&quot;/&#39;</span> <span class="o">+</span> <span class="nx">username</span> <span class="o">+</span> <span class="s1">&#39;/profile&quot;&gt;@&#39;</span> <span class="o">+</span> <span class="nx">username</span>
+      <span class="o">+</span> <span class="s1">&#39;&lt;/a&gt;&lt;br&gt;&#39;</span> <span class="o">+</span> <span class="nx">msgToHtml</span><span class="p">(</span><span class="nx">tweetconvo</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">msg</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;&lt;br&gt;&#39;</span> 
+      <span class="o">+</span> <span class="nx">tweetconvo</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">date</span> <span class="o">+</span> <span class="s1">&#39;&lt;/p&gt;&#39;</span><span class="p">;</span>
+  
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">tweetconvo</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">username</span> <span class="o">=</span> <span class="nx">tweetconvo</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">username</span><span class="p">;</span>
+    <span class="nx">name</span> <span class="o">=</span> <span class="nx">users</span><span class="p">.</span><span class="nx">get_user</span><span class="p">(</span><span class="nx">username</span><span class="p">).</span><span class="nx">name</span><span class="p">;</span>
+    <span class="nx">content</span> <span class="o">+=</span> <span class="s1">&#39;&lt;p&gt;&lt;b&gt;&#39;</span> <span class="o">+</span> <span class="nx">name</span> <span class="o">+</span> <span class="s1">&#39;&lt;/b&gt; &lt;a href=&quot;/&#39;</span> <span class="o">+</span> <span class="nx">username</span> <span class="o">+</span> <span class="s1">&#39;/profile&quot;&gt;@&#39;</span> <span class="o">+</span> <span class="nx">username</span>
+      <span class="o">+</span> <span class="s1">&#39;&lt;/a&gt;&lt;br&gt;&#39;</span> <span class="o">+</span> <span class="nx">msgToHtml</span><span class="p">(</span><span class="nx">tweetconvo</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">msg</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;&lt;br&gt;&#39;</span> 
+      <span class="o">+</span> <span class="nx">tweetconvo</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">date</span> <span class="o">+</span> <span class="s1">&#39;&lt;/p&gt;&#39;</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+  <span class="nx">content</span> <span class="o">+=</span> <span class="s1">&#39;&lt;p&gt;&lt;b&gt;Hazel Rozetta&lt;/b&gt;&lt;a href=&quot;/&quot;&gt;@hazel&lt;/a&gt;&lt;br&gt;&#39;</span> <span class="o">+</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">replyTweet</span> <span class="o">+</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="o">+</span> <span class="nx">tweetconvo</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">date</span> <span class="o">+</span><span class="s1">&#39;&lt;/p&gt;&#39;</span><span class="p">;</span>
+  
+  <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;detailedTweet&#39;</span><span class="p">,{</span><span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Detailed Tweet Fake Reply&#39;</span><span class="p">,</span> 
+            <span class="nx">loggedInUser</span><span class="o">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="c1">//Should change this later</span>
+            <span class="nx">convo</span><span class="o">:</span> <span class="nx">content</span><span class="p">,</span> 
+            <span class="nx">profilePic</span><span class="o">:</span> <span class="nx">userdb</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">profilePic</span><span class="p">,</span>
+            <span class="nx">name</span><span class="o">:</span> <span class="nx">users</span><span class="p">.</span><span class="nx">get_user</span><span class="p">(</span><span class="nx">tweetconvo</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">username</span><span class="p">).</span><span class="nx">name</span><span class="p">,</span>
+            <span class="nx">origTweet</span><span class="o">:</span> <span class="nx">ot</span><span class="p">,</span>
+            <span class="nx">username</span><span class="o">:</span> <span class="nx">tweetconvo</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">username</span><span class="p">});</span>
+
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="editprofile">
+  <h3>
+    <a href="#editprofile" class="pilcrow">&#182;</a>
+    editProfile
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>Renders Edit Profile view</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">editProfile</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">){</span>
+   <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">user</span><span class="p">;</span>
+   <span class="kd">var</span> <span class="nx">username</span> <span class="o">=</span> <span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="p">;</span>
+   <span class="k">if</span> <span class="p">(</span><span class="nx">user</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="o">||</span> <span class="nx">online</span><span class="p">[</span><span class="nx">user</span><span class="p">.</span><span class="nx">uid</span><span class="p">]</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+     <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s2">&quot;Login to view this page.&quot;</span><span class="p">);</span>
+   <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">username</span> <span class="o">!==</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">){</span>
+     <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;/editProfile&#39;</span><span class="p">);</span>
+   <span class="p">}</span><span class="k">else</span> <span class="p">{</span>
+   <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;editProfile&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Edit Profile&#39;</span><span class="p">,</span>
+      <span class="nx">loggedInUser</span><span class="o">:</span> <span class="nx">username</span><span class="p">,</span>
+      <span class="nx">msg</span><span class="o">:</span> <span class="nx">profileMsg</span><span class="p">,</span>
+      <span class="nx">name</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span>
+      <span class="nx">username</span><span class="o">:</span> <span class="nx">username</span><span class="p">,</span>
+      <span class="nx">email</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">email</span><span class="p">,</span>
+      <span class="nx">location</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">location</span><span class="p">,</span>
+      <span class="nx">website</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">website</span><span class="p">,</span>
+      <span class="nx">profilePic</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">profilePic</span><span class="p">});</span>
+   <span class="p">}</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="editsettings">
+  <h3>
+    <a href="#editsettings" class="pilcrow">&#182;</a>
+    editSettings
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>Renders Edit Settings view</p>
+  </div>
+  <div class="body"><p>This page also has the link for Edit Profile.
+To get to this page, user can click on Tools icon.</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">editSettings</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">){</span>
+   <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">user</span><span class="p">;</span>
+   <span class="k">if</span> <span class="p">(</span><span class="nx">user</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="o">||</span> <span class="nx">online</span><span class="p">[</span><span class="nx">user</span><span class="p">.</span><span class="nx">uid</span><span class="p">]</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
+</div>
+<p>res.send("Login to view this page.");</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+     <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span>
+   <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">username</span> <span class="o">=</span> <span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">username</span> <span class="o">!==</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">){</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;/editSettings&#39;</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;editSettings&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Edit Settings&#39;</span><span class="p">,</span> 
+      <span class="nx">loggedInUser</span><span class="o">:</span> <span class="nx">username</span><span class="p">,</span>
+      <span class="nx">msg</span><span class="o">:</span> <span class="nx">settingsMsg</span><span class="p">,</span> 
+      <span class="nx">pv</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">profVis</span><span class="p">,</span> 
+      <span class="nx">fp</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">folPerm</span><span class="p">,</span> 
+      <span class="nx">mp</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">mentionPerm</span><span class="p">,</span> 
+      <span class="nx">pm</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">pmPerm</span><span class="p">,</span>
+      <span class="nx">username</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="p">});</span>
+    <span class="p">}</span>
+   <span class="p">}</span> 
+<span class="p">};</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="changesettings">
+  <h3>
+    <a href="#changesettings" class="pilcrow">&#182;</a>
+    changeSettings
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>Makes changes to user settings</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">changeSettings</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">){</span>
+   <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">user</span><span class="p">;</span>
+   <span class="kd">var</span> <span class="nx">username</span> <span class="o">=</span> <span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="p">;</span>
+   <span class="k">if</span> <span class="p">(</span><span class="nx">user</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="o">||</span> <span class="nx">online</span><span class="p">[</span><span class="nx">user</span><span class="p">.</span><span class="nx">uid</span><span class="p">]</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+     <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s2">&quot;Login to view this page.&quot;</span><span class="p">);</span>
+   <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">username</span> <span class="o">!==</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">){</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;/editSettings&#39;</span><span class="p">);</span> <span class="c1">//Direct to user&#39;s edit setting page</span>
+   <span class="p">}</span><span class="k">else</span> <span class="p">{</span>
+     <span class="k">if</span> <span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">profVis</span> <span class="o">!=</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">user</span><span class="p">.</span><span class="nx">profVis</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">profVis</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">folPerm</span> <span class="o">!=</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">user</span><span class="p">.</span><span class="nx">folPerm</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">folPerm</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">mentionPerm</span> <span class="o">!=</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">user</span><span class="p">.</span><span class="nx">mentionPerm</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">mentionPerm</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">pmPerm</span> <span class="o">!=</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">user</span><span class="p">.</span><span class="nx">pmPerm</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">pmPerm</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nx">settingsMsg</span> <span class="o">=</span> <span class="s1">&#39;Changes saved.&#39;</span><span class="p">;</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;/editSettings&#39;</span><span class="p">);</span>
+   <span class="p">}</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="changeprofile">
+  <h3>
+    <a href="#changeprofile" class="pilcrow">&#182;</a>
+    changeProfile
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>Makes changes to user profile excluding profile picture</p>
+  </div>
+  <div class="body"><p>This version has not been cleaned after conversation with Tim on what goes to /routes.
+Most of the comparisons here will go to tweets.js.
+Another late information that I acquired is the required attribute for forms/input.</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">changeProfile</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">){</span>
+   <span class="kd">var</span> <span class="nx">flag</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    
+   <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">user</span><span class="p">;</span>
+   <span class="kd">var</span> <span class="nx">username</span> <span class="o">=</span> <span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="p">;</span>
+   <span class="k">if</span> <span class="p">(</span><span class="nx">user</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="o">||</span> <span class="nx">online</span><span class="p">[</span><span class="nx">user</span><span class="p">.</span><span class="nx">uid</span><span class="p">]</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+     <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s2">&quot;Login to view this page.&quot;</span><span class="p">);</span>
+   <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">username</span> <span class="o">!==</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">){</span>
+   <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;/editProfile&#39;</span><span class="p">);</span> <span class="c1">//Change to another default if desired</span>
+   <span class="p">}</span><span class="k">else</span> <span class="p">{</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
+</div>
+<p>check if current password is entered</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">currentpass</span> <span class="o">!==</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="p">{</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
+</div>
+<p>check if current password entered matches saved password</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">currentpass</span> <span class="o">===</span> <span class="nx">user</span><span class="p">.</span><span class="nx">password</span><span class="p">)</span> <span class="p">{</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
+</div>
+<p>check if user wants to change password</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">newpass</span> <span class="o">===</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">newpassconfirm</span><span class="p">)</span> <span class="p">{</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
+</div>
+<p>make changes to info</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">name</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="p">{</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
+</div>
+<p>don't allow empty change</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+              <span class="nx">flag</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+              <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;/editProfile&#39;</span><span class="p">);</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+              <span class="nx">user</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">username</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="p">{</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-32" id="section-32">&#182;</a>
+</div>
+<p>don't allow empty change</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+              <span class="nx">flag</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+              <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;/editProfile&#39;</span><span class="p">);</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+              <span class="nx">user</span><span class="p">.</span><span class="nx">username</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">username</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">email</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="p">{</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-33" id="section-33">&#182;</a>
+</div>
+<p>don't allow empty change</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+              <span class="nx">flag</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+              <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;/editProfile&#39;</span><span class="p">);</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+              <span class="nx">user</span><span class="p">.</span><span class="nx">email</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">email</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="nx">user</span><span class="p">.</span><span class="nx">location</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">location</span><span class="p">;</span>
+            <span class="nx">user</span><span class="p">.</span><span class="nx">website</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">website</span><span class="p">;</span>
+            
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-34" id="section-34">&#182;</a>
+</div>
+<p>check if np fields are not empty</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+            <span class="k">if</span> <span class="p">((</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">newpass</span> <span class="o">!==</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">newpassconfirm</span> <span class="o">!==</span> <span class="s1">&#39;&#39;</span><span class="p">))</span> <span class="p">{</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-35" id="section-35">&#182;</a>
+</div>
+<p>make changes, np fields not empty</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+              <span class="nx">user</span><span class="p">.</span><span class="nx">password</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">newpass</span><span class="p">;</span>
+            <span class="p">};</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">flag</span><span class="p">)</span> <span class="p">{</span>
+              <span class="nx">profileMsg</span> <span class="o">=</span> <span class="s1">&#39;Cannot allow name, username, email to be empty.&#39;</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+              <span class="nx">profileMsg</span> <span class="o">=</span> <span class="s1">&#39;Changes saved.&#39;</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;/editProfile&#39;</span><span class="p">);</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-36" id="section-36">&#182;</a>
+</div>
+<p>np fields did not match or one of them empty</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+          <span class="nx">profileMsg</span> <span class="o">=</span> <span class="s1">&#39;Incorrect new password confirmation. No changes made. Please try again.&#39;</span><span class="p">;</span>
+          <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;/editProfile&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-37" id="section-37">&#182;</a>
+</div>
+<p>if current password entered is incorrect, display error msg</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">profileMsg</span> <span class="o">=</span> <span class="s1">&#39;Current password entered is incorrect. No changes made. Please try again.&#39;</span><span class="p">;</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;/editProfile&#39;</span><span class="p">);</span>
+      <span class="p">}</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-38" id="section-38">&#182;</a>
+</div>
+<p>if current password is not entered, display error msg</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="nx">profileMsg</span> <span class="o">=</span> <span class="s1">&#39;Must enter current password to make changes. No changes made. Please try again.&#39;</span><span class="p">;</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;/editProfile&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+   <span class="p">}</span>
+<span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="changeprofilepic">
+  <h3>
+    <a href="#changeprofilepic" class="pilcrow">&#182;</a>
+    changeProfilePic
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>Makes changes to profile picture</p>
+  </div>
+  <div class="body"><p>This version does not support uploading the file though that form is active.
+It returns fake image upload at the moment.</p>
+
+<p>This is separated from the rest of the form for changing profile information because it was
+getting frustrating to figure out the uploading image part which was not really part of this project.
+Once the image upload is figured out, it will be merged with the rest of the data for changing profile
+or user information.</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">changeProfilePic</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">flag</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">user</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">username</span> <span class="o">=</span> <span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">user</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="o">||</span> <span class="nx">online</span><span class="p">[</span><span class="nx">user</span><span class="p">.</span><span class="nx">uid</span><span class="p">]</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s2">&quot;Login to view this page.&quot;</span><span class="p">);</span>
+    <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">username</span> <span class="o">!==</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">){</span>
+     <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;/editProfile&#39;</span><span class="p">);</span> <span class="c1">//just go to the user&#39;s edit page</span>
+    <span class="p">}</span><span class="k">else</span> <span class="p">{</span>
+       <span class="kd">var</span> <span class="nx">u</span> <span class="o">=</span> <span class="nx">users</span><span class="p">.</span><span class="nx">getUserById</span><span class="p">(</span><span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="p">);</span>
+    <span class="nx">u</span><span class="p">.</span><span class="nx">profilePic</span> <span class="o">=</span> <span class="s1">&#39;fakeChangedPic.jpg&#39;</span><span class="p">;</span>
+    <span class="nx">profileMsg</span> <span class="o">=</span> <span class="s1">&#39;Fake image generated here.&#39;</span><span class="p">;</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">u</span><span class="p">.</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;/editProfile&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="functions">
+  <h2>
+    <a href="#functions" class="pilcrow">&#182;</a>
+    Functions
+  </h2>
+</div>
+
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function--usertohtml">
+  <h3>
+    <a href="#function--usertohtml" class="pilcrow">&#182;</a>
+    <em>function</em>: userToHtml
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>Generate HTML to display user list on follower and following page.
+HTML includes name, username (hyperlink to user profile), button</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">userlist,</span>
+      <span>array of user objects</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">btntext,</span>
+      <span>text on the button displayed</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span>content, generated HTML</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">userToHtml</span><span class="p">(</span><span class="nx">loggedInUser</span><span class="p">,</span> <span class="nx">user</span><span class="p">,</span> <span class="nx">userlist</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">content</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">userlist</span><span class="p">.</span><span class="nx">length</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="nx">len</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">u</span> <span class="o">=</span> <span class="nx">users</span><span class="p">.</span><span class="nx">getUserById</span><span class="p">(</span><span class="nx">userlist</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+    <span class="kd">var</span> <span class="nx">btntext</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">u</span><span class="p">.</span><span class="nx">username</span> <span class="o">===</span> <span class="nx">loggedInUser</span><span class="p">.</span><span class="nx">username</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">content</span> <span class="o">+=</span> <span class="s1">&#39;&lt;b&gt;&#39;</span><span class="o">+</span><span class="nx">u</span><span class="p">.</span><span class="nx">name</span><span class="o">+</span><span class="s1">&#39;&lt;/b&gt; &lt;a href=&quot;/&#39;</span><span class="o">+</span><span class="nx">u</span><span class="p">.</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;/profile&quot;&gt;@&#39;</span><span class="o">+</span><span class="nx">u</span><span class="p">.</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;&lt;/a&gt;&lt;br&gt;&#39;</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">users</span><span class="p">.</span><span class="nx">isFollowing</span><span class="p">(</span><span class="nx">loggedInUser</span><span class="p">,</span> <span class="nx">u</span><span class="p">))</span> <span class="p">{</span>
+      <span class="nx">btntext</span> <span class="o">=</span> <span class="s2">&quot;unfollow&quot;</span><span class="p">;</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">btntext</span> <span class="o">=</span> <span class="s2">&quot;follow&quot;</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="nx">content</span> <span class="o">+=</span> <span class="s1">&#39;&lt;b&gt;&#39;</span><span class="o">+</span><span class="nx">u</span><span class="p">.</span><span class="nx">name</span><span class="o">+</span><span class="s1">&#39;&lt;/b&gt; &lt;a href=&quot;/&#39;</span><span class="o">+</span><span class="nx">u</span><span class="p">.</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;/profile&quot;&gt;@&#39;</span><span class="o">+</span><span class="nx">u</span><span class="p">.</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;&lt;/a&gt;&#39;</span><span class="p">;</span>
+      <span class="nx">content</span> <span class="o">+=</span> <span class="s1">&#39;&lt;form method=&quot;post&quot; id=&quot;unfollow&quot; action=&quot;/&#39;</span><span class="o">+</span><span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">btntext</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">u</span><span class="p">.</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;&quot;&gt;&#39;</span><span class="o">+</span>
+                  <span class="s1">&#39;&lt;input type=&quot;submit&quot; name=&quot;submit&quot; value=&quot;&#39;</span><span class="o">+</span><span class="nx">btntext</span><span class="o">+</span><span class="s1">&#39;&quot; /&gt;&#39;</span><span class="o">+</span>
+                  <span class="s1">&#39;&lt;/form&gt;&lt;br&gt;&#39;</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">content</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function--tweetstohtml">
+  <h3>
+    <a href="#function--tweetstohtml" class="pilcrow">&#182;</a>
+    <em>function</em>: tweetsToHtml
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>Generate HTML to display tweets list which includes
+name, @username(hyperlink to user profile), tweet message, date, and Detail(link to detailedTweet page)</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">tl,</span>
+      <span>array of tweets</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span>content, converted HTML</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">tweetsToHtml</span><span class="p">(</span><span class="nx">tl</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="nx">tl</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">content</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">j</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">tl</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+    <span class="kd">var</span> <span class="nx">usr</span> <span class="o">=</span> <span class="nx">users</span><span class="p">.</span><span class="nx">getUserById</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">username</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">msg</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">);</span>
+    <span class="nx">content</span> <span class="o">+=</span> <span class="s1">&#39;&lt;p&gt;&lt;b&gt;&#39;</span><span class="o">+</span><span class="nx">t</span><span class="p">.</span><span class="nx">name</span><span class="o">+</span><span class="s1">&#39;&lt;/b&gt; &lt;a href=&quot;/&#39;</span><span class="o">+</span><span class="nx">t</span><span class="p">.</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;/profile&quot;&gt;@&#39;</span><span class="o">+</span><span class="nx">t</span><span class="p">.</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;&lt;/a&gt;&lt;br&gt;&#39;</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-43" id="section-43">&#182;</a>
+</div>
+<p>+t.msg+'<br>'</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+              <span class="o">+</span><span class="nx">msgToHtml</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">msg</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;&lt;br&gt;&#39;</span>
+              <span class="o">+</span><span class="nx">t</span><span class="p">.</span><span class="nx">date</span><span class="o">+</span><span class="s1">&#39;&lt;br&gt;&#39;</span>
+              <span class="o">+</span><span class="s1">&#39;&lt;a href=&quot;/&#39;</span><span class="o">+</span><span class="nx">t</span><span class="p">.</span><span class="nx">id</span><span class="o">+</span><span class="s1">&#39;/detailedTweet&quot;&gt;Detail&lt;/a&gt;&lt;/p&gt;&#39;</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">content</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function--msgtohtml">
+  <h3>
+    <a href="#function--msgtohtml" class="pilcrow">&#182;</a>
+    <em>function</em>: msgToHtml
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>Find @username and #hashtag in a tweet message and convert them to a html href link.
+In order to be recognized as a @username mention, @ symbol must be the start
+of a word. And @username@username is considered invalid and is ignored.</p>
+
+
+<div class="pilwrap" id="hashtag-starts-with---and-end-before-a-space.--ford--is-considered-a-hashtag.">
+  <h1>
+    <a href="#hashtag-starts-with---and-end-before-a-space.--ford--is-considered-a-hashtag." class="pilcrow">&#182;</a>
+    hashtag starts with # and end before a space. #ford! is considered a hashtag.
+  </h1>
+</div>
+
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">msgToHtml</span><span class="p">(</span><span class="nx">msg</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">msg</span> <span class="o">=</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">content</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">word</span> <span class="o">=</span> <span class="nx">msg</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-45" id="section-45">&#182;</a>
+</div>
+<p>word starting with @ &amp;&amp; cannot have another @</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">word</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">===</span> <span class="s2">&quot;@&quot;</span> <span class="o">&amp;&amp;</span> <span class="nx">word</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot;\@&quot;</span><span class="p">).</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">content</span> <span class="o">+=</span> <span class="s1">&#39; &lt;a href=&quot;/&#39;</span><span class="o">+</span><span class="nx">word</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;/profile&quot;&gt;&#39;</span><span class="o">+</span><span class="nx">word</span><span class="o">+</span><span class="s1">&#39;&lt;/a&gt; &#39;</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">word</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">===</span> <span class="s2">&quot;#&quot;</span> <span class="o">&amp;&amp;</span> <span class="nx">word</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot;\#&quot;</span><span class="p">).</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//#ford! &lt;- !</span>
+      <span class="nx">content</span> <span class="o">+=</span> <span class="s1">&#39; &lt;a href=&quot;/search/&#39;</span><span class="o">+</span><span class="nx">word</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;&quot;&gt;&#39;</span><span class="o">+</span><span class="nx">word</span><span class="o">+</span><span class="s1">&#39;&lt;/a&gt; &#39;</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="nx">content</span> <span class="o">+=</span> <span class="nx">word</span><span class="o">+</span><span class="s2">&quot; &quot;</span><span class="p">;</span>
+    <span class="p">}</span> 
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">content</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>
