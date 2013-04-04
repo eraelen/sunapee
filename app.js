@@ -51,7 +51,7 @@ app.get('/:id/profile', routes.profile);
 app.get('/:id/follower', routes.follower);
 app.post('/:id/follower', routes.follower);
 app.get('/:id/following', routes.following);
-app.post('/unfollow/:rmuname', routes.unfollow);
+app.post('/:uname/unfollow/:rmuname', routes.unfollow);
 app.post('/:id/newtweet', routes.newtweet);
 
 app.get('/help',routes.help);

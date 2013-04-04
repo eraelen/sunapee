@@ -18,6 +18,7 @@ exports.home = function(req, res){
     if (username !== req.params.id){
       res.redirect('/'+username+'/home');
     }else {
+      console.log(username+" "+user.following);
       var tl = tweets.getRecentT(username, user.following, 20);
       res.render('home', 
             { title: 'Home',
@@ -39,7 +40,7 @@ exports.home = function(req, res){
 */
 exports.newtweet = function(req, res) {
   var user = req.session.user;
-  var username = user.username
+  var username = user.username;
   tweets.addTweet(user.name, username, req.body.message, null, null);
   //users.addUserT(username, tweets.tweetdb.length-1);
   res.redirect('/'+username+'/home');
@@ -56,6 +57,7 @@ exports.profile = function(req, res) {
   var user = users.getUserById(req.params.id);
   if (user !== undefined ) {
     var username = user.username;
+    console.log(username+" "+user.following);
     var tl = tweets.getTByUser(username, 20);
     res.render('profile',
               {title: 'Profile',
@@ -104,23 +106,24 @@ exports.follower = function(req, res) {
 * GET Following page
 */
 exports.following = function(req, res) {
-  var userl = req.session.user;
-  if (user === undefined || online[user.uid] === undefined) {
+  var loggedInUser = req.session.user;
+  if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
     res.redirect('/');
   } else {
     var user = users.getUserById(req.params.id);
-    var username = user.username
+    //var user = users.getUserById(req.params.id);
+    //var username = user.username
     var followinglist = user.following;
     var content = '';
+    console.log(loggedInUser.username+" "+loggedInUser.following);
     if (followinglist.length !== 0) {
-      content += userToHtml(followinglist, "unfollow");
+      content += userToHtml(loggedInUser, user, followinglist);
     }
     res.render('following', 
           { title: 'Following',
-            loggedInUser: userl.username,
+            loggedInUser: loggedInUser.username,
             name: user.name,
-            username: username,
-            userList: user.following,
+            username: user.username,
             content: content
              } );
   }
@@ -150,13 +153,12 @@ exports.following = function(req, res) {
 */
 
 exports.unfollow = function(req, res){
-  var user = req.session.user;
-  if (user === undefined || online[user.uid] === undefined) {
+  var loggedInUser = req.session.user;
+  if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
      res.redirect('/');
   } else {
-      var username = user.username;
-      users.unfollow(username, req.params.rmuname);
-      res.redirect('/'+username+'/following');
+      users.unfollow(loggedInUser.username, req.params.rmuname);
+      res.redirect('/'+req.params.uname+'/following');
   }
 
 }
@@ -194,7 +196,7 @@ exports.interaction = function(req, res) {
 * @param btntext, text on the button displayed
 * @return content, generated HTML
 */
-function userToHtml(userlist, btntext) {
+function userToHtml(loggedInUser, user, userlist) {
   //console.log("userlist: ", userlist);
   var content = '';
   var len = userlist.length-1;
@@ -202,12 +204,21 @@ function userToHtml(userlist, btntext) {
   for (var i=len; i >= 0; i--) {
     //console.log("userlist[i]: ",userlist[i]);
     var u = users.getUserById(userlist[i]);
-    //console.log("u: ",u);
-    content += '<b>'+u.name+'</b> <a href="/'+u.username+'/profile">@'+u.username+'</a>';
-    //content += '<button onclick="deleteFollower()">'+btntext+'</button></p>';
-    content += '<form method="post" id="unfollow" action="/'+btntext+'/'+u.username+'">'+
-                '<input type="submit" name="submit" value="'+btntext+'" />'+
-                '</form><br>';
+    var btntext;
+    if (u.username === loggedInUser.username) {
+      content += '<b>'+u.name+'</b> <a href="/'+u.username+'/profile">@'+u.username+'</a><br>';
+    } else {
+      if (users.isFollowing(loggedInUser, u)) {
+      btntext = "unfollow";
+      } else {
+        btntext = "follow";
+      }
+      content += '<b>'+u.name+'</b> <a href="/'+u.username+'/profile">@'+u.username+'</a>';
+      //content += '<button onclick="deleteFollower()">'+btntext+'</button></p>';
+      content += '<form method="post" id="unfollow" action="/'+user.username+'/'+btntext+'/'+u.username+'">'+
+                  '<input type="submit" name="submit" value="'+btntext+'" />'+
+                  '</form><br>';
+    }
   }
   return content;
 }
