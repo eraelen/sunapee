@@ -1,5 +1,5 @@
 /**
- * #--Tweetee Application--
+ * #Tweetee Application
  * 
  * Module dependencies.
  */
@@ -32,7 +32,7 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-//##Entry-related Routes
+//##Entry Related Routes
 app.get('/', entry.login);    
 app.post('/userAuth',entry.userAuth);
 app.get('/register', entry.register);
@@ -45,6 +45,8 @@ app.get('/forgotlogin', entry.forgotlogin);
 app.post('/forgotloginProcess', entry.forgotloginProcess);
 
 //##User Related Routes
+
+//###1. Main Routes
 app.get('/:id/home', routes.home);
 app.get('/:id/interaction', routes.interaction);
 app.get('/:id/profile', routes.profile);
@@ -54,6 +56,8 @@ app.get('/:id/following', routes.following);
 app.post('/:uname/unfollow/:rmuname', routes.unfollow);
 app.post('/:id/newtweet', routes.newtweet);
 
+//###2. Search, Help, Tweet Routes
+app.post('/:id/newtweet', routes.newtweet);
 app.get('/help',routes.help);
 app.get('/search/:query', routes.search);
 app.post('/searchBox',routes.searchBox);
@@ -61,12 +65,11 @@ app.get('/:tweetId/detailedTweet', routes.detailedTweet);
 app.post('/:tweetId/detailedTweetReply', routes.detailedTweetReply);
 app.get('/:tweetId/simpleReply', routes.simpleReply);
 app.post('/:tweetId/displaySimpleReply', routes.detailedTweetReply);
-
 app.post('/detailedTweetFakeReply', routes.detailedTweetFakeReply);
 
+//###3. Edit Content Routes
 app.get('/:id/editProfile', routes.editProfile);
 app.get('/:id/editSettings', routes.editSettings);
-
 app.post('/:id/changeSettings', routes.changeSettings);
 app.post('/:id/changeProfile', routes.changeProfile);
 app.post('/:id/changeProfilePic', routes.changeProfilePic);

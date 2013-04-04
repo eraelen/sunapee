@@ -1,10 +1,12 @@
+// # Route Handler: index.js
+// ##Handles routes related to post user login.
+
 var users = require('../lib/users');
 var tweets = require('../lib/tweets');
 var entry = require('../routes/entry');
 
-//var loggedInUser = "tim";
-//var userdb = users.userdb;
 var online = entry.online;
+
 /*
  * GET home page.
  */
@@ -27,7 +29,7 @@ exports.home = function(req, res){
               tweetN: users.getTNumberById(username),
               followerN: user.follower.length,
               followingN: user.following.length,
-              tweets: tl,//tweetsToHtml(tl),
+              tweets: tl,
 			  loggedInUser: user.username
                } );
     }
@@ -42,7 +44,6 @@ exports.newtweet = function(req, res) {
   var user = req.session.user;
   var username = user.username;
   tweets.addTweet(user.name, username, req.body.message, null, null);
-  //users.addUserT(username, tweets.tweetdb.length-1);
   res.redirect('/'+username+'/home');
 }
 
@@ -128,30 +129,10 @@ exports.following = function(req, res) {
              } );
   }
 }
-/*
-exports.following = function(req, res) {
-  var user = req.session.user;
-  if (user === undefined || online[user.uid] === undefined) {
-    res.redirect('/');
-  } else {
-    var user = users.getUserById(req.params.id);
-    var username = user.username
-    var followinglist = user.following;
-    var content = '';
-    if (followinglist.length !== 0) {
-      content += userToHtml(followinglist, "Unfollow");
-    }
-    res.render('following', 
-          { title: 'Following',
-            loggedInUser: username,
-            name: user.name,
-            username: username,
-            content: content
-             } );
-  }
-}
-*/
 
+/* 
+* POST changed contents of the following/follower page by redirect
+*/
 exports.unfollow = function(req, res){
   var loggedInUser = req.session.user;
   if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
@@ -168,7 +149,6 @@ exports.unfollow = function(req, res){
 exports.interaction = function(req, res) {
    var user = req.session.user;
    if (user === undefined || online[user.uid] === undefined) {
-     //res.send("You can only view the interaction page in the account you are logged in with.");
      res.redirect('/');
    } else {
       var username = user.username;
