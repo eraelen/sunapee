@@ -87,7 +87,7 @@ exports.login = function(req, res){
 
 
 // ## userAuth
-//Performs **basic** user authentication. Based on sessions example 
+// POST, Performs **basic** user authentication. Based on sessions example 
 //from lecture 18 examples by Timothy Richards. 
 //Redirects if logged-in. If not then the username and password is 
 //checked. 
@@ -102,7 +102,7 @@ exports.userAuth = function(req, res) {
     console.log("username:"+username);
     console.log("password:"+password);
     users.lookup(username, password, function(error, user) {
-      if (error) {`.
+      if (error) {
         req.flash('userAuth', error);
         console.log("Flash Error!");
         res.redirect('/');
@@ -119,7 +119,7 @@ exports.userAuth = function(req, res) {
 };
 
 // ## logout
-// Deletes user info & session - then redirects to login.
+// Get login.ejs again. Deletes user info & session - then redirects to login.
 exports.logout = function(req, res) {
   var user = req.session.user;
   if (user === undefined || online[user.uid] === undefined) {

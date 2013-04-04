@@ -1,15 +1,26 @@
 // # Route Handler: index.js
 // ##Handles routes related to post user login.
 
+// ## Global variables
+//The user and tweet files in the lib directory is accessed. 
+//Variable 'online' is a logged in database.
 var users = require('../lib/users');
 var tweets = require('../lib/tweets');
 var entry = require('../routes/entry');
-
 var online = entry.online;
 
+var userdb = users.userdb;
+var mytweets = tweets.tweetdb;
+var conversation = tweets.conversation;
+var settingsMsg = '';
+var profileMsg = '';
+
+// # User Server-Side Route-Handler
+
+// ## 
 /*
- * GET home page.
- */
+*GET home page.
+*/
 exports.home = function(req, res){
   var user = req.session.user;
   if (user === undefined || online[user.uid] === undefined) {
@@ -37,6 +48,7 @@ exports.home = function(req, res){
 }
 
 /*
+* POST newtweet.
 * Handles submiting request from new tweet button on Home page.
 * And redirect to Home page.
 */
@@ -48,7 +60,7 @@ exports.newtweet = function(req, res) {
 }
 
 /*
-* GET Profile page
+* GET profile page.
 */
 exports.profile = function(req, res) {
   var loggedInUserName = "";
@@ -78,8 +90,8 @@ exports.profile = function(req, res) {
   }
 }
 
-/*
-* GET Follower page
+/* 
+* GET follower page.
 */
 exports.follower = function(req, res) {
   var userl = req.session.user;
@@ -103,8 +115,8 @@ exports.follower = function(req, res) {
 }
 
 
-/*
-* GET Following page
+/* 
+* GET following page
 */
 exports.following = function(req, res) {
   var loggedInUser = req.session.user;
@@ -112,11 +124,8 @@ exports.following = function(req, res) {
     res.redirect('/');
   } else {
     var user = users.getUserById(req.params.id);
-    //var user = users.getUserById(req.params.id);
-    //var username = user.username
     var followinglist = user.following;
     var content = '';
-    console.log(loggedInUser.username+" "+loggedInUser.following);
     if (followinglist.length !== 0) {
       content += userToHtml(loggedInUser, user, followinglist);
     }
@@ -143,7 +152,7 @@ exports.unfollow = function(req, res){
   }
 
 }
-/*
+/* 
 * GET Interaction page
 */
 exports.interaction = function(req, res) {
@@ -167,99 +176,7 @@ exports.interaction = function(req, res) {
    }
 }
 
-// ### *function*: userToHtml
-/*
-* Generate HTML to display user list on follower and following page.
-* HTML includes name, username (hyperlink to user profile), button
-* 
-* @param userlist, array of user objects
-* @param btntext, text on the button displayed
-* @return content, generated HTML
-*/
-function userToHtml(loggedInUser, user, userlist) {
-  //console.log("userlist: ", userlist);
-  var content = '';
-  var len = userlist.length-1;
-  //console.log("len ",len);
-  for (var i=len; i >= 0; i--) {
-    //console.log("userlist[i]: ",userlist[i]);
-    var u = users.getUserById(userlist[i]);
-    var btntext;
-    if (u.username === loggedInUser.username) {
-      content += '<b>'+u.name+'</b> <a href="/'+u.username+'/profile">@'+u.username+'</a><br>';
-    } else {
-      if (users.isFollowing(loggedInUser, u)) {
-      btntext = "unfollow";
-      } else {
-        btntext = "follow";
-      }
-      content += '<b>'+u.name+'</b> <a href="/'+u.username+'/profile">@'+u.username+'</a>';
-      //content += '<button onclick="deleteFollower()">'+btntext+'</button></p>';
-      content += '<form method="post" id="unfollow" action="/'+user.username+'/'+btntext+'/'+u.username+'">'+
-                  '<input type="submit" name="submit" value="'+btntext+'" />'+
-                  '</form><br>';
-    }
-  }
-  return content;
-}
-
-// ### *function*: tweetsToHtml
-/*
-* Generate HTML to display tweets list which includes
-* name, @username(hyperlink to user profile), tweet message, date, and Detail(link to detailedTweet page)
-*
-* @param tl, array of tweets
-* @return content, converted HTML
-*/
-function tweetsToHtml(tl) {
-  var j = tl.length;
-  var content='';
-  for (var i=0; i < j; i++) {
-    var t = tl[i];
-    var usr = users.getUserById(t.username);
-    var a = t.msg.split(" ");
-    content += '<p><b>'+t.name+'</b> <a href="/'+t.username+'/profile">@'+t.username+'</a><br>'
-              //+t.msg+'<br>'
-              +msgToHtml(t.msg)+'<br>'
-              +t.date+'<br>'
-              +'<a href="/'+t.id+'/detailedTweet">Detail</a></p>';
-  }
-  return content;
-}
-
-// ### *function*: msgToHtml
-/**
- * Find @username and #hashtag in a tweet message and convert them to a html href link.
- * In order to be recognized as a @username mention, @ symbol must be the start
- * of a word. And @username@username is considered invalid and is ignored.
- * #hashtag starts with # and end before a space. #ford! is considered a hashtag.
- */
-function msgToHtml(msg) {
-  msg = msg.split(" ");
-  var content = '';
-  var len = msg.length;
-  for (var i=0; i < len; i++) {
-    var word = msg[i];
-    //console.log("");
-    // word starting with @ && cannot have another @
-    if (word.charAt(0) === "@" && word.split("\@").length === 2) {
-      content += ' <a href="/'+word.substring(1)+'/profile">'+word+'</a> ';
-    } else if (word.charAt(0) === "#" && word.split("\#").length === 2) { //#ford! <- !
-      content += ' <a href="/search/'+word.substring(1)+'">'+word+'</a> ';
-    } else {
-      content += word+" ";
-    } 
-  }
-  return content;
-}
-
-var userdb = users.userdb;
-var mytweets = tweets.tweetdb;
-var conversation = tweets.conversation;
-var settingsMsg = '';
-var profileMsg = '';
-
-// ## help
+// ### help
 /**
  * Renders Help Page
  */
@@ -275,7 +192,7 @@ exports.help = function (req,res) {
     }
 }
 
-// ## search
+// ### search
 /**
  * Renders Search Result Page
  * 
@@ -307,7 +224,7 @@ exports.search = function (req,res) {
    }
 };
 
-// ## searchBox
+// ### searchBox
 /**
  * Supports searching using the search box. Simply passes query string from search box to search.
  */
@@ -315,7 +232,7 @@ exports.searchBox = function (req,res) {
 	res.redirect('/search/'+req.body.query);
 };
 
-// ## detailedTweet
+// ### detailedTweet
 /**
  * Renders Detailed Tweet Page
  * 
@@ -342,10 +259,7 @@ exports.detailedTweet = function (req, res) {
 						//had to include this because text area did not like <%= origTweet.username %>
 						username: tweets.tweetdb[tweetId].username});
 		} else {
-			console.log("tweetconvo here is " + tweetconvo.length);
-			console.log("conversation so far...");
 			for (var i=0; i<tweets.conversation.length; i++) {
-				console.log("convolist " + i + " " + tweets.conversation[i].convlist);
 			}
 			for (var j=0; j<tweets.tweetdb.length; j++) {
 				console.log("tweet reply for " + j + " " + tweets.tweetdb[j].reply);
@@ -400,7 +314,7 @@ exports.displaySimpleReply = function (req, res) {
 	res.redirect('/'+tweetId+'/simpleReply');
 }
 
-// ## detailedTweetFakeReply
+// ### detailedTweetFakeReply
 /**
  * This version shows how the display looks like with a fake reply post to the original tweet.
  * It allows the user to send a tweet reply but reply is stored in static position in the conversation,
@@ -438,7 +352,7 @@ exports.detailedTweetFakeReply = function (req, res) {
 
 };
 
-// ## editSettings
+// ### editProfile
 /**
  * Renders Edit Profile view
  */
@@ -462,7 +376,7 @@ exports.editProfile = function (req, res){
    }
 };
 
-// ## editSettings
+// ### editSettings
 /**
  * Renders Edit Settings view
  *
@@ -490,7 +404,7 @@ exports.editSettings = function (req, res){
     }
    } 
 };
-// ## changeSettings
+// ### changeSettings
 /**
  * Makes changes to user settings
  */
@@ -519,7 +433,7 @@ exports.changeSettings = function (req, res){
    }
 };
 
-// ## changeProfile
+// ### changeProfile
 /**
  * Makes changes to user profile excluding profile picture
  * 
@@ -597,7 +511,7 @@ exports.changeProfile = function (req, res){
    }
 };
 
-// ## changeProfilePic
+// ### changeProfilePic
 /**
  * Makes changes to profile picture
  * 
@@ -625,3 +539,87 @@ exports.changeProfilePic = function (req, res) {
 		res.redirect('/'+u.username+'/editProfile');
     }
 };
+
+
+//## Functions
+
+// ### *function*: userToHtml
+/*
+* Generate HTML to display user list on follower and following page.
+* HTML includes name, username (hyperlink to user profile), button
+* 
+* @param userlist, array of user objects
+* @param btntext, text on the button displayed
+* @return content, generated HTML
+*/
+function userToHtml(loggedInUser, user, userlist) {
+  var content = '';
+  var len = userlist.length-1;
+  for (var i=len; i >= 0; i--) {
+    var u = users.getUserById(userlist[i]);
+    var btntext;
+    if (u.username === loggedInUser.username) {
+      content += '<b>'+u.name+'</b> <a href="/'+u.username+'/profile">@'+u.username+'</a><br>';
+    } else {
+      if (users.isFollowing(loggedInUser, u)) {
+      btntext = "unfollow";
+      } else {
+        btntext = "follow";
+      }
+      content += '<b>'+u.name+'</b> <a href="/'+u.username+'/profile">@'+u.username+'</a>';
+      content += '<form method="post" id="unfollow" action="/'+user.username+'/'+btntext+'/'+u.username+'">'+
+                  '<input type="submit" name="submit" value="'+btntext+'" />'+
+                  '</form><br>';
+    }
+  }
+  return content;
+}
+
+// ### *function*: tweetsToHtml
+/*
+* Generate HTML to display tweets list which includes
+* name, @username(hyperlink to user profile), tweet message, date, and Detail(link to detailedTweet page)
+*
+* @param tl, array of tweets
+* @return content, converted HTML
+*/
+function tweetsToHtml(tl) {
+  var j = tl.length;
+  var content='';
+  for (var i=0; i < j; i++) {
+    var t = tl[i];
+    var usr = users.getUserById(t.username);
+    var a = t.msg.split(" ");
+    content += '<p><b>'+t.name+'</b> <a href="/'+t.username+'/profile">@'+t.username+'</a><br>'
+              //+t.msg+'<br>'
+              +msgToHtml(t.msg)+'<br>'
+              +t.date+'<br>'
+              +'<a href="/'+t.id+'/detailedTweet">Detail</a></p>';
+  }
+  return content;
+}
+
+// ### *function*: msgToHtml
+/**
+ * Find @username and #hashtag in a tweet message and convert them to a html href link.
+ * In order to be recognized as a @username mention, @ symbol must be the start
+ * of a word. And @username@username is considered invalid and is ignored.
+ * #hashtag starts with # and end before a space. #ford! is considered a hashtag.
+ */
+function msgToHtml(msg) {
+  msg = msg.split(" ");
+  var content = '';
+  var len = msg.length;
+  for (var i=0; i < len; i++) {
+    var word = msg[i];
+    // word starting with @ && cannot have another @
+    if (word.charAt(0) === "@" && word.split("\@").length === 2) {
+      content += ' <a href="/'+word.substring(1)+'/profile">'+word+'</a> ';
+    } else if (word.charAt(0) === "#" && word.split("\#").length === 2) { //#ford! <- !
+      content += ' <a href="/search/'+word.substring(1)+'">'+word+'</a> ';
+    } else {
+      content += word+" ";
+    } 
+  }
+  return content;
+}
