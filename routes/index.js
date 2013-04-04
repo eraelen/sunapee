@@ -113,6 +113,29 @@ exports.following = function(req, res) {
     var followinglist = user.following;
     var content = '';
     if (followinglist.length !== 0) {
+      content += userToHtml(followinglist, "unfollow");
+    }
+    res.render('following', 
+          { title: 'Following',
+            loggedInUser: username,
+            name: user.name,
+            username: username,
+            userList: user.following,
+            content: content
+             } );
+  }
+}
+/*
+exports.following = function(req, res) {
+  var user = req.session.user;
+  if (user === undefined || online[user.uid] === undefined) {
+    res.redirect('/');
+  } else {
+    var user = users.getUserById(req.params.id);
+    var username = user.username
+    var followinglist = user.following;
+    var content = '';
+    if (followinglist.length !== 0) {
       content += userToHtml(followinglist, "Unfollow");
     }
     res.render('following', 
@@ -124,7 +147,19 @@ exports.following = function(req, res) {
              } );
   }
 }
+*/
 
+exports.unfollow = function(req, res){
+  var user = req.session.user;
+  if (user === undefined || online[user.uid] === undefined) {
+     res.redirect('/');
+  } else {
+      var username = user.username;
+      users.unfollow(username, req.params.rmuname);
+      res.redirect('/'+username+'/following');
+  }
+
+}
 /*
 * GET Interaction page
 */
@@ -168,8 +203,11 @@ function userToHtml(userlist, btntext) {
     //console.log("userlist[i]: ",userlist[i]);
     var u = users.getUserById(userlist[i]);
     //console.log("u: ",u);
-    content += '<p><b>'+u.name+'</b> <a href="/'+u.username+'/profile">@'+u.username+'</a><br>';
-    content += '<button onclick="deleteFollower()">'+btntext+'</button></p>';
+    content += '<b>'+u.name+'</b> <a href="/'+u.username+'/profile">@'+u.username+'</a>';
+    //content += '<button onclick="deleteFollower()">'+btntext+'</button></p>';
+    content += '<form method="post" id="unfollow" action="/'+btntext+'/'+u.username+'">'+
+                '<input type="submit" name="submit" value="'+btntext+'" />'+
+                '</form><br>';
   }
   return content;
 }

@@ -117,12 +117,12 @@ a {
 
 #viewFOption  a {
 	text-decoration: none;
-	color: black;
+	color: gray;
 }
 
 #viewFOption  a:hover {
 	text-decoration: underline;
-	color: black;
+	color: gray;
 }
 
 #userListContainer {
