@@ -170,16 +170,16 @@ Variable 'online' is a logged in database.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
 <span class="nx">exports</span><span class="p">.</span><span class="nx">home</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">){</span>
-  <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">user</span><span class="p">;</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nx">user</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="o">||</span> <span class="nx">online</span><span class="p">[</span><span class="nx">user</span><span class="p">.</span><span class="nx">uid</span><span class="p">]</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">loggedInUser</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">user</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">loggedInUser</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="o">||</span> <span class="nx">online</span><span class="p">[</span><span class="nx">loggedInUser</span><span class="p">.</span><span class="nx">uid</span><span class="p">]</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">req</span><span class="p">.</span><span class="nx">flash</span><span class="p">(</span><span class="s1">&#39;userAuth&#39;</span><span class="p">,</span> <span class="s1">&#39;Not logged in!&#39;</span><span class="p">);</span>
     <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span>
   <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">users</span><span class="p">.</span><span class="nx">getUserById</span><span class="p">(</span><span class="nx">loggedInUser</span><span class="p">.</span><span class="nx">username</span><span class="p">);</span>
     <span class="kd">var</span> <span class="nx">username</span> <span class="o">=</span> <span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="p">;</span>
     <span class="k">if</span> <span class="p">(</span><span class="nx">username</span> <span class="o">!==</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">){</span>
       <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;/home&#39;</span><span class="p">);</span>
     <span class="p">}</span><span class="k">else</span> <span class="p">{</span>
-      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">username</span><span class="o">+</span><span class="s2">&quot; &quot;</span><span class="o">+</span><span class="nx">user</span><span class="p">.</span><span class="nx">following</span><span class="p">);</span>
       <span class="kd">var</span> <span class="nx">tl</span> <span class="o">=</span> <span class="nx">tweets</span><span class="p">.</span><span class="nx">getRecentT</span><span class="p">(</span><span class="nx">username</span><span class="p">,</span> <span class="nx">user</span><span class="p">.</span><span class="nx">following</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
       <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;home&#39;</span><span class="p">,</span> 
             <span class="p">{</span> <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Home&#39;</span><span class="p">,</span>
@@ -284,19 +284,20 @@ And redirect to Home page.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
 <span class="nx">exports</span><span class="p">.</span><span class="nx">follower</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">userl</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">user</span><span class="p">;</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nx">userl</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="o">||</span> <span class="nx">online</span><span class="p">[</span><span class="nx">userl</span><span class="p">.</span><span class="nx">uid</span><span class="p">]</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">loggedInUser</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">user</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">loggedInUser</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="o">||</span> <span class="nx">online</span><span class="p">[</span><span class="nx">loggedInUser</span><span class="p">.</span><span class="nx">uid</span><span class="p">]</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span>
   <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nx">loggedInUser</span> <span class="o">=</span> <span class="nx">users</span><span class="p">.</span><span class="nx">getUserById</span><span class="p">(</span><span class="nx">loggedInUser</span><span class="p">.</span><span class="nx">username</span><span class="p">);</span>
     <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">users</span><span class="p">.</span><span class="nx">getUserById</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
     <span class="kd">var</span> <span class="nx">followerList</span> <span class="o">=</span> <span class="nx">user</span><span class="p">.</span><span class="nx">follower</span><span class="p">;</span>
     <span class="kd">var</span> <span class="nx">content</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
     <span class="k">if</span> <span class="p">(</span><span class="nx">followerList</span><span class="p">.</span><span class="nx">length</span> <span class="o">!==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">content</span> <span class="o">+=</span> <span class="nx">userToHtml</span><span class="p">(</span><span class="nx">followerList</span><span class="p">,</span> <span class="s2">&quot;Delete&quot;</span><span class="p">);</span>
+      <span class="nx">content</span> <span class="o">+=</span> <span class="nx">userToHtml</span><span class="p">(</span><span class="nx">loggedInUser</span><span class="p">,</span> <span class="nx">user</span><span class="p">,</span> <span class="nx">followerList</span><span class="p">,</span> <span class="s2">&quot;follower&quot;</span><span class="p">);</span>
     <span class="p">}</span>
     <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;follower&#39;</span><span class="p">,</span> 
           <span class="p">{</span> <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Follower&#39;</span><span class="p">,</span>
-            <span class="nx">loggedInUser</span><span class="o">:</span> <span class="nx">userl</span><span class="p">.</span><span class="nx">username</span><span class="p">,</span>
+                <span class="nx">loggedInUser</span><span class="o">:</span> <span class="nx">loggedInUser</span><span class="p">.</span><span class="nx">username</span><span class="p">,</span>
             <span class="nx">name</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span>
             <span class="nx">username</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="p">,</span>
             <span class="nx">content</span><span class="o">:</span> <span class="nx">content</span>
@@ -327,11 +328,12 @@ And redirect to Home page.</p>
   <span class="k">if</span> <span class="p">(</span><span class="nx">loggedInUser</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="o">||</span> <span class="nx">online</span><span class="p">[</span><span class="nx">loggedInUser</span><span class="p">.</span><span class="nx">uid</span><span class="p">]</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span>
   <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nx">loggedInUser</span> <span class="o">=</span> <span class="nx">users</span><span class="p">.</span><span class="nx">getUserById</span><span class="p">(</span><span class="nx">loggedInUser</span><span class="p">.</span><span class="nx">username</span><span class="p">);</span>
     <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">users</span><span class="p">.</span><span class="nx">getUserById</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
     <span class="kd">var</span> <span class="nx">followinglist</span> <span class="o">=</span> <span class="nx">user</span><span class="p">.</span><span class="nx">following</span><span class="p">;</span>
     <span class="kd">var</span> <span class="nx">content</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
     <span class="k">if</span> <span class="p">(</span><span class="nx">followinglist</span><span class="p">.</span><span class="nx">length</span> <span class="o">!==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">content</span> <span class="o">+=</span> <span class="nx">userToHtml</span><span class="p">(</span><span class="nx">loggedInUser</span><span class="p">,</span> <span class="nx">user</span><span class="p">,</span> <span class="nx">followinglist</span><span class="p">);</span>
+      <span class="nx">content</span> <span class="o">+=</span> <span class="nx">userToHtml</span><span class="p">(</span><span class="nx">loggedInUser</span><span class="p">,</span> <span class="nx">user</span><span class="p">,</span> <span class="nx">followinglist</span><span class="p">,</span> <span class="s2">&quot;following&quot;</span><span class="p">);</span>
     <span class="p">}</span>
     <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;following&#39;</span><span class="p">,</span> 
           <span class="p">{</span> <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Following&#39;</span><span class="p">,</span>
@@ -353,7 +355,7 @@ And redirect to Home page.</p>
   <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
 </div>
 <div class="dox">
-  <div class="summary"><p>POST changed contents of the following/follower page by redirect</p>
+  <div class="summary"><p>POST unfollow contents of the following/follower page by redirect</p>
   </div>
   <div class="body">
   </div>
@@ -366,10 +368,11 @@ And redirect to Home page.</p>
      <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span>
   <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
       <span class="nx">users</span><span class="p">.</span><span class="nx">unfollow</span><span class="p">(</span><span class="nx">loggedInUser</span><span class="p">.</span><span class="nx">username</span><span class="p">,</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">rmuname</span><span class="p">);</span>
-      <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">uname</span><span class="o">+</span><span class="s1">&#39;/following&#39;</span><span class="p">);</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">uname</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">redir</span><span class="p">);</span>
   <span class="p">}</span>
 
 <span class="p">}</span>
+
 
 </pre></div>
         </td>
@@ -378,6 +381,34 @@ And redirect to Home page.</p>
         <td class="docs">
 <div class="pilwrap">
   <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>POST follow contents of the following/follower page by redirect</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">follow</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">loggedInUser</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">user</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">loggedInUser</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="o">||</span> <span class="nx">online</span><span class="p">[</span><span class="nx">loggedInUser</span><span class="p">.</span><span class="nx">uid</span><span class="p">]</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+     <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="nx">users</span><span class="p">.</span><span class="nx">follow</span><span class="p">(</span><span class="nx">loggedInUser</span><span class="p">.</span><span class="nx">username</span><span class="p">,</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">adduname</span><span class="p">);</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">uname</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">redir</span><span class="p">);</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
 </div>
 <div class="dox">
   <div class="summary"><p>GET Interaction page</p>
@@ -440,7 +471,7 @@ And redirect to Home page.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
+  <a class="pilcrow" href="#section-13" id="section-13">&#182;</a>
 </div>
 <p>res.send("Login to view this page.");</p>
         </td>
@@ -573,7 +604,7 @@ The rest of the conversation appears below the box.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
+  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
 </div>
 <p>had to include this because text area did not like &lt;%= origTweet.username %></p>
         </td>
@@ -598,7 +629,7 @@ The rest of the conversation appears below the box.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
+  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
 </div>
 <p>had to include this because text area did not like &lt;%= origTweet.username %></p>
         </td>
@@ -623,7 +654,7 @@ The rest of the conversation appears below the box.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
+  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
 </div>
 <p>users.addUserT(user.username, tweets.tweetdb.length-1);</p>
         </td>
@@ -651,7 +682,7 @@ The rest of the conversation appears below the box.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
+  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
 </div>
 <p>had to include this because text area did not like &lt;%= origTweet.username %></p>
         </td>
@@ -671,7 +702,7 @@ The rest of the conversation appears below the box.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
+  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
 </div>
 <p>users.addUserT(user.username, tweets.tweetdb.length-1);</p>
         </td>
@@ -809,7 +840,7 @@ To get to this page, user can click on Tools icon.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
+  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
 </div>
 <p>res.send("Login to view this page.");</p>
         </td>
@@ -919,7 +950,7 @@ Another late information that I acquired is the required attribute for forms/inp
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
+  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
 </div>
 <p>check if current password is entered</p>
         </td>
@@ -932,7 +963,7 @@ Another late information that I acquired is the required attribute for forms/inp
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
+  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
 </div>
 <p>check if current password entered matches saved password</p>
         </td>
@@ -945,7 +976,7 @@ Another late information that I acquired is the required attribute for forms/inp
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
+  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
 </div>
 <p>check if user wants to change password</p>
         </td>
@@ -958,7 +989,7 @@ Another late information that I acquired is the required attribute for forms/inp
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
+  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
 </div>
 <p>make changes to info</p>
         </td>
@@ -971,7 +1002,7 @@ Another late information that I acquired is the required attribute for forms/inp
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
+  <a class="pilcrow" href="#section-32" id="section-32">&#182;</a>
 </div>
 <p>don't allow empty change</p>
         </td>
@@ -989,7 +1020,7 @@ Another late information that I acquired is the required attribute for forms/inp
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-32" id="section-32">&#182;</a>
+  <a class="pilcrow" href="#section-33" id="section-33">&#182;</a>
 </div>
 <p>don't allow empty change</p>
         </td>
@@ -1007,7 +1038,7 @@ Another late information that I acquired is the required attribute for forms/inp
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-33" id="section-33">&#182;</a>
+  <a class="pilcrow" href="#section-34" id="section-34">&#182;</a>
 </div>
 <p>don't allow empty change</p>
         </td>
@@ -1027,7 +1058,7 @@ Another late information that I acquired is the required attribute for forms/inp
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-34" id="section-34">&#182;</a>
+  <a class="pilcrow" href="#section-35" id="section-35">&#182;</a>
 </div>
 <p>check if np fields are not empty</p>
         </td>
@@ -1040,7 +1071,7 @@ Another late information that I acquired is the required attribute for forms/inp
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-35" id="section-35">&#182;</a>
+  <a class="pilcrow" href="#section-36" id="section-36">&#182;</a>
 </div>
 <p>make changes, np fields not empty</p>
         </td>
@@ -1060,7 +1091,7 @@ Another late information that I acquired is the required attribute for forms/inp
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-36" id="section-36">&#182;</a>
+  <a class="pilcrow" href="#section-37" id="section-37">&#182;</a>
 </div>
 <p>np fields did not match or one of them empty</p>
         </td>
@@ -1076,7 +1107,7 @@ Another late information that I acquired is the required attribute for forms/inp
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-37" id="section-37">&#182;</a>
+  <a class="pilcrow" href="#section-38" id="section-38">&#182;</a>
 </div>
 <p>if current password entered is incorrect, display error msg</p>
         </td>
@@ -1092,7 +1123,7 @@ Another late information that I acquired is the required attribute for forms/inp
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-38" id="section-38">&#182;</a>
+  <a class="pilcrow" href="#section-39" id="section-39">&#182;</a>
 </div>
 <p>if current password is not entered, display error msg</p>
         </td>
@@ -1204,14 +1235,26 @@ HTML includes name, username (hyperlink to user profile), button</p>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-<span class="kd">function</span> <span class="nx">userToHtml</span><span class="p">(</span><span class="nx">loggedInUser</span><span class="p">,</span> <span class="nx">user</span><span class="p">,</span> <span class="nx">userlist</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">function</span> <span class="nx">userToHtml</span><span class="p">(</span><span class="nx">loggedInUser</span><span class="p">,</span> <span class="nx">user</span><span class="p">,</span> <span class="nx">userlist</span><span class="p">,</span> <span class="nx">redir</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">content</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
   <span class="kd">var</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">userlist</span><span class="p">.</span><span class="nx">length</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
   <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="nx">len</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">u</span> <span class="o">=</span> <span class="nx">users</span><span class="p">.</span><span class="nx">getUserById</span><span class="p">(</span><span class="nx">userlist</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
     <span class="kd">var</span> <span class="nx">btntext</span><span class="p">;</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">u</span><span class="p">.</span><span class="nx">username</span> <span class="o">===</span> <span class="nx">loggedInUser</span><span class="p">.</span><span class="nx">username</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">content</span> <span class="o">+=</span> <span class="s1">&#39;&lt;b&gt;&#39;</span><span class="o">+</span><span class="nx">u</span><span class="p">.</span><span class="nx">name</span><span class="o">+</span><span class="s1">&#39;&lt;/b&gt; &lt;a href=&quot;/&#39;</span><span class="o">+</span><span class="nx">u</span><span class="p">.</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;/profile&quot;&gt;@&#39;</span><span class="o">+</span><span class="nx">u</span><span class="p">.</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;&lt;/a&gt;&lt;br&gt;&#39;</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">u</span><span class="p">.</span><span class="nx">username</span> <span class="o">===</span> <span class="nx">loggedInUser</span><span class="p">.</span><span class="nx">username</span><span class="p">)</span> <span class="p">{</span> 
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-43" id="section-43">&#182;</a>
+</div>
+<p>if it's loggedInUser, don't display button</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+      <span class="nx">content</span> <span class="o">+=</span> <span class="s1">&#39;&lt;p&gt;&lt;b&gt;&#39;</span><span class="o">+</span><span class="nx">u</span><span class="p">.</span><span class="nx">name</span><span class="o">+</span><span class="s1">&#39;&lt;/b&gt; &lt;a href=&quot;/&#39;</span><span class="o">+</span><span class="nx">u</span><span class="p">.</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;/profile&quot;&gt;@&#39;</span><span class="o">+</span><span class="nx">u</span><span class="p">.</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;&lt;/a&gt;&lt;/p&gt;&#39;</span><span class="p">;</span>
     <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
       <span class="k">if</span> <span class="p">(</span><span class="nx">users</span><span class="p">.</span><span class="nx">isFollowing</span><span class="p">(</span><span class="nx">loggedInUser</span><span class="p">,</span> <span class="nx">u</span><span class="p">))</span> <span class="p">{</span>
       <span class="nx">btntext</span> <span class="o">=</span> <span class="s2">&quot;unfollow&quot;</span><span class="p">;</span>
@@ -1219,7 +1262,8 @@ HTML includes name, username (hyperlink to user profile), button</p>
         <span class="nx">btntext</span> <span class="o">=</span> <span class="s2">&quot;follow&quot;</span><span class="p">;</span>
       <span class="p">}</span>
       <span class="nx">content</span> <span class="o">+=</span> <span class="s1">&#39;&lt;b&gt;&#39;</span><span class="o">+</span><span class="nx">u</span><span class="p">.</span><span class="nx">name</span><span class="o">+</span><span class="s1">&#39;&lt;/b&gt; &lt;a href=&quot;/&#39;</span><span class="o">+</span><span class="nx">u</span><span class="p">.</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;/profile&quot;&gt;@&#39;</span><span class="o">+</span><span class="nx">u</span><span class="p">.</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;&lt;/a&gt;&#39;</span><span class="p">;</span>
-      <span class="nx">content</span> <span class="o">+=</span> <span class="s1">&#39;&lt;form method=&quot;post&quot; id=&quot;unfollow&quot; action=&quot;/&#39;</span><span class="o">+</span><span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">btntext</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">u</span><span class="p">.</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;&quot;&gt;&#39;</span><span class="o">+</span>
+      <span class="nx">content</span> <span class="o">+=</span> <span class="s1">&#39;&lt;form method=&quot;post&quot; id=&quot;unfollow&quot; action=&quot;/&#39;</span>
+              <span class="o">+</span><span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">btntext</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">u</span><span class="p">.</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">redir</span><span class="o">+</span><span class="s1">&#39;&quot;&gt;&#39;</span><span class="o">+</span>
                   <span class="s1">&#39;&lt;input type=&quot;submit&quot; name=&quot;submit&quot; value=&quot;&#39;</span><span class="o">+</span><span class="nx">btntext</span><span class="o">+</span><span class="s1">&#39;&quot; /&gt;&#39;</span><span class="o">+</span>
                   <span class="s1">&#39;&lt;/form&gt;&lt;br&gt;&#39;</span><span class="p">;</span>
     <span class="p">}</span>
@@ -1277,7 +1321,7 @@ name, @username(hyperlink to user profile), tweet message, date, and Detail(link
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-43" id="section-43">&#182;</a>
+  <a class="pilcrow" href="#section-45" id="section-45">&#182;</a>
 </div>
 <p>+t.msg+'<br>'</p>
         </td>
@@ -1335,7 +1379,7 @@ of a word. And @username@username is considered invalid and is ignored.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-45" id="section-45">&#182;</a>
+  <a class="pilcrow" href="#section-47" id="section-47">&#182;</a>
 </div>
 <p>word starting with @ &amp;&amp; cannot have another @</p>
         </td>
