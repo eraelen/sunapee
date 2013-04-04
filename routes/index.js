@@ -22,16 +22,16 @@ var profileMsg = '';
 *GET home page.
 */
 exports.home = function(req, res){
-  var user = req.session.user;
-  if (user === undefined || online[user.uid] === undefined) {
+  var loggedInUser = req.session.user;
+  if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
     req.flash('userAuth', 'Not logged in!');
     res.redirect('/');
   } else {
+    var user = users.getUserById(loggedInUser.username);
     var username = user.username;
     if (username !== req.params.id){
       res.redirect('/'+username+'/home');
     }else {
-      console.log(username+" "+user.following);
       var tl = tweets.getRecentT(username, user.following, 20);
       res.render('home', 
             { title: 'Home',
@@ -123,6 +123,7 @@ exports.following = function(req, res) {
   if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
     res.redirect('/');
   } else {
+    loggedInUser = users.getUserById(loggedInUser.username);
     var user = users.getUserById(req.params.id);
     var followinglist = user.following;
     var content = '';
