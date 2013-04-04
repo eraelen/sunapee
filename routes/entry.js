@@ -68,7 +68,7 @@ exports.codeCheck = function(req,res){
   });
 }
 
-// ## login
+// ## login, userAuth, Logout
 //GET login.ejs. Based on sessions example from lecture 18 examples by 
 //Timothy Richards. 
 // There is a check to see if the user is already logged in. If they are, the user's
@@ -86,7 +86,6 @@ exports.login = function(req, res){
 };
 
 
-// ## userAuth
 // POST, Performs **basic** user authentication. Based on sessions example 
 //from lecture 18 examples by Timothy Richards. 
 //Redirects if logged-in. If not then the username and password is 
@@ -99,26 +98,20 @@ exports.userAuth = function(req, res) {
   else {
     var username = req.body.username;
     var password = req.body.password;
-    console.log("username:"+username);
-    console.log("password:"+password);
     users.lookup(username, password, function(error, user) {
       if (error) {
         req.flash('userAuth', error);
-        console.log("Flash Error!");
         res.redirect('/');
       }
       else {
-        console.log("No error!");
         req.session.user = user;
         online[user.uid] = user;
-        console.log("userlogged in:"+user.username);
         res.redirect('/'+user.username+'/home');
       }
     });
   }
 };
 
-// ## logout
 // Get login.ejs again. Deletes user info & session - then redirects to login.
 exports.logout = function(req, res) {
   var user = req.session.user;
