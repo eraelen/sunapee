@@ -11,7 +11,7 @@ Here is a list of the files and the main additions we made:
 - entry.js: changed from cookies to sessions
 - index.js: incorperated sessions and route handlers/functions for button/link functionality, such as new tweet
 - views directory: ejs header inserts logged in user for tweetee session, minor changes in content
-- pdf: indicating the possible new features that we would like to add
+- pdf: indicates the possible new features that we would like to add
 
 Some additional notes:
 * Navigation Bar : 
