@@ -228,22 +228,17 @@ exports.help = function (req,res) {
  */
  
 exports.search = function (req,res) {
-   var user = req.session.user;
-   var username = user.username;
-   if (user === undefined || online[user.uid] === undefined) { //if a user is logged in, search works.
-     res.send("Login to view this page."); //Should we make it so that a search can only be conducted when a user is logged in?
-   }else{
-   	 var ht = '#ftw';
-	 var query = "#"+req.params.query;
-	 var results = tweets.searchTweetsByHT(ht);
-	 res.render('search', {title: 'Search Result',
-                loggedInUser: username,
+	var user = req.session.user;
+	if (user === undefined || online[user.uid] === undefined) {
+        res.redirect('/');
+    } else {
+		var query = "#"+req.params.query;
+		console.log(query);
+		var results = tweets.searchTweetsByHT(query);
+		res.render('search', {title: 'Search Result',
+								loggedInUser: user.username,
 								searchPhrase: query,
-								rname : results[0].name,
-								rusername: results[0].username,
-								rmsg: msgToHtml(results[0].msg),
-								rdate: results[0].date,
-								username: user.username});	
+								tweets: results, username: user.username});	
    }
 };
 

@@ -18,22 +18,30 @@
 	
 	<div id="rightContainer">		
 		<div id="searchResults">
-			<h3>Results for <font color="red"><%- searchPhrase %></font> :</h3>
-			<div class="tweetSearchResult">
-				<script>
-					document.write('<p><b> <%- rname %> </b> <a href="/ <%- rusername %> ">@ <%- rusername %> </a><br> <%- rmsg %> <br> <%- rdate %> </p>');
-				</script>
-			</div>
-			<div class="tweetSearchResult">
-				<script>
-					document.write('<p><b> <%- rname %> </b> <a href="/ <%- rusername %> ">@ <%- rusername %> </a><br> <%- rmsg %> <br> <%- rdate %> </p>');
-				</script>
-			</div>
-			<div class="tweetSearchResult">
-				<script>
-					document.write('<p><b> <%- rname %> </b> <a href="/ <%- rusername %> ">@ <%- rusername %> </a><br> <%- rmsg %> <br> <%- rdate %> </p>');
-				</script>
-			</div>
+			<h3>Results for <font color="red"><%= searchPhrase %></font> :</h3>
+			<% if (tweets !== null) { %>
+				<% for (var i=0; i < tweets.length; i++) { %>
+					<div id = "newtweet" >
+						<b><%= tweets[i].name %></b> <a href="/<%= tweets[i].username %>/profile"> @<%= tweets[i].username %></a>
+						<div class="tmsg">
+							<% var msg = tweets[i].msg %><% msg = msg.split(" ") %>
+							<% for (var j=0; j < msg.length; j++) { %>
+								<% if (msg[j].charAt(0) === "@" && msg[j].split("\@").length === 2) { var word = msg[j].substring(1); %>
+									<a href="/<%= word %>/profile"> <%= msg[j] %> </a>
+								<% } else if (msg[j].charAt(0) === "#" && msg[j].split("\#").length === 2) { var word = msg[j].substring(1); %>
+									<a href="/search/<%= word %>"> <%= msg[j] %> </a>
+								<% } else { %>
+									<%= msg[j] %>
+								<% } %>
+							<% } %>
+						</div>
+						<%= tweets[i].date %><br>
+						<a href="/<%= tweets[i].id %>/detailedTweet">Detail</a> <a href="/<%= tweets[i].id %>/simpleReply">Reply</a>
+					</div>
+				<% } %>
+			<% } else { %>
+				<p> No results found. </p>
+			<% } %>
 		</div>
 	</div>
 </div>

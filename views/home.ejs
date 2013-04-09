@@ -1,9 +1,6 @@
 <% include userHeader %>
 <% include navbar %>
 <div class="center">
-	<center>
-		<h1>ATTN: <a href="../326Project3NewFeature_Sunapee.pdf">NEW FEATURE</a> coming up!!!</h1>
-	</center>
 	<div id="leftContainer">
 		<div id="userStats">
 			<table>
@@ -37,13 +34,24 @@
 			<h2>Timeline:</h2>
 			<!-- tweets %>-->
 			<% for (var i=0; i < tweets.length; i++) { %>
-			<p>
-				<b><%= tweets[i].name %></b> <a href="/<%= tweets[i].username %>/profile"> @<%= tweets[i].username %></a><br>
-				<%= tweets[i].msg %><br>
-				<%= tweets[i].date %><br>
-				<a href="/<%= tweets[i].id %>/detailedTweet">Detail</a> <a href="/<%= tweets[i].id %>/simpleReply">Reply</a>
-			</p>
-		<% } %>
+				<div id = "newtweet" >
+					<b><%= tweets[i].name %></b> <a href="/<%= tweets[i].username %>/profile"> @<%= tweets[i].username %></a>
+					<div class="tmsg">
+						<% var msg = tweets[i].msg %><% msg = msg.split(" ") %>
+						<% for (var j=0; j < msg.length; j++) { %>
+							<% if (msg[j].charAt(0) === "@" && msg[j].split("\@").length === 2) { var word = msg[j].substring(1); %>
+								<a href="/<%= word %>/profile"> <%= msg[j] %> </a>
+							<% } else if (msg[j].charAt(0) === "#" && msg[j].split("\#").length === 2) { var word = msg[j].substring(1); %>
+								<a href="/search/<%= word %>"> <%= msg[j] %> </a>
+							<% } else { %>
+								<%= msg[j] %>
+							<% } %>
+						<% } %>
+					</div>
+					<%= tweets[i].date %><br>
+					<a href="/<%= tweets[i].id %>/detailedTweet">Detail</a> <a href="/<%= tweets[i].id %>/simpleReply">Reply</a>
+				</div>
+			<% } %>
 			
 		</div>
 	</div>
