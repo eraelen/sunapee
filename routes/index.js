@@ -12,7 +12,6 @@ var online = entry.online;
 var userdb = users.userdb;
 var mytweets = tweets.tweetdb;
 var conversation = tweets.conversation;
-var settingsMsg = '';
 var profileMsg = '';
 
 // ## User Server-Side Route-Handlers
@@ -68,23 +67,30 @@ exports.profile = function(req, res) {
   var loggedInUserName = "";
   if (req.session.user !== undefined) {
     loggedInUserName = req.session.user.username;
+	loggedinuser = req.session.user;
   }
   var user = users.getUserById(req.params.id);
   if (user !== undefined ) {
-    var username = user.username;
-    console.log(username+" "+user.following);
-    var tl = tweets.getTByUser(username, 20);
-    res.render('profile',
-              {title: 'Profile',
-               loggedInUser: loggedInUserName,
-               name: user.name,
-               username: username,
-               tweetN: users.getTNumberById(username),
-               followerN: user.follower.length,
-               followingN: user.following.length,
-               tweets: tweetsToHtml(tl)
-               }
-      );
+    //check if logged in user is allowed to view this profile
+	var permission = users.checkProfilePermission(loggedinuser, user);
+	if (permission) {	
+		var username = user.username;
+		console.log(username+" "+user.following);
+		var tl = tweets.getTByUser(username, 20);
+		res.render('profile',
+				  {title: 'Profile',
+				   loggedInUser: loggedInUserName,
+				   name: user.name,
+				   username: username,
+				   tweetN: users.getTNumberById(username),
+				   followerN: user.follower.length,
+				   followingN: user.following.length,
+				   tweets: tweetsToHtml(tl)
+				   }
+		  );
+	} else {
+		res.render('error', {title: 'Error', msg: "You are not allowed to view this profile."});
+	}
   } else {
     res.render('error',
                {title: 'Error',
@@ -330,44 +336,6 @@ exports.displaySimpleReply = function (req, res) {
 	res.redirect('/'+tweetId+'/simpleReply');
 }
 
-// ### detailedTweetFakeReply
-/**
- * This version shows how the display looks like with a fake reply post to the original tweet.
- * It allows the user to send a tweet reply but reply is stored in static position in the conversation,
- * i.e. the last position.
- *
- */
-exports.detailedTweetFakeReply = function (req, res) {	
-	var tweetId = 2;
-	var tweetconvo = tweets.getTweetConvoByTweetID(tweetId);
-	var content = '';
-	
-	var username = tweetconvo[0].username;
-	var name = users.get_user(username).name;
-	var ot = '<p><b>' + name + '</b> <a href="/' + username + '/profile">@' + username
-			+ '</a><br>' + msgToHtml(tweetconvo[0].msg) + '<br>' 
-			+ tweetconvo[0].date + '</p>';
-	
-	for (var i=1; i < tweetconvo.length; i++) {
-		username = tweetconvo[i].username;
-		name = users.get_user(username).name;
-		content += '<p><b>' + name + '</b> <a href="/' + username + '/profile">@' + username
-			+ '</a><br>' + msgToHtml(tweetconvo[i].msg) + '<br>' 
-			+ tweetconvo[i].date + '</p>';
-	}
-	
-	content += '<p><b>Hazel Rozetta</b><a href="/">@hazel</a><br>' + req.body.replyTweet + '<br>'+ tweetconvo[0].date +'</p>';
-	
-	res.render('detailedTweet',{title: 'Detailed Tweet Fake Reply', 
-            loggedInUser:"", //will change this later
-						convo: content, 
-						profilePic: userdb[0].profilePic,
-						name: users.get_user(tweetconvo[0].username).name,
-						origTweet: ot,
-						username: tweetconvo[0].username});
-
-};
-
 // ### editProfile
 /**
  * Renders Edit Profile view
@@ -400,52 +368,40 @@ exports.editProfile = function (req, res){
  * To get to this page, user can click on Tools icon.
  */
 exports.editSettings = function (req, res){
-   var user = req.session.user;
-   if (user === undefined || online[user.uid] === undefined) {
-     res.redirect('/');
-   } else {
-    var username = user.username;
-    if(username !== req.params.id){
-      res.redirect('/'+username+'/editSettings');
-    } else {
-      res.render('editSettings', {title: 'Edit Settings', 
-      loggedInUser: username,
-      msg: settingsMsg, 
-      pv: user.profVis, 
-      fp: user.folPerm, 
-      mp: user.mentionPerm, 
-      pm: user.pmPerm,
-      username: user.username});
-    }
-   } 
+	var user = req.session.user;
+	var username = user.username;
+	var settingsMsg = req.flash('changeSettings') || '';
+	if (user === undefined || online[user.uid] === undefined) {
+		res.redirect('/');
+	} else {
+		if(username !== req.params.id){
+			res.redirect('/'+username+'/editSettings');
+		} else {
+			res.render('editSettings', {title: 'Edit Settings', 
+			loggedInUser: username,
+			msg: settingsMsg, 
+			pv: users.userdb[user.uid].profVis, 
+			mp: users.userdb[user.uid].mentionPerm, 
+			pm: users.userdb[user.uid].pmPerm,
+			username: username});
+		}
+	} 
 };
+
 // ### changeSettings
 /**
  * Makes changes to user settings
  */
 exports.changeSettings = function (req, res){
-   var user = req.session.user;
-   var username = user.username;
-   if (user === undefined || online[user.uid] === undefined) {
-     res.send("Login to view this page.");
-   }else if(username !== req.params.id){
-	  res.redirect('/'+username+'/editSettings'); 
-   }else {
-     if (req.body.profVis != undefined) {
-			user.profVis = req.body.profVis;
-		}
-		if (req.body.folPerm != undefined) {
-			user.folPerm = req.body.folPerm;
-		}
-		if (req.body.mentionPerm != undefined) {
-			user.mentionPerm = req.body.mentionPerm;
-		}
-		if (req.body.pmPerm != undefined) {
-			user.pmPerm = req.body.pmPerm;
-		}
-		settingsMsg = 'Changes saved.';
+	var user = req.session.user;
+	var username = user.username;
+	if (user === undefined || online[user.uid] === undefined) {
+		res.redirect('/');
+	} else {
+		users.changeUserSettings(username, req.body.profVis, req.body.mentionPerm, req.body.pmPerm);		
+		req.flash('changeSettings', 'Changes saved.');
 		res.redirect('/'+username+'/editSettings');
-   }
+	}
 };
 
 // ### changeProfile

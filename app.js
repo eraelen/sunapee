@@ -65,7 +65,6 @@ app.get('/:tweetId/detailedTweet', routes.detailedTweet);
 app.post('/:tweetId/detailedTweetReply', routes.detailedTweetReply);
 app.get('/:tweetId/simpleReply', routes.simpleReply);
 app.post('/:tweetId/displaySimpleReply', routes.detailedTweetReply);
-app.post('/detailedTweetFakeReply', routes.detailedTweetFakeReply);
 
 //###3. Edit Content Routes
 app.get('/:id/editProfile', routes.editProfile);

@@ -7,30 +7,24 @@
 		<font color="red"><%- msg %></font>
 	</p>
 	<div id="formSettings">
-		<form method="post" id="editSettings" action="/<%= username %>/changeSettings">
+		<form method="post" id="editSettings" action="/<%= loggedInUser %>/changeSettings">
 			<b>Profile Visibility:</b> <font color="gray"> <%- pv %> </font> <br>
 			<p>
 				<input type="radio" name="profVis" value="Public" /> Public <br>
 				<input type="radio" name="profVis" value="Followers Only" /> Followers Only <br>
 				<input type="radio" name="profVis" value="Only Me" /> Only Me <br>
 			</p>
-			<b>Follower Permission:</b> <font color="gray"> <%- fp %> </font> <br>
-			<p>
-			<input type="radio" name="folPerm" value="Public" /> Public <br>
-			<input type="radio" name="folPerm" value="Followers Only" /> Followers Only <br>
-			<input type="radio" name="folPerm" value="Only Me" /> Only Me <br>
-			</p>
 			<b>Mention Permission:</b> <font color="gray"> <%- mp %> </font> <br>
 			<p>
-			<input type="radio" name="mentionPerm" value="Public" /> Public <br>
-			<input type="radio" name="mentionPerm" value="Followers Only" /> Followers Only <br>
-			<input type="radio" name="mentionPerm" value="Only Me" /> Only Me <br>
+				<input type="radio" name="mentionPerm" value="Public" /> Public <br>
+				<input type="radio" name="mentionPerm" value="Followers Only" /> Followers Only <br>
+				<input type="radio" name="mentionPerm" value="Only Me" /> Only Me <br>
 			</p>
 			<b>Private Messaging Permission:</b> <font color="gray"> <%- pm %> </font> <br>
 			<p>
-			<input type="radio" name="pmPerm" value="Public" /> Public <br>
-			<input type="radio" name="pmPerm" value="Followers Only" /> Followers Only <br>
-			<input type="radio" name="pmPerm" value="None" /> None <br>
+				<input type="radio" name="pmPerm" value="Public" /> Public <br>
+				<input type="radio" name="pmPerm" value="Followers Only" /> Followers Only <br>
+				<input type="radio" name="pmPerm" value="None" /> None <br>
 			</p>
 			<input type="submit" name="submit" value="Submit" /> <br>
 		</form>
@@ -38,7 +32,7 @@
 	<br>
 	
 	<p>
-		<a href="/<%- username %>/editProfile">Edit Profile</a>
+		<a href="/<%- loggedInUser %>/editProfile">Edit Profile</a>
 	</p>
 </div>
 <% include footer %>
