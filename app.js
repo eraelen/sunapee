@@ -57,6 +57,7 @@ app.post('/:uname/unfollow/:rmuname/:redir', routes.unfollow);
 app.post('/:id/newtweet', routes.newtweet);
 
 //###2. Search, Help, Tweet Routes
+app.post('/newtweet', routes.newtweet);
 app.post('/:id/newtweet', routes.newtweet);
 app.get('/help',routes.help);
 app.get('/search/:query', routes.search);
