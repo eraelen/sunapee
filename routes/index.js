@@ -308,7 +308,6 @@ exports.detailedTweet = function (req, res) {
 	} else {
 		var tweetId = req.params.tweetId;
 		var tweetconvo = tweets.getTweetConvoByTweetID(tweetId);
-		//check in EJS, not here
 		if (tweetconvo === null) {
 			res.render('detailedTweet',{title: 'Detailed Tweet', 
 						loggedInUser: user.username, 
