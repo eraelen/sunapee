@@ -52,13 +52,13 @@
 					<a href="/<%= tweets[i].id %>/detailedTweet">Detail</a> <a href="/<%= tweets[i].id %>/simpleReply">Reply</a>
 				</div>
 			<% } %>
-			
 		</div>
+		
+		<div id="output"></div>
 	</div>
 </div>
 
 <script type="text/javascript">
-	console.log("went into script");
 	var postNewTweet = function (tweetMsg) {
 		$.ajax({
 			type: 'POST',
@@ -71,14 +71,14 @@
 
 	$('#compose').bind('click',
     function (event) {
-      // Get the pair
-      var data = $('textarea').val();  
-      postNewTweet(data);
+		// Get tweet message
+		var data = $('textarea').val();  
+		postNewTweet(data);
 	  
-      // Reset input field:
-      $('textarea').val('Whats on your mind?');
-
-      return false;
+		// Reset input field:
+		$('textarea').val('Whats on your mind?');
+	  
+		return false;
     });
 </script>
 

@@ -53,19 +53,15 @@ exports.home = function(req, res){
 * And redirect to Home page.
 */
 exports.newtweet = function(req, res) {
-  var user = req.session.user;
-  var username = user.username;
-  tweets.addTweet(user.name, username, req.body.message, null, null);
-  res.redirect('/'+username+'/home');
+	//var message = "";
+	var user = req.session.user;
+	var username = user.username;
+	tweets.addTweet(user.name, username, req.body.message, null, null);
+	//res.contentType('application/json');
+    //message = req.body.message;
+	//res.send(message);
+  //res.redirect('/'+username+'/home');
 }
-
-exports.newtweet2 = function(req, res) {
-  var user = req.session.user;
-  var username = user.username;
-  //tweets.addTweet(user.name, username, req.body.message, null, null);
-  res.redirect('/'+username+'/home');
-}
-
 
 // ### profile
 /*

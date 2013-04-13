@@ -47,6 +47,7 @@ app.post('/forgotloginProcess', entry.forgotloginProcess);
 //##User Related Routes
 
 //###1. Main Routes
+//app.post('/:id/home', routes.home);
 app.get('/:id/home', routes.home);
 app.get('/:id/interaction', routes.interaction);
 app.get('/:id/profile', routes.profile);
