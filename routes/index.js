@@ -328,6 +328,11 @@ exports.detailedTweet = function (req, res) {
 	}
 }
 
+// ### Detailed Tweet REPLY Page
+/**
+*  In our system, we have two kinds of replies that we track. One is replying from the detailed page and the other is replying from the "Reply" link from the tweet itself.
+*  This route handles replies from the detailed page. The reply is composed from the compose tweet box. It is a direct reply to the original tweet of the current conversation displayed and not to the last tweet of the conversation. 
+*/
 exports.detailedTweetReply = function (req, res) {
 	var user = req.session.user;
 	if (user === undefined || online[user.uid] === undefined) {
@@ -340,6 +345,12 @@ exports.detailedTweetReply = function (req, res) {
 	}
 }
 
+// ### Simple Reply Page View
+/**
+*  In our system, we have two kinds of replies that we track. One is replying from the detailed page and the other is replying from the "Reply" link from the tweet itself.
+*  This renders the detailed tweet page view with the tweet that the user wants to reply to appears. 
+*  Can be improved: Create a div for compose box once the "Reply" link is clicked.
+*/
 exports.simpleReply = function (req, res) {
 	var user = req.session.user;
 	if (user === undefined || online[user.uid] === undefined) {
@@ -357,6 +368,11 @@ exports.simpleReply = function (req, res) {
 	}
 }
 
+// ### Simple Reply Page Handler
+/**
+*  In our system, we have two kinds of replies that we track. One is replying from the detailed page and the other is replying from the "Reply" link from the tweet itself.
+*  This route handles replies from clicking on the "Reply" link attached to each tweet. 
+*/
 exports.displaySimpleReply = function (req, res) {
 	var user = req.session.user;
 	var tweetId = req.params.tweetId;	
@@ -364,9 +380,8 @@ exports.displaySimpleReply = function (req, res) {
 	res.redirect('/'+tweetId+'/simpleReply');
 }
 
-// ### Edit Settings Page
+// ### Edit Settings Page View
 /**
- * Renders Edit Settings view
  *
  * This page also has the link for Edit Profile.
  * To get to this page, user can click on Tools icon.
@@ -408,7 +423,7 @@ exports.changeSettings = function (req, res){
 	}
 };
 
-// ### Edit Profile Page
+// ### Edit Profile Page View
 /**
  * Allows users to edit name, username, email, location, website, profile picture and password.
  * User's name, username and email cannot be empty.
@@ -432,7 +447,12 @@ exports.editProfile = function (req, res){
 					profilePic: users.userdb[user.uid-1].profilePic});
    }
 };
-
+//  ### Change Profile Page
+/**
+*  Route for actually changing the profile page.
+*  For changes to be valid and take effect, users must input the correct current password. If users want to change the password, the new password entered must be entered twice and those passwords must match.
+*  Users will be informed whether the changes are saved or not.
+*/
 exports.changeProfile = function (req, res) {
 	var user = req.session.user;
 	var username = user.username;
