@@ -440,8 +440,9 @@ exports.changeProfile = function (req, res) {
 	if (user === undefined || online[user.uid] === undefined) {
 		res.redirect('/');
 	} else {
-		var validChange = users.changeUserProfile(username, req.body.name, req.body.username, req.body.email, req.body.location, req.body.website, req.body.newpass, req.body.confirmnewpass, req.body.currentpass);		
-		if (validChange) {
+		var validChange = users.changeUserProfile(username, req.body.name, req.body.username, req.body.email, req.body.location, req.body.website, req.body.newpass, req.body.confirmnewpass, req.body.currentpass, req, user);		
+		if (validChange.b) {
+			username = validChange.user.username;
 			req.flash('changeProfile', 'Changes saved.');
 			res.redirect('/'+username+'/editProfile');
 		} else {
