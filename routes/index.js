@@ -205,9 +205,9 @@ exports.interaction = function(req, res) {
    }
 }
 
-// ### help
+// ### Help
 /**
- * Renders Help Page
+ * Renders help page.
  */
 exports.help = function (req,res) {
 	var user = req.session.user;
@@ -248,12 +248,49 @@ exports.search = function (req,res) {
    }
 };
 
-// ### searchBox
+// ### Search Tweets Result Page
+/**
+ * Searches through tweets (message only).
+ */ 
+exports.searchT = function (req,res) {
+	var user = req.session.user;
+	if (user === undefined || online[user.uid] === undefined) {
+        res.redirect('/');
+    } else {
+		var query = req.params.query;
+		var results = tweets.searchTweets(query);
+		res.render('searchT', {title: 'Search Result',
+								loggedInUser: user.username,
+								searchPhrase: query,
+								tweets: results, username: user.username});	
+   }
+};
+
+// ### Search People Result Page
+/**
+ * Searches through users (name and username only).
+ */
+exports.searchP = function (req, res) {
+	var user = req.session.user;
+	if (user === undefined || online[user.uid] === undefined) {
+		res.redirect('/');
+	} else {
+		var query = req.params.query;
+		var results = users.searchPeople(query);
+		res.render('searchP', {title: 'Search Result',
+								loggedInUser: user.username,
+								searchPhrase: query,
+								users: results, username: user.username});
+	}
+};
+
+// ### Search Box from Navigation Bar
 /**
  * Supports searching using the search box. Simply passes query string from search box to search.
+ * Default for result in search box is searching tweets.
  */
 exports.searchBox = function (req,res) {
-	res.redirect('/search/'+req.body.query);
+	res.redirect('/searchT/'+req.body.query);
 };
 
 // ### detailedTweet

@@ -42,7 +42,7 @@
 							<% if (msg[j].charAt(0) === "@" && msg[j].split("\@").length === 2) { var word = msg[j].substring(1); %>
 								<a href="/<%= word %>/profile"> <%= msg[j] %> </a>
 							<% } else if (msg[j].charAt(0) === "#" && msg[j].split("\#").length === 2) { var word = msg[j].substring(1); %>
-								<a href="/searchT/<%= word %>"> <%= msg[j] %> </a>
+								<a href="/search/<%= word %>"> <%= msg[j] %> </a>
 							<% } else { %>
 								<%= msg[j] %>
 							<% } %>

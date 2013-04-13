@@ -60,6 +60,8 @@ app.post('/:id/newtweet', routes.newtweet);
 app.post('/:id/newtweet', routes.newtweet);
 app.get('/help',routes.help);
 app.get('/search/:query', routes.search);
+app.get('/searchT/:query', routes.searchT);
+app.get('/searchP/:query', routes.searchP);
 app.post('/searchBox',routes.searchBox);
 app.get('/:tweetId/detailedTweet', routes.detailedTweet);
 app.post('/:tweetId/detailedTweetReply', routes.detailedTweetReply);

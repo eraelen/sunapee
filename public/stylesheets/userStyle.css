@@ -146,6 +146,27 @@ li.question {
 	padding: 5px;
 }
 
+.tweet {
+	border-bottom: 1px dotted gray;
+	padding: 5px;
+}
+
+/* CSS for search result for user */
+.user {
+	border-bottom: 1px dotted gray;
+	padding: 5px;
+}
+
+#searchResultCategory  a {
+	text-decoration: none;
+	color: gray;
+}
+
+#searchResultCategory  a:hover {
+	text-decoration: underline;
+	color: gray;
+}
+
 /* CSS for tweet msg */
 .tmsg {
 	padding-top: 5px;

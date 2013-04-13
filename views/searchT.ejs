@@ -5,10 +5,8 @@
 		<div id="searchResultCategory">
 			<p>
 				<b>Tweets</b><br>
-				<font color="gray">------------------------------</font><br>
-				<b>Hashtags</b><br>
-				<font color="gray">------------------------------</font><br>
-				<b>People</b><br>
+				<font color="#45c7b1">--------------</font><br>
+				<a href="/searchP/<%= searchPhrase %>">People</a><br>
 			</p>
 		</div>	
 		<div id="trendHashtags">
@@ -29,7 +27,7 @@
 								<% if (msg[j].charAt(0) === "@" && msg[j].split("\@").length === 2) { var word = msg[j].substring(1); %>
 									<a href="/<%= word %>/profile"> <%= msg[j] %> </a>
 								<% } else if (msg[j].charAt(0) === "#" && msg[j].split("\#").length === 2) { var word = msg[j].substring(1); %>
-									<a href="/search/<%= word %>"> <%= msg[j] %> </a>
+									<a href="/searchT/<%= word %>"> <%= msg[j] %> </a>
 								<% } else { %>
 									<%= msg[j] %>
 								<% } %>
