@@ -57,13 +57,13 @@
 	</div>
 </div>
 
-<script>
+<script type="text/javascript">
 	console.log("went into script");
 	var postNewTweet = function (tweetMsg) {
 		$.ajax({
 			type: 'POST',
 			url: '/newtweet',
-			data: tweetMsg
+			data: 'message=' + tweetMsg
 			}).done(function(msg) {
 				console.log('Data Sent: ' + msg);
 			});
