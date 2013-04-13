@@ -505,6 +505,10 @@ exports.changeProfilePic = function (req, res) {
     }
 };
 
+exports.chat = function (req, res){
+	var user = req.session.user
+	res.render('chat', { title: 'Express', loggedInUser: user.username, username:user.username, online: online })
+}
 
 //## Functions
 

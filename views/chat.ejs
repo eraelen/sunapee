@@ -1,0 +1,21 @@
+<% include userHeader %>
+<% include navbar %>
+<div class = "center">
+    <div id="leftContainer">
+     <h1>Chatbox</h1>
+     <div id="chat-app">
+		<textarea id="chat-text-area" rows="5" cols="50"></textarea>
+		<br>
+		<input id="chat-post-button" type="submit" value="Post">
+		<ul id="message-list"></div>
+	</div>
+	<div id="rightContainer">
+	    <h2>Online Users</h2>
+	    <ul>
+	    <% for(var i = 1; i <= online.length; i++){ %>
+          <li> <%= online[i].username %> </li>
+	    <% } %>
+	    </ul>
+	</div>
+</div>
+<% include footer %>

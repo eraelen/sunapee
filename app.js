@@ -78,6 +78,17 @@ app.post('/:id/changeProfile', routes.changeProfile);
 app.post('/:id/changeProfilePic', routes.changeProfilePic);
 
 
-http.createServer(app).listen(app.get('port'), function(){
+
+app.get('/chat', routes.chat);
+
+var server = http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
+});
+
+// WebSockets/Socket.IO
+var io      = require('socket.io', {'log level': 0}).listen(server);
+var chatApp = require('./chat');
+
+io.sockets.on('connection', function (socket) {
+  chatApp.init(socket);
 });
