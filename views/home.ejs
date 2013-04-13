@@ -60,6 +60,7 @@
 <script type="text/javascript">
 	console.log("went into script");
 	var postNewTweet = function (tweetMsg) {
+		console.log('tweetMsg: ' + tweetMsg);
 		$.ajax({
 			type: 'POST',
 			url: '/newtweet',
@@ -73,6 +74,7 @@
     function (event) {
       // Get the pair
       var data = $('textarea').val();  
+      console.log('Data: ' + data);
       postNewTweet(data);
 	  
       // Reset input field:
