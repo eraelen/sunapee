@@ -293,15 +293,12 @@ exports.searchBox = function (req,res) {
 	res.redirect('/searchT/'+req.body.query);
 };
 
-// ### detailedTweet
-/**
- * Renders Detailed Tweet Page
- * 
+// ### Detailed Tweet Page
+/** 
  * Renders detailed conversation. A conversation is a thread of tweets through replies.
  * The page displays the first "original" tweet in the conversation and the user information of who posted that tweet.
  * There is a default text box that allows users to reply to the "original" tweet.
  * The rest of the conversation appears below the box.
- *
  */
 exports.detailedTweet = function (req, res) {
 	var user = req.session.user;
@@ -311,6 +308,7 @@ exports.detailedTweet = function (req, res) {
 	} else {
 		var tweetId = req.params.tweetId;
 		var tweetconvo = tweets.getTweetConvoByTweetID(tweetId);
+		//check in EJS, not here
 		if (tweetconvo === null) {
 			res.render('detailedTweet',{title: 'Detailed Tweet', 
 						loggedInUser: user.username, 
@@ -320,12 +318,6 @@ exports.detailedTweet = function (req, res) {
 						//had to include this because text area did not like <%= origTweet.username %>
 						username: tweets.tweetdb[tweetId].username});
 		} else {
-			for (var i=0; i<tweets.conversation.length; i++) {
-			}
-			for (var j=0; j<tweets.tweetdb.length; j++) {
-				console.log("tweet reply for " + j + " " + tweets.tweetdb[j].reply);
-				console.log("tweet convo for " + j + " " + tweets.tweetdb[j].convo);
-			}
 			res.render('detailedTweet',{title: 'Detailed Tweet', 
 						loggedInUser: user.username, 
 						convo: tweetconvo, 
@@ -373,31 +365,7 @@ exports.displaySimpleReply = function (req, res) {
 	res.redirect('/'+tweetId+'/simpleReply');
 }
 
-// ### editProfile
-/**
- * Renders Edit Profile view
- */
-exports.editProfile = function (req, res){
-   var user = req.session.user;
-   var username = user.username;
-   if (user === undefined || online[user.uid] === undefined) {
-     res.send("Login to view this page.");
-   }else if(username !== req.params.id){
-     res.redirect('/'+username+'/editProfile');
-   }else {
-	 res.render('editProfile', { title: 'Edit Profile',
-      loggedInUser: username,
-			msg: profileMsg,
-			name: user.name,
-			username: username,
-			email: user.email,
-			location: user.location,
-			website: user.website,
-			profilePic: user.profilePic});
-   }
-};
-
-// ### editSettings
+// ### Edit Settings Page
 /**
  * Renders Edit Settings view
  *
@@ -417,17 +385,17 @@ exports.editSettings = function (req, res){
 			res.render('editSettings', {title: 'Edit Settings', 
 			loggedInUser: username,
 			msg: settingsMsg, 
-			pv: users.userdb[user.uid].profVis, 
-			mp: users.userdb[user.uid].mentionPerm, 
-			pm: users.userdb[user.uid].pmPerm,
+			pv: users.userdb[user.uid-1].profVis, 
+			mp: users.userdb[user.uid-1].mentionPerm, 
+			pm: users.userdb[user.uid-1].pmPerm,
 			username: username});
 		}
 	} 
 };
 
-// ### changeSettings
+// ### Change Settings
 /**
- * Makes changes to user settings
+ * Makes changes to user settings.
  */
 exports.changeSettings = function (req, res){
 	var user = req.session.user;
@@ -441,83 +409,47 @@ exports.changeSettings = function (req, res){
 	}
 };
 
-// ### changeProfile
+// ### Edit Profile Page
 /**
- * Makes changes to user profile excluding profile picture
- * 
- * This version has not been cleaned after conversation with Tim on what goes to /routes.
- * Most of the comparisons here will go to tweets.js.
- * Another late information that I acquired is the required attribute for forms/input.
+ * Allows users to edit name, username, email, location, website, profile picture and password.
+ * User's name, username and email cannot be empty.
+ * User must always enter current password to allow changes.
  */
-exports.changeProfile = function (req, res){
-   var flag = false;
-    
-   var user = req.session.user;
-   var username = user.username;
-   if (user === undefined || online[user.uid] === undefined) {
-     res.send("Login to view this page.");
-   }else if(username !== req.params.id){
-	 res.redirect('/'+username+'/editProfile'); //Change to another default if desired
-   }else {
-     //check if current password is entered
-		if (req.body.currentpass !== '') {
-			//check if current password entered matches saved password
-			if (req.body.currentpass === user.password) {
-				//check if user wants to change password
-				if (req.body.newpass === req.body.newpassconfirm) {
-						//make changes to info
-						if (req.body.name == "") {
-							//don't allow empty change
-							flag = true;
-							res.redirect('/'+user.username+'/editProfile');
-						} else {
-							user.name = req.body.name;
-						}
-						if (req.body.username == "") {
-							//don't allow empty change
-							flag = true;
-							res.redirect('/'+user.username+'/editProfile');
-						} else {
-							user.username = req.body.username;
-						}
-						if (req.body.email == "") {
-							//don't allow empty change
-							flag = true;
-							res.redirect('/'+user.username+'/editProfile');
-						} else {
-							user.email = req.body.email;
-						}
-						user.location = req.body.location;
-						user.website = req.body.website;
-						
-						//check if np fields are not empty
-						if ((req.body.newpass !== '') && (req.body.newpassconfirm !== '')) {
-							//make changes, np fields not empty
-							user.password = req.body.newpass;
-						};
-						if (flag) {
-							profileMsg = 'Cannot allow name, username, email to be empty.';
-						} else {
-							profileMsg = 'Changes saved.';
-						}
-						res.redirect('/'+username+'/editProfile');
-				//np fields did not match or one of them empty
-				} else {
-					profileMsg = 'Incorrect new password confirmation. No changes made. Please try again.';
-					res.redirect('/'+username+'/editProfile');
-				}
-			//if current password entered is incorrect, display error msg
-			} else {
-				profileMsg = 'Current password entered is incorrect. No changes made. Please try again.';
-				res.redirect('/'+username+'/editProfile');
-			}
-		//if current password is not entered, display error msg
-		} else {
-			profileMsg = 'Must enter current password to make changes. No changes made. Please try again.';
-			res.redirect('/'+username+'/editProfile');
-		}
+exports.editProfile = function (req, res){
+	var user = req.session.user;
+	var username = user.username;
+	var profileMsg = req.flash('changeProfile') || '';
+	if (user === undefined || online[user.uid] === undefined) {
+		res.redirect('/');
+	} else {
+		res.render('editProfile', { title: 'Edit Profile',
+					loggedInUser: username,
+					msg: profileMsg,
+					name: users.userdb[user.uid-1].name,
+					username: users.userdb[user.uid-1].username,
+					email: users.userdb[user.uid-1].email,
+					location: users.userdb[user.uid-1].location,
+					website: users.userdb[user.uid-1].website,
+					profilePic: users.userdb[user.uid-1].profilePic});
    }
 };
+
+exports.changeProfile = function (req, res) {
+	var user = req.session.user;
+	var username = user.username;
+	if (user === undefined || online[user.uid] === undefined) {
+		res.redirect('/');
+	} else {
+		var validChange = users.changeUserProfile(username, req.body.name, req.body.username, req.body.email, req.body.location, req.body.website, req.body.newpass, req.body.confirmnewpass, req.body.currentpass);		
+		if (validChange) {
+			req.flash('changeProfile', 'Changes saved.');
+			res.redirect('/'+username+'/editProfile');
+		} else {
+			req.flash('changeProfile', 'Changes not saved. Please try again.');
+			res.redirect('/'+username+'/editProfile');
+		}
+	}
+}
 
 // ### changeProfilePic
 /**
