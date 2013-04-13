@@ -119,9 +119,14 @@ exports.follower = function(req, res) {
             	  loggedInUser: loggedInUser.username,
     			  name: user.name,
     			  username: user.username,
-    			  content: content
+    			  followers: user.follower,
+				  content: content
     			   } );
   }
+}
+
+exports.deleteFollower = function(req, res) {
+	users.deleteFollower(loggedinuser, user);
 }
 
 // ### following

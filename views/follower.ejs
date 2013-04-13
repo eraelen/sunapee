@@ -17,8 +17,18 @@
 	
 	<div id="rightContainer">		
 		<div id="userListContainer">
-			<h2>Followers:</h2>
-			<%- content %>
+			<h2><%= name %>'s Followers:</h2>
+			<!-- followers is followers list coming from index.js -->
+			<ul>
+			<% for (var i=0; i < followers.length; i++) { %>
+				<% var bid = followers[i]; %>
+				<script>
+					bid
+					var myButton = $('<button/>', {id: bid, text: 'Delete'});
+					$(myButton).appendTo('#userListContainer');
+				</script>
+			<% } %>
+			</ul>
 		</div>
 	</div>
 
