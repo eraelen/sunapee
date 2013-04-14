@@ -32,26 +32,28 @@
 		
 		<div id="tweetListContainer">
 			<h2>Timeline:</h2>
-			<!-- tweets %>-->
-			<% for (var i=0; i < tweets.length; i++) { %>
-				<div id = "newtweet" >
-					<b><%= tweets[i].name %></b> <a href="/<%= tweets[i].username %>/profile"> @<%= tweets[i].username %></a>
-					<div class="tmsg">
-						<% var msg = tweets[i].msg %><% msg = msg.split(" ") %>
-						<% for (var j=0; j < msg.length; j++) { %>
-							<% if (msg[j].charAt(0) === "@" && msg[j].split("\@").length === 2) { var word = msg[j].substring(1); %>
-								<a href="/<%= word %>/profile"> <%= msg[j] %> </a>
-							<% } else if (msg[j].charAt(0) === "#" && msg[j].split("\#").length === 2) { var word = msg[j].substring(1); %>
-								<a href="/searchT/<%= word %>"> <%= msg[j] %> </a>
-							<% } else { %>
-								<%= msg[j] %>
+			<div id-"tweetList">
+				<!-- tweets %>-->
+				<% for (var i=0; i < tweets.length; i++) { %>
+					<div id = "newtweet" >
+						<b><%= tweets[i].name %></b> <a href="/<%= tweets[i].username %>/profile"> @<%= tweets[i].username %></a>
+						<div class="tmsg">
+							<% var msg = tweets[i].msg %><% msg = msg.split(" ") %>
+							<% for (var j=0; j < msg.length; j++) { %>
+								<% if (msg[j].charAt(0) === "@" && msg[j].split("\@").length === 2) { var word = msg[j].substring(1); %>
+									<a href="/<%= word %>/profile"> <%= msg[j] %> </a>
+								<% } else if (msg[j].charAt(0) === "#" && msg[j].split("\#").length === 2) { var word = msg[j].substring(1); %>
+									<a href="/searchT/<%= word %>"> <%= msg[j] %> </a>
+								<% } else { %>
+									<%= msg[j] %>
+								<% } %>
 							<% } %>
-						<% } %>
+						</div>
+						<%= tweets[i].date %><br>
+						<a href="/<%= tweets[i].id %>/detailedTweet">Detail</a> <a href="/<%= tweets[i].id %>/simpleReply">Reply</a>
 					</div>
-					<%= tweets[i].date %><br>
-					<a href="/<%= tweets[i].id %>/detailedTweet">Detail</a> <a href="/<%= tweets[i].id %>/simpleReply">Reply</a>
-				</div>
-			<% } %>
+				<% } %>
+			</div>
 		</div>
 		
 		<div id="output"></div>
@@ -64,22 +66,22 @@
 			type: 'POST',
 			url: '/newtweet',
 			data: 'message=' + tweetMsg
+			success: function(tweetMsg) {
+
+				$('#tweetList').prepend();
+
+
+			}
 			}).done(function(msg) {
-				console.log('Data Sent: ' + msg);
+				alert("done");
 			});
 	};
 
 	$('#compose').bind('click',
     function (event) {
-<<<<<<< HEAD
 		// Get tweet message
 		var data = $('textarea').val();  
 		postNewTweet(data);
-=======
-      // Get the pair
-      var data = $('textarea').val();  
-      postNewTweet(data);
->>>>>>> 08c0fa0a7a4a38d1e01534a4c01dc663073bcf7d
 	  
 		// Reset input field:
 		$('textarea').val('Whats on your mind?');
