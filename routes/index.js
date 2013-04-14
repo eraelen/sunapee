@@ -53,14 +53,14 @@ exports.home = function(req, res){
 * And redirect to Home page.
 */
 exports.newtweet = function(req, res) {
-	//var message = "";
 	var user = req.session.user;
 	var username = user.username;
 	tweets.addTweet(user.name, username, req.body.message, null, null);
-	//res.contentType('application/json');
-    //message = req.body.message;
-	//res.send(message);
-  //res.redirect('/'+username+'/home');
+	
+	//returns tweet that will be displayed in home.ejs
+	res.contentType('application/json');
+    message = req.body.message;
+	res.send(message);
 }
 
 // ### profile

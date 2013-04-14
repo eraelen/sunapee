@@ -66,6 +66,12 @@
 			type: 'POST',
 			url: '/newtweet',
 			data: 'message=' + tweetMsg
+			success: function(tweetMsg) {
+
+				$('#tweetList').prepend();
+
+
+			}
 			}).done(function(msg) {
 				alert("done");
 			});
@@ -80,10 +86,6 @@
 		// Reset input field:
 		$('textarea').val('Whats on your mind?');
 	  
-		//display tweet here
-		var tweet = message;
-		$('#output').html('tweet');
-		
 		return false;
     });
 </script>
