@@ -24,7 +24,26 @@
 			</table>
 		</div>
 		<div id="tweetListContainer">
-			<%- tweets %>
+			<!-- tweets %>-->
+			<% for (var i=0; i < tweets.length; i++) { %>
+				<div id = "newtweet" >
+					<b><%= tweets[i].name %></b> <a href="/<%= tweets[i].username %>/profile"> @<%= tweets[i].username %></a>
+					<div class="tmsg">
+						<% var msg = tweets[i].msg %><% msg = msg.split(" ") %>
+						<% for (var j=0; j < msg.length; j++) { %>
+							<% if (msg[j].charAt(0) === "@" && msg[j].split("\@").length === 2) { var word = msg[j].substring(1); %>
+								<a href="/<%= word %>/profile"> <%= msg[j] %> </a>
+							<% } else if (msg[j].charAt(0) === "#" && msg[j].split("\#").length === 2) { var word = msg[j].substring(1); %>
+								<a href="/searchT/<%= word %>"> <%= msg[j] %> </a>
+							<% } else { %>
+								<%= msg[j] %>
+							<% } %>
+						<% } %>
+					</div>
+					<%= tweets[i].date %><br>
+					<a href="/<%= tweets[i].id %>/detailedTweet">Detail</a> <a href="/<%= tweets[i].id %>/simpleReply">Reply</a>
+				</div>
+			<% } %>
 		</div>
 	</div
 </div>

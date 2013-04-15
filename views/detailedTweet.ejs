@@ -12,8 +12,18 @@
 	
 	<p>
 		<b><%= origTweet.name %></b> <a href="/<%= origTweet.username %>/profile"> @<%= origTweet.username %></a><br>
-		<%= origTweet.msg %><br>
-		<%= origTweet.date %>
+		<% var msg = origTweet.msg %><% msg = msg.split(" ") %>
+		<% for (var j=0; j < msg.length; j++) { %>
+			<% if (msg[j].charAt(0) === "@" && msg[j].split("\@").length === 2) { var word = msg[j].substring(1); %>
+				<a href="/<%= word %>/profile"> <%= msg[j] %> </a>
+			<% } else if (msg[j].charAt(0) === "#" && msg[j].split("\#").length === 2) { var word = msg[j].substring(1); %>
+				<a href="/searchT/<%= word %>"> <%= msg[j] %> </a>
+			<% } else { %>
+				<%= msg[j] %>
+			<% } %>
+		<% } %>
+		<br>
+		<%= origTweet.date %><br>
 	</p>
 	
 	<div id="composeTweetBox">
@@ -26,13 +36,24 @@
 	
 	<div id="tweetListContainer">
 		<% for (var i=1; i < convo.length; i++) { %>
-			<p>
-				<b><%= convo[i].name %></b> <a href="/<%= convo[i].username %>/profile"> @<%= convo[i].username %></a><br>
-				<%= convo[i].msg %><br>
+			<div id = "newtweet" >
+				<b><%= convo[i].name %></b> <a href="/<%= convo[i].username %>/profile"> @<%= convo[i].username %></a>
+				<div class="tmsg">
+					<% var msg = convo[i].msg %><% msg = msg.split(" ") %>
+					<% for (var j=0; j < msg.length; j++) { %>
+						<% if (msg[j].charAt(0) === "@" && msg[j].split("\@").length === 2) { var word = msg[j].substring(1); %>
+							<a href="/<%= word %>/profile"> <%= msg[j] %> </a>
+						<% } else if (msg[j].charAt(0) === "#" && msg[j].split("\#").length === 2) { var word = msg[j].substring(1); %>
+							<a href="/searchT/<%= word %>"> <%= msg[j] %> </a>
+						<% } else { %>
+							<%= msg[j] %>
+						<% } %>
+					<% } %>
+				</div>
 				<%= convo[i].date %><br>
 				<a href="/<%= convo[i].id %>/detailedTweet">Detail</a> <a href="/<%= convo[i].id %>/simpleReply">Reply</a>
-			</p>
-		<% } %>		
+			</div>
+		<% } %>
 	</div>
 </div>
 

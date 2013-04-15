@@ -85,9 +85,7 @@ exports.profile = function(req, res) {
 				   tweetN: users.getTNumberById(username),
 				   followerN: user.follower.length,
 				   followingN: user.following.length,
-				   tweets: tweetsToHtml(tl)
-				   }
-		  );
+				   tweets: tl });
 	} else {
 		res.render('error', {title: 'Error', msg: "You are not allowed to view this profile."});
 	}
@@ -295,7 +293,10 @@ exports.searchP = function (req, res) {
  * Default for result in search box is searching tweets.
  */
 exports.searchBox = function (req,res) {
-	res.redirect('/searchT/'+req.body.query);
+	var query = req.body.query;
+	//performs additional check - found that # as first character for url causes issues
+	if (query.charAt(0) === "#") {query = query.substring(1,query.length);}
+	res.redirect('/searchT/'+query);
 };
 
 // ### Detailed Tweet Page
