@@ -59,10 +59,10 @@ app.post('/deleteFollower', routes.deleteFollower);
 app.post('/unfollow', routes.unfollow);
 app.post('/:uname/follow/:adduname/:redir', routes.follow);
 //app.post('/:uname/unfollow/:rmuname/:redir', routes.unfollow);
-app.post('/:id/newtweet', routes.newtweet);
 
 //###3. Search, Help, Tweet Routes
 app.post('/newtweet', routes.newtweet);
+app.post('/:id/newtweet', routes.newtweet);
 app.get('/help',routes.help);
 app.get('/search/:query', routes.search);
 app.get('/searchT/:query', routes.searchT);
