@@ -47,7 +47,9 @@ app.post('/forgotloginProcess', entry.forgotloginProcess);
 //##User Related Routes
 
 //###1. Main Routes
+//app.post('/:id/home', routes.home);
 app.get('/:id/home', routes.home);
+app.post('/:id/home', routes.home);
 app.get('/:id/interaction', routes.interaction);
 app.get('/:id/profile', routes.profile);
 app.get('/:id/follower', routes.follower);
@@ -57,7 +59,8 @@ app.post('/:uname/unfollow/:rmuname/:redir', routes.unfollow);
 app.post('/:id/newtweet', routes.newtweet);
 
 //###2. Search, Help, Tweet Routes
-app.post('/:id/newtweet', routes.newtweet);
+app.post('/newtweet', routes.newtweet);
+//app.get('/:id/newtweet', routes.newtweet);
 app.get('/help',routes.help);
 app.get('/search/:query', routes.search);
 app.get('/searchT/:query', routes.searchT);

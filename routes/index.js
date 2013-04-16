@@ -53,10 +53,16 @@ exports.home = function(req, res){
 * And redirect to Home page.
 */
 exports.newtweet = function(req, res) {
-  var user = req.session.user;
-  var username = user.username;
-  tweets.addTweet(user.name, username, req.body.message, null, null);
-  res.redirect('/'+username+'/home');
+	var user = req.session.user;
+	var username = user.username;
+	console.log("body ", req.body.msg);
+	var ntweet = tweets.addTweet(user.name, username, req.body.msg, null, null);
+	console.log(ntweet.date);
+	console.log("tweet added to db");
+	//returns tweet that will be displayed in home.ejs
+	//res.contentType('application/json');
+    //message = req.body.message;
+	res.send([ntweet]);
 }
 
 // ### profile

@@ -23,7 +23,7 @@
 	
 	<div id="rightContainer">
 		<div id="composeTweetBox">
-			<form method="post" id="compose" action="/<%= username %>/newtweet">
+			<form method="post" id="compose">
 				<textarea name="message" cols="50" rows="4">What's on your mind?</textarea>
 				<br>
 				<input type="submit" id="newtweetSubmit" name="submit" value="Tweet!" />
@@ -60,51 +60,36 @@
 	</div>
 </div>
 
-<<<<<<< HEAD
-=======
-<script type="text/javascript"> 
-	//var tohtml : "/javascript/tohtml.js";
-	console.log("in script");
+<script type="text/javascript" src="/javascripts/tohtml.js"></script>
+
+<script type="text/javascript">
 	var postNewTweet = function (tweetMsg) {
-		console.log("calling ajax");
 		$.ajax({
 			type: 'POST',
 			url: '/newtweet',
-			data: 'msg=' + tweetMsg,
-			success: function(tl) {
-				//console.log("success: tweet "+tl[1].username);
-				console.log(tl[0].date);
-				$('#tweetList').prepend(tweetsToHtml(tl));
-				$('#output').append(tl[0].date);
+			data: 'message=' + tweetMsg
+			success: function(tweetMsg) {
+
+				$('#tweetList').prepend();
+
+
 			}
 			}).done(function(msg) {
-				console.log("ejs msg ",msg);
+				alert("done");
 			});
-		console.log("finish ajax");
 	};
-	
-	console.log("bind");
 
-	$('#newtweetSubmit').bind('click',
+	$('#compose').bind('click',
     function (event) {
-    	//var tohtml = require('/javascripts/tohtml.js');//////////????
 		// Get tweet message
 		var data = $('textarea').val();  
-		console.log("text ",data);
 		postNewTweet(data);
-	  	//$('#tweetList').prepend(msgToHtml(data));
-		// Reset input field:
-		$('textarea').val("What\'s on your mind?");
 	  
-		//display tweet here
-		//var tweet = message;
-		
-		//$('#output').html('tweet');
-		
+		// Reset input field:
+		$('textarea').val('Whats on your mind?');
+	  
 		return false;
     });
-    console.log("first script done");
 </script>
 
->>>>>>> origin/p4-mesing-about
 <% include footer %>
