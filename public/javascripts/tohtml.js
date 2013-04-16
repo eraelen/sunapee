@@ -77,11 +77,12 @@ function tweetsToHtml(tl) {
     console.log("t.username "+t.username);
     //var usr = getUserById(t.username);
     var a = t.msg.split(" ");
-    content += '<p><b>'+t.name+'</b> <a href="/'+t.username+'/profile">@'+t.username+'</a><br>'
-              +msgToHtml(t.msg)+'<br>'
-              +t.date+'<br>'
+    content += '<div id = "newtweet" ><b>'+t.name+'</b> <a href="/'+t.username+'/profile"> @'+t.username+'</a>'
+              +'<div class="tmsg">'+msgToHtml(t.msg)+'</div>'
+              +new Date(t.date)+'<br>'
               +'<a href="/'+t.id+'/detailedTweet">Detail</a> '
-              +'<a href="/'+t.id+'/simpleReply">Reply</a></p>';
+              +'<a href="/'+t.id+'/simpleReply">Reply</a></p>'
+			  +'</div>';
   }
   return content;
 }
