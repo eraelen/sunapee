@@ -1,3 +1,28 @@
+//var script = '/lib/users/users.js';
+////var script = '/javascripts/test.js';
+////$.ajax({
+////        url: script,
+////        dataType: "script",
+////        async: false,           // <-- this is the key
+////        success: function () {
+////            // all good...
+////        },
+////        error: function () {
+////            throw new Error("Could not load script " + script);
+////        }
+////    });
+//$.ajax({
+            ////type: "GET",
+            //url: script,
+            ////success: callback,
+            //dataType: "script",
+            //cache: true
+//            
+    //}).done(function(data){
+//
+              //console.log("load success");
+    //});
+
 //## Functions
 
 // ### *function*: userToHtml
@@ -9,16 +34,18 @@
 * @param btntext, text on the button displayed
 * @return content, generated HTML
 */
+
+console.log("in js");
 function userToHtml(loggedInUser, user, userlist, redir) {
   var content = '';
   var len = userlist.length-1;
   for (var i=len; i >= 0; i--) {
-    var u = users.getUserById(userlist[i]);
+    var u = getUserById(userlist[i]);
     var btntext;
     if (u.username === loggedInUser.username) { 
       content += '<p><b>'+u.name+'</b> <a href="/'+u.username+'/profile">@'+u.username+'</a></p>';
     } else {
-      if (users.isFollowing(loggedInUser, u)) {
+      if (isFollowing(loggedInUser, u)) {
       btntext = "unfollow";
       } else {
         btntext = "follow";
@@ -46,12 +73,15 @@ function tweetsToHtml(tl) {
   var content='';
   for (var i=0; i < j; i++) {
     var t = tl[i];
-    var usr = users.getUserById(t.username);
+    console.log("t "+t);
+    console.log("t.username "+t.username);
+    //var usr = getUserById(t.username);
     var a = t.msg.split(" ");
     content += '<p><b>'+t.name+'</b> <a href="/'+t.username+'/profile">@'+t.username+'</a><br>'
               +msgToHtml(t.msg)+'<br>'
               +t.date+'<br>'
-              +'<a href="/'+t.id+'/detailedTweet">Detail</a></p>';
+              +'<a href="/'+t.id+'/detailedTweet">Detail</a> '
+              +'<a href="/'+t.id+'/simpleReply">Reply</a></p>';
   }
   return content;
 }
@@ -80,3 +110,5 @@ function msgToHtml(msg) {
   }
   return content;
 }
+
+console.log("finish js");
