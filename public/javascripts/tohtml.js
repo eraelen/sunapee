@@ -70,6 +70,7 @@ function userToHtml(loggedInUser, user, userlist, redir) {
 */
 function tweetsToHtml(tl) {
   var j = tl.length;
+  console.log("tl is... " + tl.length);
   var content='';
   for (var i=0; i < j; i++) {
     var t = tl[i];
@@ -84,6 +85,26 @@ function tweetsToHtml(tl) {
               +'<a href="/'+t.id+'/simpleReply">Reply</a></p>'
 			  +'</div>';
   }
+  return content;
+}
+
+// ### *function*: tweetToHtml
+/*
+* Generate HTML to display tweet which includes
+* name, @username(hyperlink to user profile), tweet message, date, and Detail(link to detailedTweet page)
+*
+* @param t, tweet object
+* @return content, converted HTML
+*/
+function tweetToHtml(t) {
+	var content='';
+	var a = t.msg.split(" ");
+	content += '<div id = "newtweet" ><b>'+t.name+'</b> <a href="/'+t.username+'/profile"> @'+t.username+'</a>'
+		  +'<div class="tmsg">'+msgToHtml(t.msg)+'</div>'
+		  +new Date(t.date)+'<br>'
+		  +'<a href="/'+t.id+'/detailedTweet">Detail</a> '
+		  +'<a href="/'+t.id+'/simpleReply">Reply</a></p>'
+		  +'</div>';
   return content;
 }
 
@@ -104,7 +125,7 @@ function msgToHtml(msg) {
     if (word.charAt(0) === "@" && word.split("\@").length === 2) {
       content += ' <a href="/'+word.substring(1)+'/profile">'+word+'</a> ';
     } else if (word.charAt(0) === "#" && word.split("\#").length === 2) {
-      content += ' <a href="/search/'+word.substring(1)+'">'+word+'</a> ';
+      content += ' <a href="/searchT/'+word.substring(1)+'">'+word+'</a> ';
     } else {
       content += word+" ";
     } 

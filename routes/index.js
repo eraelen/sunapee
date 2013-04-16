@@ -62,7 +62,7 @@ exports.newtweet = function(req, res) {
 	//returns tweet that will be displayed in home.ejs
 	//res.contentType('application/json');
     //message = req.body.message;
-	res.send([ntweet]);
+	res.json([ntweet,users.getTNumberById(username)]);
 }
 
 // ### profile

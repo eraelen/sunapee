@@ -10,7 +10,7 @@
 					<!--<th><img src="/images/defaultProfilePic.jpg" width="100" height="30" /></th>-->
 				</tr>
 				<tr>
-					<th><a href="/<%= username %>/profile">Tweets: <%= tweetN %></a></th>
+					<th><a href="/<%= username %>/profile" id="tweetCount">Tweets: <%= tweetN %></a></th>
 					<th><a href="follower">Follower: <%= followerN %></a></th>
 					<th><a href="following">Following: <%= followingN %></a></th>
 				</tr>
@@ -55,13 +55,9 @@
 				<% } %>
 			</div>
 		</div>
-		
-		<div id="output"></div>
 	</div>
 </div>
 
-<<<<<<< HEAD
-=======
 <script type="text/javascript"> 
 	//var tohtml : "/javascript/tohtml.js";
 	console.log("in script");
@@ -71,11 +67,9 @@
 			type: 'POST',
 			url: '/newtweet',
 			data: 'msg=' + tweetMsg,
-			success: function(tl) {
-				//console.log("success: tweet "+tl[1].username);
-				console.log(tl[0].date);
-				$('#tweetList').prepend(tweetsToHtml(tl));
-				$('#output').append(tl[0].date);
+			success: function(par) {
+				$('#tweetCount').text("Tweets: "+par[1]);
+				$('#tweetList').prepend(tweetToHtml(par[0]));
 			}
 			}).done(function(msg) {
 				console.log("ejs msg ",msg);
@@ -87,24 +81,16 @@
 
 	$('#newtweetSubmit').bind('click',
     function (event) {
-    	//var tohtml = require('/javascripts/tohtml.js');//////////????
 		// Get tweet message
 		var data = $('textarea').val();  
-		console.log("text ",data);
 		postNewTweet(data);
-	  	//$('#tweetList').prepend(msgToHtml(data));
+
 		// Reset input field:
 		$('textarea').val("What\'s on your mind?");
-	  
-		//display tweet here
-		//var tweet = message;
-		
-		//$('#output').html('tweet');
 		
 		return false;
     });
     console.log("first script done");
 </script>
 
->>>>>>> origin/p4-mesing-about
 <% include footer %>
