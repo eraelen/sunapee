@@ -147,34 +147,29 @@ exports.following = function(req, res) {
 	} else {
 		loggedInUser = users.getUserById(loggedInUser.username);
 		var user = users.getUserById(req.params.id);
-		var followinglist = user.following;
-		var content = '';
-		if (followinglist.length !== 0) {
-			content += userToHtml(loggedInUser, user, followinglist, "following");
-		}
+		var followingList = users.getFollowingList(user.username);
 		res.render('following', 
-			{ title: 'Following',
-				loggedInUser: loggedInUser.username,
-				name: user.name,
-				username: user.username,
-				content: content
-				} );
+    			{ title: 'Following',
+            	  loggedInUser: loggedInUser.username,
+    			  name: user.name,
+    			  username: user.username,
+    			  following: followingList} );
   }
 }
 
-// ### unfollow
+// ### Unfollow
 /* 
-* POST unfollow contents of the following/follower page by redirect
+* Unfollowing users implemented using AJAX
 */
 exports.unfollow = function(req, res){
-  var loggedInUser = req.session.user;
-  if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
-     res.redirect('/');
-  } else {
-      users.unfollow(loggedInUser.username, req.params.rmuname);
-      res.redirect('/'+req.params.uname+'/'+req.params.redir);
-  }
-
+	var loggedInUser = req.session.user;
+	if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
+		res.redirect('/');
+	} else {
+		var userUnfollow = req.body.userUnfollow;
+		users.unfollow(loggedInUser.username, userUnfollow);
+		res.send(userUnfollow);
+	}
 }
 
 // ### follow

@@ -54,10 +54,11 @@ app.get('/:id/profile', routes.profile);
 
 //###2. Follower and Following Routes
 app.get('/:id/follower', routes.follower);
-app.post('/deleteFollower', routes.deleteFollower);
-app.post('/:uname/follow/:adduname/:redir', routes.follow);
 app.get('/:id/following', routes.following);
-app.post('/:uname/unfollow/:rmuname/:redir', routes.unfollow);
+app.post('/deleteFollower', routes.deleteFollower);
+app.post('/unfollow', routes.unfollow);
+app.post('/:uname/follow/:adduname/:redir', routes.follow);
+//app.post('/:uname/unfollow/:rmuname/:redir', routes.unfollow);
 app.post('/:id/newtweet', routes.newtweet);
 
 //###3. Search, Help, Tweet Routes

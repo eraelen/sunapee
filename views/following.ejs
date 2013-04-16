@@ -7,7 +7,7 @@
 			<p>
 				<a href="follower"><font color="gray"><b>Follower</b></font></a><br>
 				<font color="gray">------------------------------</font><br>
-				<a href="following"><font color="black"><b>Following</b></font></a><br>
+				<font color="black"><b>Following</b></font><br>
 			</p>
 		</div>	
 		<div id="trendHashtags">
@@ -17,12 +17,38 @@
 	
 	<div id="rightContainer">		
 		<div id="userListContainer">
-			<h2>Following:</h2>
-			<%-content%>
-			
+			<h2><%= name %> is Following:</h2>
+			<ul>
+				<% for (var i=0; i < following.length; i++) { %>
+					<li id="<%= following[i].username %>"><%= following[i].name %> <a href = "/<%= following[i].username %>/profile">@<%= following[i].username %></a> <button class="unfollow" id="<%= following[i].username %>"> Unfollow </button></li>
+				<% } %>
+			</ul>
 		</div>
 	</div>
 
 </div>
+
+<script>
+	var unfollow = function (username) {
+		$.ajax({
+			type: 'POST',
+			url: '/unfollow',
+			data: 'userUnfollow=' + username,
+			success: function(bid) {
+				$("#"+bid).remove();
+			}
+			}).done(function(msg) {
+				console.log("error ",msg);
+			});
+	};
+
+	$('.unfollow').bind('click',
+    function (event) {
+		var bid = $(this).attr("id");
+		unfollow(bid);	
+		
+		return false;
+    });
+</script>
 
 <% include footer %>
