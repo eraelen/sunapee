@@ -61,16 +61,14 @@
 </div>
 
 <script type="text/javascript"> 
-	//var tohtml : "/javascript/tohtml.js";
 	console.log("in script");
 	var postNewTweet = function (tweetMsg) {
 		console.log("calling ajax");
 		$.ajax({
 			type: 'POST',
 			url: '/newtweet',
-			data: 'msg=' + tweetMsg,
+			data: {msg: tweetMsg},
 			success: function(tl) {
-				//console.log("success: tweet "+tl[1].username);
 				console.log(tl[0].date);
 				$('#tweetList').prepend(tweetsToHtml(tl));
 				$('#output').append(tl[0].date);
@@ -78,30 +76,17 @@
 			}).done(function(msg) {
 				console.log("ejs msg ",msg);
 			});
-		console.log("finish ajax");
 	};
 	
-	console.log("bind");
-
 	$('#newtweetSubmit').bind('click',
     function (event) {
-    	//var tohtml = require('/javascripts/tohtml.js');//////////????
-		// Get tweet message
 		var data = $('textarea').val();  
 		console.log("text ",data);
 		postNewTweet(data);
-	  	//$('#tweetList').prepend(msgToHtml(data));
 		// Reset input field:
 		$('textarea').val("What\'s on your mind?");
-	  
-		//display tweet here
-		//var tweet = message;
-		
-		//$('#output').html('tweet');
-		
 		return false;
     });
-    console.log("first script done");
 </script>
 
 <% include footer %>

@@ -55,12 +55,12 @@ exports.home = function(req, res){
 exports.newtweet = function(req, res) {
 	var user = req.session.user;
 	var username = user.username;
-	console.log("body ", req.body.msg);
-	var ntweet = tweets.addTweet(user.name, username, req.body.msg, null, null);
+	console.log("body ", JSON.stringify(req.body.msg));
+	var ntweet = tweets.addTweet(user.name, username, JSON.stringify(req.body.msg), null, null);
 	console.log(ntweet.date);
 	console.log("tweet added to db");
 	//returns tweet that will be displayed in home.ejs
-	//res.contentType('application/json');
+	res.contentType('application/json');
     //message = req.body.message;
 	res.send([ntweet]);
 }

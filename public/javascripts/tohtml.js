@@ -81,8 +81,8 @@ function tweetsToHtml(tl) {
               +'<div class="tmsg">'+msgToHtml(t.msg)+'</div>'
               +new Date(t.date)+'<br>'
               +'<a href="/'+t.id+'/detailedTweet">Detail</a> '
-              +'<a href="/'+t.id+'/simpleReply">Reply</a></p>'
-			  +'</div>';
+              +'<a href="/'+t.id+'/simpleReply">Reply</a>'
+			        +'</div>';
   }
   return content;
 }
