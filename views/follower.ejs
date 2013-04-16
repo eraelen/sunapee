@@ -20,18 +20,36 @@
 			<h2><%= name %>'s Followers:</h2>
 			<!-- followers is followers list coming from index.js -->
 			<ul>
-			<% for (var i=0; i < followers.length; i++) { %>
-				<% var bid = followers[i]; %>
-				<script>
-					bid
-					var myButton = $('<button/>', {id: bid, text: 'Delete'});
-					$(myButton).appendTo('#userListContainer');
-				</script>
-			<% } %>
+				<% for (var i=0; i < followers.length; i++) { %>
+					<li id="<%= followers[i].username %>"><%= followers[i].name %> <a href = "/<%= followers[i].username %>/profile">@<%= followers[i].username %></a> <button class="delFollower" id="<%= followers[i].username %>"> Delete </button></li>
+				<% } %>
 			</ul>
 		</div>
 	</div>
 
 </div>
+
+<script>
+	var delFollower = function (username) {
+		$.ajax({
+			type: 'POST',
+			url: '/deleteFollower',
+			data: 'usertbd=' + username,
+			success: function(bid) {
+				$("#"+bid).remove();
+			}
+			}).done(function(msg) {
+				console.log("error ",msg);
+			});
+	};
+
+	$('.delFollower').bind('click',
+    function (event) {
+		var bid = $(this).attr("id");
+		delFollower(bid);	
+		
+		return false;
+    });
+</script>
 
 <% include footer %>

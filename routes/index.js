@@ -107,30 +107,33 @@ exports.profile = function(req, res) {
 * GET follower page.
 */
 exports.follower = function(req, res) {
-  var loggedInUser = req.session.user;
-  if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
-    res.redirect('/');
-  } else {
-  	loggedInUser = users.getUserById(loggedInUser.username);
-    var user = users.getUserById(req.params.id);
-    var followerList = user.follower;
-    var content = '';
-    if (followerList.length !== 0) {
-      content += userToHtml(loggedInUser, user, followerList, "follower");
-    }
-  	res.render('follower', 
+	var loggedInUser = req.session.user;
+	if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
+		res.redirect('/');
+	} else {
+		loggedInUser = users.getUserById(loggedInUser.username);
+		var user = users.getUserById(req.params.id);
+		var followerList = users.getFollowerList(user.username);
+		res.render('follower', 
     			{ title: 'Follower',
             	  loggedInUser: loggedInUser.username,
     			  name: user.name,
     			  username: user.username,
-    			  followers: user.follower,
-				  content: content
-    			   } );
+    			  followers: followerList} );
   }
 }
 
+//  ### Delete Follower
+/*
+*	In our implementation, users can delete followers.
+*	Deleting followers use AJAX. 
+*   The user to be deleted is passed to this route and that same user is passed back to the script to delete the user from the list displayed.
+*/
 exports.deleteFollower = function(req, res) {
-	users.deleteFollower(loggedinuser, user);
+	var loggedInUser = req.session.user;
+	var user = req.body.usertbd;
+	users.deleteFollower(loggedInUser, user);
+	res.send(user);
 }
 
 // ### following
@@ -138,24 +141,24 @@ exports.deleteFollower = function(req, res) {
 * GET following page
 */
 exports.following = function(req, res) {
-  var loggedInUser = req.session.user;
-  if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
-    res.redirect('/');
-  } else {
-    loggedInUser = users.getUserById(loggedInUser.username);
-    var user = users.getUserById(req.params.id);
-    var followinglist = user.following;
-    var content = '';
-    if (followinglist.length !== 0) {
-      content += userToHtml(loggedInUser, user, followinglist, "following");
-    }
-    res.render('following', 
-          { title: 'Following',
-            loggedInUser: loggedInUser.username,
-            name: user.name,
-            username: user.username,
-            content: content
-             } );
+	var loggedInUser = req.session.user;
+	if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
+		res.redirect('/');
+	} else {
+		loggedInUser = users.getUserById(loggedInUser.username);
+		var user = users.getUserById(req.params.id);
+		var followinglist = user.following;
+		var content = '';
+		if (followinglist.length !== 0) {
+			content += userToHtml(loggedInUser, user, followinglist, "following");
+		}
+		res.render('following', 
+			{ title: 'Following',
+				loggedInUser: loggedInUser.username,
+				name: user.name,
+				username: user.username,
+				content: content
+				} );
   }
 }
 

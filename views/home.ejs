@@ -59,10 +59,7 @@
 </div>
 
 <script type="text/javascript"> 
-	//var tohtml : "/javascript/tohtml.js";
-	console.log("in script");
 	var postNewTweet = function (tweetMsg) {
-		console.log("calling ajax");
 		$.ajax({
 			type: 'POST',
 			url: '/newtweet',
@@ -74,10 +71,7 @@
 			}).done(function(msg) {
 				console.log("ejs msg ",msg);
 			});
-		console.log("finish ajax");
 	};
-	
-	console.log("bind");
 
 	$('#newtweetSubmit').bind('click',
     function (event) {

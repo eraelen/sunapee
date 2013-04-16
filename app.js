@@ -47,20 +47,21 @@ app.post('/forgotloginProcess', entry.forgotloginProcess);
 //##User Related Routes
 
 //###1. Main Routes
-//app.post('/:id/home', routes.home);
 app.get('/:id/home', routes.home);
 app.post('/:id/home', routes.home);
 app.get('/:id/interaction', routes.interaction);
 app.get('/:id/profile', routes.profile);
+
+//###2. Follower and Following Routes
 app.get('/:id/follower', routes.follower);
+app.post('/deleteFollower', routes.deleteFollower);
 app.post('/:uname/follow/:adduname/:redir', routes.follow);
 app.get('/:id/following', routes.following);
 app.post('/:uname/unfollow/:rmuname/:redir', routes.unfollow);
 app.post('/:id/newtweet', routes.newtweet);
 
-//###2. Search, Help, Tweet Routes
+//###3. Search, Help, Tweet Routes
 app.post('/newtweet', routes.newtweet);
-//app.get('/:id/newtweet', routes.newtweet);
 app.get('/help',routes.help);
 app.get('/search/:query', routes.search);
 app.get('/searchT/:query', routes.searchT);
@@ -71,9 +72,7 @@ app.post('/:tweetId/detailedTweetReply', routes.detailedTweetReply);
 app.get('/:tweetId/simpleReply', routes.simpleReply);
 app.post('/:tweetId/displaySimpleReply', routes.detailedTweetReply);
 
-app.post('/fakepage', routes.help);
-
-//###3. Edit Content Routes
+//###4. Edit Content Routes
 app.get('/:id/editProfile', routes.editProfile);
 app.get('/:id/editSettings', routes.editSettings);
 app.post('/:id/changeSettings', routes.changeSettings);
