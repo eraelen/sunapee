@@ -24,7 +24,7 @@
 	<div id="rightContainer">
 		<div id="composeTweetBox">
 			<form method="post" id="compose">
-				<textarea name="message" cols="50" rows="4">Whats on your mind?</textarea>
+				<textarea name="message" cols="50" rows="4">What's on your mind?</textarea>
 				<br>
 				<input type="submit" id="newtweetSubmit" name="submit" value="Tweet!" />
 			</form>
@@ -74,6 +74,7 @@
 				//console.log("success: tweet "+tl[1].username);
 				console.log(tl[0].date);
 				$('#tweetList').prepend(tweetsToHtml(tl));
+				$('#output').append(tl[0].date);
 			}
 			}).done(function(msg) {
 				console.log("ejs msg ",msg);
@@ -92,7 +93,7 @@
 		postNewTweet(data);
 	  	//$('#tweetList').prepend(msgToHtml(data));
 		// Reset input field:
-		$('textarea').val('Whats on your mind?');
+		$('textarea').val("What\'s on your mind?");
 	  
 		//display tweet here
 		//var tweet = message;
