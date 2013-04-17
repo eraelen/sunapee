@@ -8,6 +8,7 @@ var users = require('../lib/users');
 var tweets = require('../lib/tweets');
 var entry = require('../routes/entry');
 var online = entry.online;
+var chat = require('../chat/index');
 
 var userdb = users.userdb;
 var mytweets = tweets.tweetdb;
@@ -512,7 +513,11 @@ exports.changeProfilePic = function (req, res) {
 
 exports.chat = function (req, res){
 	var user = req.session.user
-	res.render('chat', { title: 'Chat', loggedInUser: user.username, username:user.username, online: online })
+	if (user === undefined || online[user.uid] === undefined) {
+      res.send("Login to view this page.");
+    }else{
+	  res.render('chat', { title: 'Chat', loggedInUser: user.username, username:user.username, online: online, messageList: chat.messageList })
+    }
 }
 
 //## Functions

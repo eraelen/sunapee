@@ -4,20 +4,22 @@
     <div id="leftContainer">
      <h1>Chatbox</h1>
      <div id="chat-app">  
-        <p>User to PM:</p>
         <p id= <%= loggedInUser %> name=loggedInUser >
-        username:
-        <textarea id="other-user-area" rows="1" cols="10"></textarea>
         <br>
 		<textarea id="chat-text-area" rows="5" cols="50"></textarea>
 		<br>
 		<input id="chat-post-button" type="submit" value="Post">
-		<ul id="message-list"></div>
+		<ul id="message-list">
+		<% for (var i=messageList.length-1; i>-1; i--){ %>
+		    <li> <%= messageList[i]%> </li>
+		<% } %>
+		</div> 
+
 	</div>
 	<div id="rightContainer">
 	    <h2>Online Users</h2>
 	    <ul>
-	    <% for(var i = 1; i < online.length+1; i++){ %>
+	    <% for(var i = 1; i < Object.keys(online).length+1; i++){ %>
           <li> <%= online[i].username %> </li>
 	    <% } %>
 	    </ul>

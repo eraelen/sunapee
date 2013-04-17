@@ -144,6 +144,7 @@ function chatApp(socket) {
     // Grab the textarea's text and send to server:
     var otherUser = obj.username.getText();
     var message = obj.loggedInUser+": "+obj.text.getText();
+    
     socket.emit('post', { post : message, otherUser: otherUser, loggedInUser: obj.loggedInUser});
     // Clear the text box and add the message locally:
     obj.text.clearText();
