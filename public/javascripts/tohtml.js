@@ -1,28 +1,3 @@
-//var script = '/lib/users/users.js';
-////var script = '/javascripts/test.js';
-////$.ajax({
-////        url: script,
-////        dataType: "script",
-////        async: false,           // <-- this is the key
-////        success: function () {
-////            // all good...
-////        },
-////        error: function () {
-////            throw new Error("Could not load script " + script);
-////        }
-////    });
-//$.ajax({
-            ////type: "GET",
-            //url: script,
-            ////success: callback,
-            //dataType: "script",
-            //cache: true
-//            
-    //}).done(function(data){
-//
-              //console.log("load success");
-    //});
-
 //## Functions
 
 // ### *function*: userToHtml
@@ -70,7 +45,6 @@ function userToHtml(loggedInUser, user, userlist, redir) {
 */
 function tweetsToHtml(tl) {
   var j = tl.length;
-  console.log("tl is... " + tl.length);
   var content='';
   for (var i=0; i < j; i++) {
     var t = tl[i];
@@ -82,8 +56,8 @@ function tweetsToHtml(tl) {
               +'<div class="tmsg">'+msgToHtml(t.msg)+'</div>'
               +new Date(t.date)+'<br>'
               +'<a href="/'+t.id+'/detailedTweet">Detail</a> '
-              +'<a href="/'+t.id+'/simpleReply">Reply</a></p>'
-			  +'</div>';
+              +'<a href="/'+t.id+'/simpleReply">Reply</a>'
+			        +'</div>';
   }
   return content;
 }
@@ -103,7 +77,7 @@ function tweetToHtml(t) {
 		  +'<div class="tmsg">'+msgToHtml(t.msg)+'</div>'
 		  +new Date(t.date)+'<br>'
 		  +'<a href="/'+t.id+'/detailedTweet">Detail</a> '
-		  +'<a href="/'+t.id+'/simpleReply">Reply</a></p>'
+		  +'<a href="/'+t.id+'/simpleReply">Reply</a>'
 		  +'</div>';
   return content;
 }

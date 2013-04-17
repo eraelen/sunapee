@@ -33,6 +33,7 @@
 		<div id="tweetListContainer">
 			<h2>Timeline:</h2>
 			<div id="tweetList">
+
 				<!-- tweets %>-->
 				<% for (var i=0; i < tweets.length; i++) { %>
 					<div id = "newtweet" >
@@ -63,7 +64,7 @@
 		$.ajax({
 			type: 'POST',
 			url: '/newtweet',
-			data: 'msg=' + tweetMsg,
+			data: {msg: tweetMsg},
 			success: function(par) {
 				$('#tweetCount').text("Tweets: "+par[1]);
 				$('#tweetList').prepend(tweetToHtml(par[0]));
