@@ -10,7 +10,7 @@
 		<br>
 		<input id="chat-post-button" type="submit" value="Post">
 		<ul id="message-list">
-		<% for (var i=messageList.length-1; i>-1; i--){ %>
+		<% for (var i= messageList.length-1; i>-1; i--){ %>
 		    <li> <%= messageList[i]%> </li>
 		<% } %>
 		</div> 
@@ -18,9 +18,11 @@
 	</div>
 	<div id="rightContainer">
 	    <h2>Online Users</h2>
-	    <ul>
-	    <% for(var i = 1; i < Object.keys(online).length+1; i++){ %>
-          <li> <%= online[i].username %> </li>
+	    <ul id="onlineUsers">
+	    <% for(var i = 0; i < Object.keys(online).length+2; i++){ %>
+	      <% if (online[i] !== undefined){%>
+             <li> <%= online[i].username %> </li>
+          <% } %>
 	    <% } %>
 	    </ul>
 	</div>
