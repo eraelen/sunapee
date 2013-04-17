@@ -81,7 +81,15 @@ app.post('/:id/changeProfile', routes.changeProfile);
 app.post('/:id/changeProfilePic', routes.changeProfilePic);
 
 io.sockets.on('connection', function (socket) {
-  chatApp.init(socket);
+  io.sockets.emit('this', { will: 'be received by everyone'});
+
+  socket.on('private message', function (from, msg) {
+    console.log('I received a private message by ', from, ' saying ', msg);
+  });
+
+  socket.on('disconnect', function () {
+    io.sockets.emit('user disconnected');
+  });
 });
 
 http.createServer(app).listen(app.get('port'), function(){
