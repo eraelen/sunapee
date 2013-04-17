@@ -58,8 +58,6 @@ app.get('/:id/following', routes.following);
 app.post('/deleteFollower', routes.deleteFollower);
 app.post('/unfollow', routes.unfollow);
 app.post('/follow', routes.follow);
-app.post('/:uname/follow/:adduname/:redir', routes.follow);
-//app.post('/:uname/unfollow/:rmuname/:redir', routes.unfollow);
 
 //###3. Search, Help, Tweet Routes
 app.post('/newtweet', routes.newtweet);
@@ -80,6 +78,7 @@ app.get('/:id/editSettings', routes.editSettings);
 app.post('/:id/changeSettings', routes.changeSettings);
 app.post('/:id/changeProfile', routes.changeProfile);
 app.post('/:id/changeProfilePic', routes.changeProfilePic);
+
 app.get('/chat', routes.chat);
 
 var server = http.createServer(app).listen(app.get('port'), function(){

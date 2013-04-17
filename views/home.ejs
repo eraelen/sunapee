@@ -7,7 +7,6 @@
 				<tr height="175px">
 					<th><img src="/images/defaultProfilePic.jpg" width="120" height="120" /></th>
 					<th><%= name %><br><a href = "/<%= username %>/profile"> @<%= username %></th>
-					<!--<th><img src="/images/defaultProfilePic.jpg" width="100" height="30" /></th>-->
 				</tr>
 				<tr>
 					<th><a href="/<%= username %>/profile" id="tweetCount">Tweets: <%= tweetN %></a></th>
@@ -42,9 +41,9 @@
 							<% var msg = tweets[i].msg %><% msg = msg.split(" ") %>
 							<% for (var j=0; j < msg.length; j++) { %>
 								<% if (msg[j].charAt(0) === "@" && msg[j].split("\@").length === 2) { var word = msg[j].substring(1); %>
-									<a href="/<%= word %>/profile"> <%= msg[j] %> </a>
+									<a href="/<%= word %>/profile"> <%= msg[j] %></a> 
 								<% } else if (msg[j].charAt(0) === "#" && msg[j].split("\#").length === 2) { var word = msg[j].substring(1); %>
-									<a href="/searchT/<%= word %>"> <%= msg[j] %> </a>
+									<a href="/searchT/<%= word %>"> <%= msg[j] %></a> 
 								<% } else { %>
 									<%= msg[j] %>
 								<% } %>
@@ -82,10 +81,8 @@
 
 		// Reset input field:
 		$('textarea').val("What\'s on your mind?");
-		
 		return false;
     });
-    console.log("first script done");
 </script>
 
 <% include footer %>

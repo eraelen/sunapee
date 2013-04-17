@@ -6,6 +6,13 @@
 			<tr>
 				<td><img src="/images/defaultProfilePic.jpg" width="120" height="120" /></td>
 				<td><%= origTweet.name %><br><a href = "/<%= origTweet.username %>/profile"> @<%= origTweet.username %></td>
+					<% if (loggedInUser !== username) { %>
+						<td id='button'> <% if (isFollowing) { %>
+								<button class="unfollow" id="<%=username%>"> Unfollow </button>
+						<% } else { %>
+							<button class="follow" id="<%=username%>"> Follow </button>
+						<% } %> </td>
+					<% } %>
 			</tr>
 		</table>
 	</div>
@@ -15,9 +22,9 @@
 		<% var msg = origTweet.msg %><% msg = msg.split(" ") %>
 		<% for (var j=0; j < msg.length; j++) { %>
 			<% if (msg[j].charAt(0) === "@" && msg[j].split("\@").length === 2) { var word = msg[j].substring(1); %>
-				<a href="/<%= word %>/profile"> <%= msg[j] %> </a>
+				<a href="/<%= word %>/profile"> <%= msg[j] %></a> 
 			<% } else if (msg[j].charAt(0) === "#" && msg[j].split("\#").length === 2) { var word = msg[j].substring(1); %>
-				<a href="/searchT/<%= word %>"> <%= msg[j] %> </a>
+				<a href="/searchT/<%= word %>"> <%= msg[j] %></a> 
 			<% } else { %>
 				<%= msg[j] %>
 			<% } %>
@@ -42,9 +49,9 @@
 					<% var msg = convo[i].msg %><% msg = msg.split(" ") %>
 					<% for (var j=0; j < msg.length; j++) { %>
 						<% if (msg[j].charAt(0) === "@" && msg[j].split("\@").length === 2) { var word = msg[j].substring(1); %>
-							<a href="/<%= word %>/profile"> <%= msg[j] %> </a>
+							<a href="/<%= word %>/profile"> <%= msg[j] %></a> 
 						<% } else if (msg[j].charAt(0) === "#" && msg[j].split("\#").length === 2) { var word = msg[j].substring(1); %>
-							<a href="/searchT/<%= word %>"> <%= msg[j] %> </a>
+							<a href="/searchT/<%= word %>"> <%= msg[j] %></a> 
 						<% } else { %>
 							<%= msg[j] %>
 						<% } %>
@@ -56,5 +63,11 @@
 		<% } %>
 	</div>
 </div>
+
+<script src='/javascripts/follow.js'></script>
+<script>
+	onUnfollow();
+	onFollow();
+</script>
 
 <% include footer %>

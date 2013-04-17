@@ -56,13 +56,7 @@ exports.home = function(req, res){
 exports.newtweet = function(req, res) {
 	var user = req.session.user;
 	var username = user.username;
-	//console.log("body ", JSON.stringify(req.body.msg));
 	var ntweet = tweets.addTweet(user.name, username, req.body.msg, null, null);
-	//console.log(ntweet.date);
-	//console.log("tweet added to db");
-	//returns tweet that will be displayed in home.ejs
-	res.contentType('application/json');
-    //message = req.body.message;
 	res.json([ntweet,users.getTNumberById(username)]);
 }
 
@@ -71,20 +65,17 @@ exports.newtweet = function(req, res) {
 * GET profile page.
 */
 exports.profile = function(req, res) {
-  //var loggedInUserName = "";
   	var loggedInUser = req.session.user;
 	if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
 		res.redirect('/');
 	} else {
 	  loggedInUser = users.getUserById(loggedInUser.username);
-	  //loggedinuser = req.session.user;
 	  var user = users.getUserById(req.params.id);
 	  if (user !== undefined ) {
 	    //check if logged in user is allowed to view this profile
 		var permission = users.checkProfilePermission(loggedInUser, user);
 		if (permission) {	
 			var username = user.username;
-			console.log(username+" "+user.following);
 			var tl = tweets.getTByUser(username, 20);
 			var isFollowing = users.isFollowing(loggedInUser, user);
 			res.render('profile',
@@ -192,9 +183,10 @@ exports.unfollow = function(req, res){
 
 // ### follow
 /* 
-* POST follow contents of the following/follower page by redirect
+* POST follow tweets of a user implemented using AJAX
 */
 exports.follow = function(req, res){
+	console.log("follow");
   var loggedInUser = req.session.user;
   if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
      res.redirect('/');
@@ -202,7 +194,6 @@ exports.follow = function(req, res){
   	  var adduname = req.body.adduname;
       users.follow(loggedInUser.username, adduname);
       var followerN = users.getFollowerNum(adduname);
-      //res.redirect('/'+req.params.uname+'/'+req.params.redir);
       res.json([adduname, followerN]);
   }
 
@@ -267,7 +258,6 @@ exports.search = function (req,res) {
         res.redirect('/');
     } else {
 		var query = "#"+req.params.query;
-		console.log(query);
 		var results = tweets.searchTweetsByHT(query);
 		res.render('search', {title: 'Search Result',
 								loggedInUser: user.username,
@@ -332,29 +322,36 @@ exports.searchBox = function (req,res) {
  * The rest of the conversation appears below the box.
  */
 exports.detailedTweet = function (req, res) {
-	var user = req.session.user;
-	if (user === undefined || online[user.uid] === undefined) {
+	var loggedInUser = req.session.user;
+	if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
 		req.flash('userAuth', 'Not logged in!');
 		res.redirect('/');
 	} else {
+		loggedInUser = users.getUserById(loggedInUser.username);
 		var tweetId = req.params.tweetId;
 		var tweetconvo = tweets.getTweetConvoByTweetID(tweetId);
 		if (tweetconvo === null) {
+			var user = tweets.tweetdb[tweetId];
+			var isFollowing = users.isFollowing(loggedInUser, user);
 			res.render('detailedTweet',{title: 'Detailed Tweet', 
-						loggedInUser: user.username, 
+						loggedInUser: loggedInUser.username, 
 						convo: "", 
 						profilePic: userdb[0].profilePic, //change later
 						origTweet: tweets.tweetdb[tweetId],
+						isFollowing: isFollowing,
 						//had to include this because text area did not like <%= origTweet.username %>
-						username: tweets.tweetdb[tweetId].username});
+						username: user.username});
 		} else {
+			var user = users.getUserById(tweetconvo[0].username);
+			var isFollowing = users.isFollowing(loggedInUser, user);
 			res.render('detailedTweet',{title: 'Detailed Tweet', 
 						loggedInUser: user.username, 
 						convo: tweetconvo, 
 						profilePic: userdb[0].profilePic, //change later
 						origTweet: tweetconvo[0],
+						isFollowing: isFollowing,
 						//had to include this because text area did not like <%= origTweet.username %>
-						username: tweetconvo[0].username});
+						username: user.username});
 		}
 	}
 }
@@ -533,7 +530,6 @@ exports.changeProfilePic = function (req, res) {
     }
 };
 
-
 // ### chat
 /* 
 * GET global chat page
@@ -546,85 +542,5 @@ exports.chat = function (req, res){
 	  res.render('chat', { title: 'Chat', loggedInUser: user.username, username:user.username, online: online, messageList: chat.messageList })
     }
 }
-//## Functions
 
-// ### *function*: userToHtml
-/*
-* Generate HTML to display user list on follower and following page.
-* HTML includes name, username (hyperlink to user profile), button
-* 
-* @param userlist, array of user objects
-* @param btntext, text on the button displayed
-* @return content, generated HTML
-*/
-function userToHtml(loggedInUser, user, userlist, redir) {
-  var content = '';
-  var len = userlist.length-1;
-  for (var i=len; i >= 0; i--) {
-    var u = users.getUserById(userlist[i]);
-    var btntext;
-    if (u.username === loggedInUser.username) { 
-      content += '<p><b>'+u.name+'</b> <a href="/'+u.username+'/profile">@'+u.username+'</a></p>';
-    } else {
-      if (users.isFollowing(loggedInUser, u)) {
-      btntext = "unfollow";
-      } else {
-        btntext = "follow";
-      }
-      content += '<b>'+u.name+'</b> <a href="/'+u.username+'/profile">@'+u.username+'</a>';
-      content += '<form method="post" id="unfollow" action="/'
-      				+user.username+'/'+btntext+'/'+u.username+'/'+redir+'">'+
-                  '<input type="submit" name="submit" value="'+btntext+'" />'+
-                  '</form><br>';
-    }
-  }
-  return content;
-}
 
-// ### *function*: tweetsToHtml
-/*
-* Generate HTML to display tweets list which includes
-* name, @username(hyperlink to user profile), tweet message, date, and Detail(link to detailedTweet page)
-*
-* @param tl, array of tweets
-* @return content, converted HTML
-*/
-function tweetsToHtml(tl) {
-  var j = tl.length;
-  var content='';
-  for (var i=0; i < j; i++) {
-    var t = tl[i];
-    var usr = users.getUserById(t.username);
-    var a = t.msg.split(" ");
-    content += '<p><b>'+t.name+'</b> <a href="/'+t.username+'/profile">@'+t.username+'</a><br>'
-              +msgToHtml(t.msg)+'<br>'
-              +t.date+'<br>'
-              +'<a href="/'+t.id+'/detailedTweet">Detail</a></p>';
-  }
-  return content;
-}
-
-// ### *function*: msgToHtml
-/**
- * Find @username and #hashtag in a tweet message and convert them to a html href link.
- * In order to be recognized as a @username mention, @ symbol must be the start
- * of a word. And @username@username is considered invalid and is ignored.
- * hashtag starts with # and end before a space. #ford! is considered a hashtag.
- * Note: word starting with @ && cannot have another @, #ford! <- ! in else if statement.
- */
-function msgToHtml(msg) {
-  msg = msg.split(" ");
-  var content = '';
-  var len = msg.length;
-  for (var i=0; i < len; i++) {
-    var word = msg[i];
-    if (word.charAt(0) === "@" && word.split("\@").length === 2) {
-      content += ' <a href="/'+word.substring(1)+'/profile">'+word+'</a> ';
-    } else if (word.charAt(0) === "#" && word.split("\#").length === 2) {
-      content += ' <a href="/search/'+word.substring(1)+'">'+word+'</a> ';
-    } else {
-      content += word+" ";
-    } 
-  }
-  return content;
-}

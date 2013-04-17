@@ -10,7 +10,6 @@
 * @return content, generated HTML
 */
 
-console.log("in js");
 function userToHtml(loggedInUser, user, userlist, redir) {
   var content = '';
   var len = userlist.length-1;
@@ -106,5 +105,3 @@ function msgToHtml(msg) {
   }
   return content;
 }
-
-console.log("finish js");

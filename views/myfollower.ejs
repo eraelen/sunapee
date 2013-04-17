@@ -29,26 +29,12 @@
 
 </div>
 
+<script src='/javascripts/follow.js'></script>
 <script>
-console.log("myfollower");
-	var delFollower = function (username) {
-		$.ajax({
-			type: 'POST',
-			url: '/deleteFollower',
-			data: 'usertbd=' + username,
-			success: function(bid) {
-				$("li#"+bid).remove();
-			}
-			}).done(function(msg) {
-				console.log("error ",msg);
-			});
-	};
-
 	$('.delFollower').bind('click',
     function (event) {
 		var bid = $(this).attr("id");
 		delFollower(bid);	
-		
 		return false;
     });
 </script>

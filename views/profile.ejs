@@ -17,9 +17,9 @@
 					<% if (loggedInUser !== username) { %>
 						<th id='button'> <% if (isFollowing) { %>
 								<button class="unfollow" id="<%=username%>"> Unfollow </button>
-							<% } else { %>
-								<button class="follow" id="<%=username%>"> Follow </button>
-							<% } %> </th>
+						<% } else { %>
+							<button class="follow" id="<%=username%>"> Follow </button>
+						<% } %> </th>
 					<% } %>
 					<!--<th><img src="/images/defaultProfilePic.jpg" width="100" height="30" /></th>-->
 				</tr>
@@ -55,50 +55,10 @@
 		</div>
 </div>
 
+<script src='/javascripts/follow.js'></script>
 <script>
-	$('.unfollow').bind('click',
-    function (event) {
-		var username = $(this).attr("id");
-		unfollow(username);	
-		return false;
-    });
-
-    $('.follow').bind('click',
-    function (event) {
-		var username = $(this).attr("id");
-		follow(username);	
-		return false;
-    });
-
-    var unfollow = function (username) {
-    	$.ajax({
-			type: 'POST',
-			url: '/unfollow',
-			data: {rmusername: username},
-			success: function(pair) {
-				// change button link and text
-				$('#button').html('<button class="follow" id="'+pair[0]+'"> Follow </button>');
-				// change follower number
-				$('#followerN').text("Follower: "+pair[1]);
-			}
-			});
-    }
-
-    var follow = function (username) {
-    	console.log("follow");
-    	$.ajax({
-			type: 'POST',
-			url: '/follow',
-			data: {adduname: username},
-			success: function(pair) {
-				// change button link and text
-				$('#button').html('<button class="unfollow" id="'+pair[0]+'"> Unfollow </button>');
-				// change follower number
-				$('#followerN').text("Follower: "+pair[1]);
-			}
-			});
-    }
+	onUnfollow();
+	onFollow();
 </script>
-
 
 <% include footer %>
