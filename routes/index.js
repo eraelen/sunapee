@@ -531,10 +531,13 @@ exports.changeProfilePic = function (req, res) {
 			res.redirect('/'+u.username+'/editProfile');
     	}
     }
-
-    
 };
-/*
+
+
+// ### chat
+/* 
+* GET global chat page
+*/
 exports.chat = function (req, res){
 	var user = req.session.user
 	if (user === undefined || online[user.uid] === undefined) {

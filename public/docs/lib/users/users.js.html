@@ -90,6 +90,24 @@
       <div class="heading h3">
         <a href="#function--getfollowingnum">function: getFollowingNum</a>
       </div>
+      <div class="heading h3">
+        <a href="#function--changeusersettings">function: changeUserSettings</a>
+      </div>
+      <div class="heading h3">
+        <a href="#function--checkprofilepermission">function: checkProfilePermission</a>
+      </div>
+      <div class="heading h3">
+        <a href="#function--searchpeople">function: searchPeople</a>
+      </div>
+      <div class="heading h3">
+        <a href="#function--deletefollower">function: deleteFollower</a>
+      </div>
+      <div class="heading h3">
+        <a href="#function--getfollowerlist">function: getFollowerList</a>
+      </div>
+      <div class="heading h3">
+        <a href="#function--getfollowinglist">function: getFollowingList</a>
+      </div>
     </div>
   </div>
   <div id="sidebar-toggle"></div>
@@ -125,12 +143,12 @@
         </td>
         <td class="code highlight"><div class="highlight"><pre>
 <span class="kd">var</span> <span class="nx">userdb</span> <span class="o">=</span> <span class="p">[</span>
-<span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Tim Berners-Lee&#39;</span> <span class="p">,</span><span class="nx">username</span><span class="o">:</span> <span class="s1">&#39;tim&#39;</span><span class="p">,</span> <span class="nx">password</span><span class="o">:</span> <span class="s1">&#39;mit&#39;</span><span class="p">,</span> <span class="nx">uid</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">email</span><span class="o">:</span> <span class="s2">&quot;aqua_manga@yahoo.com&quot;</span><span class="p">,</span> <span class="nx">location</span><span class="o">:</span> <span class="s2">&quot;Massachusetts&quot;</span><span class="p">,</span> <span class="nx">website</span><span class="o">:</span> <span class="s2">&quot;amazon.com&quot;</span><span class="p">,</span> <span class="nx">profilePic</span><span class="o">:</span> <span class="s2">&quot;defaultProfilePic.jpg&quot;</span><span class="p">,</span> <span class="nx">follower</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;caleb&quot;</span><span class="p">,</span><span class="s2">&quot;hazel&quot;</span><span class="p">],</span> <span class="nx">following</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;caleb&quot;</span><span class="p">,</span><span class="s2">&quot;hazel&quot;</span><span class="p">],</span> <span class="nx">tweets</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span> <span class="nx">profVis</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">,</span> <span class="nx">folPerm</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">,</span> <span class="nx">mentionPerm</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">,</span> <span class="nx">pmPerm</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">},</span>
-<span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Hazel Rozetta&#39;</span><span class="p">,</span> <span class="nx">username</span><span class="o">:</span> <span class="s1">&#39;hazel&#39;</span><span class="p">,</span> <span class="nx">password</span><span class="o">:</span> <span class="s1">&#39;lezah&#39;</span><span class="p">,</span> <span class="nx">uid</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">email</span><span class="o">:</span> <span class="s2">&quot;ysasaki@smith.edu&quot;</span><span class="p">,</span> <span class="nx">location</span><span class="o">:</span> <span class="s2">&quot;United States&quot;</span><span class="p">,</span> <span class="nx">website</span><span class="o">:</span> <span class="s2">&quot;petco.com&quot;</span><span class="p">,</span> <span class="nx">profilePic</span><span class="o">:</span> <span class="s2">&quot;defaultProfilePic.jpg&quot;</span><span class="p">,</span> <span class="nx">follower</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;tim&quot;</span><span class="p">,</span><span class="s2">&quot;caleb&quot;</span><span class="p">],</span> <span class="nx">following</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;tim&quot;</span><span class="p">,</span> <span class="s2">&quot;caleb&quot;</span><span class="p">],</span> <span class="nx">tweets</span><span class="o">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="nx">profVis</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">,</span> <span class="nx">folPerm</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">,</span> <span class="nx">mentionPerm</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">,</span> <span class="nx">pmPerm</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">},</span>
-<span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Caleb Marks&#39;</span><span class="p">,</span> <span class="nx">username</span><span class="o">:</span> <span class="s1">&#39;caleb&#39;</span><span class="p">,</span> <span class="nx">password</span><span class="o">:</span> <span class="s1">&#39;belac&#39;</span><span class="p">,</span> <span class="nx">uid</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span> <span class="nx">email</span><span class="o">:</span> <span class="s2">&quot;ysasaki2014@gmail.com&quot;</span><span class="p">,</span> <span class="nx">location</span><span class="o">:</span> <span class="s2">&quot;Asia&quot;</span><span class="p">,</span> <span class="nx">website</span><span class="o">:</span> <span class="s2">&quot;ebay.com&quot;</span><span class="p">,</span> <span class="nx">profilePic</span><span class="o">:</span> <span class="s2">&quot;defaultProfilePic.jpg&quot;</span><span class="p">,</span> <span class="nx">follower</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;hazel&quot;</span><span class="p">,</span><span class="s2">&quot;tim&quot;</span><span class="p">],</span> <span class="nx">following</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;hazel&quot;</span><span class="p">,</span><span class="s2">&quot;tim&quot;</span><span class="p">],</span> <span class="nx">tweets</span><span class="o">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="nx">profVis</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">,</span> <span class="nx">folPerm</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">,</span> <span class="nx">mentionPerm</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">,</span> <span class="nx">pmPerm</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Tim Berners-Lee&#39;</span> <span class="p">,</span><span class="nx">username</span><span class="o">:</span> <span class="s1">&#39;tim&#39;</span><span class="p">,</span> <span class="nx">password</span><span class="o">:</span> <span class="s1">&#39;mit&#39;</span><span class="p">,</span> <span class="nx">uid</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">email</span><span class="o">:</span> <span class="s2">&quot;aqua_manga@yahoo.com&quot;</span><span class="p">,</span> <span class="nx">location</span><span class="o">:</span> <span class="s2">&quot;Massachusetts&quot;</span><span class="p">,</span> <span class="nx">website</span><span class="o">:</span> <span class="s2">&quot;amazon.com&quot;</span><span class="p">,</span> <span class="nx">profilePic</span><span class="o">:</span> <span class="s2">&quot;defaultProfilePic.jpg&quot;</span><span class="p">,</span> <span class="nx">follower</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;caleb&quot;</span><span class="p">,</span><span class="s2">&quot;hazel&quot;</span><span class="p">],</span> <span class="nx">following</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;caleb&quot;</span><span class="p">,</span><span class="s2">&quot;hazel&quot;</span><span class="p">],</span> <span class="nx">tweets</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span> <span class="nx">profVis</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">,</span> <span class="nx">mentionPerm</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">,</span> <span class="nx">pmPerm</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">,</span> <span class="nx">pmUsers</span><span class="o">:</span><span class="p">[]},</span>
+<span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Hazel Rozetta&#39;</span><span class="p">,</span> <span class="nx">username</span><span class="o">:</span> <span class="s1">&#39;hazel&#39;</span><span class="p">,</span> <span class="nx">password</span><span class="o">:</span> <span class="s1">&#39;lezah&#39;</span><span class="p">,</span> <span class="nx">uid</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">email</span><span class="o">:</span> <span class="s2">&quot;ysasaki@smith.edu&quot;</span><span class="p">,</span> <span class="nx">location</span><span class="o">:</span> <span class="s2">&quot;United States&quot;</span><span class="p">,</span> <span class="nx">website</span><span class="o">:</span> <span class="s2">&quot;petco.com&quot;</span><span class="p">,</span> <span class="nx">profilePic</span><span class="o">:</span> <span class="s2">&quot;defaultProfilePic.jpg&quot;</span><span class="p">,</span> <span class="nx">follower</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;tim&quot;</span><span class="p">,</span><span class="s2">&quot;caleb&quot;</span><span class="p">],</span> <span class="nx">following</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;tim&quot;</span><span class="p">,</span> <span class="s2">&quot;caleb&quot;</span><span class="p">],</span> <span class="nx">tweets</span><span class="o">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="nx">profVis</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">,</span> <span class="nx">mentionPerm</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">,</span> <span class="nx">pmPerm</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">,</span> <span class="nx">pmUsers</span><span class="o">:</span> <span class="p">[]},</span>
+<span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Caleb Marks&#39;</span><span class="p">,</span> <span class="nx">username</span><span class="o">:</span> <span class="s1">&#39;caleb&#39;</span><span class="p">,</span> <span class="nx">password</span><span class="o">:</span> <span class="s1">&#39;belac&#39;</span><span class="p">,</span> <span class="nx">uid</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span> <span class="nx">email</span><span class="o">:</span> <span class="s2">&quot;ysasaki2014@gmail.com&quot;</span><span class="p">,</span> <span class="nx">location</span><span class="o">:</span> <span class="s2">&quot;Asia&quot;</span><span class="p">,</span> <span class="nx">website</span><span class="o">:</span> <span class="s2">&quot;ebay.com&quot;</span><span class="p">,</span> <span class="nx">profilePic</span><span class="o">:</span> <span class="s2">&quot;defaultProfilePic.jpg&quot;</span><span class="p">,</span> <span class="nx">follower</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;hazel&quot;</span><span class="p">,</span><span class="s2">&quot;tim&quot;</span><span class="p">],</span> <span class="nx">following</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;hazel&quot;</span><span class="p">,</span><span class="s2">&quot;tim&quot;</span><span class="p">],</span> <span class="nx">tweets</span><span class="o">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="nx">profVis</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">,</span> <span class="nx">mentionPerm</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">,</span> <span class="nx">pmPerm</span><span class="o">:</span> <span class="s2">&quot;Public&quot;</span><span class="p">,</span> <span class="nx">pmUsers</span><span class="o">:</span> <span class="p">[]}</span>
 <span class="p">];</span>
 
-<span class="kd">var</span> <span class="nx">usersInTestData</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span> 
+<span class="kd">var</span> <span class="nx">usersInTestData</span> <span class="o">=</span> <span class="nx">userdb</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> 
 <span class="nx">exports</span><span class="p">.</span><span class="nx">userdb</span> <span class="o">=</span> <span class="nx">userdb</span><span class="p">;</span>
 
 
@@ -1043,6 +1061,7 @@ function</span>
     <div class="dox_tag_detail">
       <span class="dox_tag_name">username</span>
       <span class="dox_type">string</span>
+      <span>of logged in user</span>
     </div>
     <div class="dox_tag_detail">
       <span class="dox_tag_name">username</span>
@@ -1053,10 +1072,38 @@ function</span>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-<span class="nx">exports</span><span class="p">.</span><span class="nx">unfollow</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">username</span><span class="p">,</span> <span class="nx">rmuname</span><span class="p">)</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">fl</span> <span class="o">=</span> <span class="nx">getUserById</span><span class="p">(</span><span class="nx">username</span><span class="p">).</span><span class="nx">following</span><span class="p">;</span>
-  <span class="nx">fl</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">fl</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">rmuname</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span> <span class="c1">//remove rmuname from fl</span>
+<span class="kd">function</span> <span class="nx">unfollow</span><span class="p">(</span><span class="nx">loggedinuser</span><span class="p">,</span> <span class="nx">username</span><span class="p">)</span> <span class="p">{</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
+</div>
+<p>removes user from following list of logged-in user</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">var</span> <span class="nx">fl</span> <span class="o">=</span> <span class="nx">getUserById</span><span class="p">(</span><span class="nx">loggedinuser</span><span class="p">).</span><span class="nx">following</span><span class="p">;</span>
+  <span class="nx">fl</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">fl</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">username</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
+</div>
+<p>remove logged in user from follower list of user</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">var</span> <span class="nx">followerList</span> <span class="o">=</span> <span class="nx">getUserById</span><span class="p">(</span><span class="nx">username</span><span class="p">).</span><span class="nx">follower</span><span class="p">;</span>
+  <span class="nx">followerList</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">followerList</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">loggedinuser</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
 <span class="p">}</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">unfollow</span> <span class="o">=</span> <span class="nx">unfollow</span><span class="p">;</span>
 
 
 </pre></div>
@@ -1173,6 +1220,337 @@ function</span>
   <span class="k">return</span> <span class="nx">getUserById</span><span class="p">(</span><span class="nx">username</span><span class="p">).</span><span class="nx">following</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
 <span class="p">}</span>
 <span class="nx">exports</span><span class="p">.</span><span class="nx">getFollowingNum</span> <span class="o">=</span> <span class="nx">getFollowingNum</span><span class="p">;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function--changeusersettings">
+  <h3>
+    <a href="#function--changeusersettings" class="pilcrow">&#182;</a>
+    <em>function</em>: changeUserSettings
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>Changes user settings or permission for viewing user's profile, mentioning user in tweets and sending user private messages.
+ @param {string} username of logged in user
+ @param {string} profile visibility permission
+ @param {string} mentioning of user permission
+ @param {string} sending user private messages permission</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">changeUserSettings</span> <span class="p">(</span><span class="nx">username</span><span class="p">,</span> <span class="nx">nprofvis</span><span class="p">,</span> <span class="nx">nmentionperm</span><span class="p">,</span> <span class="nx">npmperm</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">getUserById</span><span class="p">(</span><span class="nx">username</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">nprofvis</span> <span class="o">!==</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">userdb</span><span class="p">[</span><span class="nx">user</span><span class="p">.</span><span class="nx">uid</span><span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="nx">profVis</span> <span class="o">=</span> <span class="nx">nprofvis</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">nmentionperm</span> <span class="o">!==</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">userdb</span><span class="p">[</span><span class="nx">user</span><span class="p">.</span><span class="nx">uid</span><span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="nx">mentionPerm</span> <span class="o">=</span> <span class="nx">nmentionperm</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">npmperm</span> <span class="o">!==</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">userdb</span><span class="p">[</span><span class="nx">user</span><span class="p">.</span><span class="nx">uid</span><span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="nx">pmPerm</span> <span class="o">=</span> <span class="nx">npmperm</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">changeUserSettings</span> <span class="o">=</span> <span class="nx">changeUserSettings</span><span class="p">;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function--checkprofilepermission">
+  <h3>
+    <a href="#function--checkprofilepermission" class="pilcrow">&#182;</a>
+    <em>function</em>: checkProfilePermission
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>Checks and sets profile permission.
+ If "Public", any user can view profile.
+ If "Followers Only", only followers of this user can view this profile.
+ If "Only Me", only profile owner can view profile.
+ @param {object} logged in user
+ @param {object} profile owner
+ @return {boolean} whether logged in user has permission to view profile</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">checkProfilePermission</span><span class="p">(</span><span class="nx">loggedin</span><span class="p">,</span> <span class="nx">profileowner</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">profperm</span> <span class="o">=</span> <span class="nx">userdb</span><span class="p">[</span><span class="nx">profileowner</span><span class="p">.</span><span class="nx">uid</span><span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="nx">profVis</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">profperm</span> <span class="o">===</span> <span class="s2">&quot;Followers Only&quot;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">followerList</span> <span class="o">=</span> <span class="nx">userdb</span><span class="p">[</span><span class="nx">profileowner</span><span class="p">.</span><span class="nx">uid</span><span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="nx">follower</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">followerList</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">loggedin</span><span class="p">.</span><span class="nx">username</span><span class="p">)</span> <span class="o">!==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">profperm</span> <span class="o">===</span> <span class="s2">&quot;Only Me&quot;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">loggedin</span><span class="p">.</span><span class="nx">username</span> <span class="o">===</span> <span class="nx">profileowner</span><span class="p">.</span><span class="nx">username</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+  <span class="p">}</span> 
+<span class="p">}</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">checkProfilePermission</span> <span class="o">=</span> <span class="nx">checkProfilePermission</span><span class="p">;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function--searchpeople">
+  <h3>
+    <a href="#function--searchpeople" class="pilcrow">&#182;</a>
+    <em>function</em>: searchPeople
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>Searches database for users having names and/or usernames matching query string.
+ @param {string} query 
+ @return {object} list of users matching (partial or complete) query or null if none found</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">searchPeople</span> <span class="p">(</span><span class="nx">query</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">userList</span> <span class="o">=</span> <span class="p">[];</span>
+  <span class="kd">var</span> <span class="nx">reQuery</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="nx">query</span><span class="p">,</span> <span class="s2">&quot;gi&quot;</span><span class="p">);</span>
+  
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">userdb</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">((</span><span class="nx">userdb</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">name</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">query</span><span class="p">)</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="nx">userdb</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">username</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">query</span><span class="p">)</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">))</span> <span class="p">{</span>
+      <span class="nx">userList</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">userdb</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  
+  <span class="k">if</span> <span class="p">(</span><span class="nx">userList</span><span class="p">.</span><span class="nx">length</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">userList</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">searchPeople</span> <span class="o">=</span> <span class="nx">searchPeople</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">changeUserProfile</span><span class="p">(</span><span class="nx">username</span><span class="p">,</span> <span class="nx">nname</span><span class="p">,</span> <span class="nx">nusername</span><span class="p">,</span> <span class="nx">nemail</span><span class="p">,</span> <span class="nx">nlocation</span><span class="p">,</span> <span class="nx">nwebsite</span><span class="p">,</span> <span class="nx">nnewpass</span><span class="p">,</span> <span class="nx">nconfirmnewpass</span><span class="p">,</span> <span class="nx">ncurrentpass</span><span class="p">,</span> <span class="nx">req</span><span class="p">,</span> <span class="nx">user</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">getUserById</span><span class="p">(</span><span class="nx">username</span><span class="p">);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;user in changeUserProfile is: &quot;</span> <span class="o">+</span> <span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="p">);</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
+</div>
+<p>check if current password is correct</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;ncurrentpass: &quot;</span> <span class="o">+</span> <span class="nx">ncurrentpass</span> <span class="o">+</span> <span class="s2">&quot; userdbpassword: &quot;</span> <span class="o">+</span> <span class="nx">userdb</span><span class="p">[</span><span class="nx">user</span><span class="p">.</span><span class="nx">uid</span><span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="nx">password</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">ncurrentpass</span> <span class="o">===</span> <span class="nx">userdb</span><span class="p">[</span><span class="nx">user</span><span class="p">.</span><span class="nx">uid</span><span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="nx">password</span><span class="p">)</span> <span class="p">{</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-32" id="section-32">&#182;</a>
+</div>
+<p>check if user changed new password</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">nnewpass</span> <span class="o">!==</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">nnewpass</span> <span class="o">===</span> <span class="nx">nconfirmnewpass</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">userdb</span><span class="p">[</span><span class="nx">user</span><span class="p">.</span><span class="nx">uid</span><span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="nx">password</span> <span class="o">=</span> <span class="nx">nnewpass</span><span class="p">;</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">{</span><span class="nx">b</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">user</span><span class="o">:</span> <span class="nx">user</span><span class="p">};</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-33" id="section-33">&#182;</a>
+</div>
+<p>check if user changed name, username and email - cannot be empty</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">nname</span> <span class="o">!==</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="p">{</span> <span class="nx">userdb</span><span class="p">[</span><span class="nx">user</span><span class="p">.</span><span class="nx">uid</span><span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">nname</span><span class="p">;</span> <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">nusername</span> <span class="o">!==</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="p">{</span> <span class="nx">userdb</span><span class="p">[</span><span class="nx">user</span><span class="p">.</span><span class="nx">uid</span><span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="nx">username</span> <span class="o">=</span> <span class="nx">nusername</span><span class="p">;</span> <span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">user</span> <span class="o">=</span> <span class="nx">user</span><span class="p">;}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">nemail</span> <span class="o">!==</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="p">{</span> <span class="nx">userdb</span><span class="p">[</span><span class="nx">user</span><span class="p">.</span><span class="nx">uid</span><span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="nx">email</span> <span class="o">=</span> <span class="nx">nemail</span><span class="p">;</span> <span class="p">}</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-34" id="section-34">&#182;</a>
+</div>
+<p>check if user changed location and website - can be empty</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nx">userdb</span><span class="p">[</span><span class="nx">user</span><span class="p">.</span><span class="nx">uid</span><span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="nx">location</span> <span class="o">=</span> <span class="nx">nlocation</span><span class="p">;</span>
+    <span class="nx">userdb</span><span class="p">[</span><span class="nx">user</span><span class="p">.</span><span class="nx">uid</span><span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="nx">website</span> <span class="o">=</span> <span class="nx">nwebsite</span><span class="p">;</span>
+    <span class="k">return</span> <span class="p">{</span><span class="nx">b</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">user</span><span class="o">:</span> <span class="nx">user</span><span class="p">};</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span><span class="nx">b</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">user</span><span class="o">:</span> <span class="nx">user</span><span class="p">};</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">changeUserProfile</span> <span class="o">=</span> <span class="nx">changeUserProfile</span><span class="p">;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function--deletefollower">
+  <h3>
+    <a href="#function--deletefollower" class="pilcrow">&#182;</a>
+    <em>function</em>: deleteFollower
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>Deletes follower from follower list. Two steps:
+ 1. Delete user from logged in user's followers list
+ 2. Delete logged in user from user's following list
+ @param {object} loggedinuser 
+ @param {string} username of user to be deleted from logged in user's follower's list</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">deleteFollower</span><span class="p">(</span><span class="nx">loggedinuser</span><span class="p">,</span> <span class="nx">username</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;in users.js deleteFollower&quot;</span><span class="p">);</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-36" id="section-36">&#182;</a>
+</div>
+<p>remove user from logged in user's follower list</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">var</span> <span class="nx">followerList</span> <span class="o">=</span> <span class="nx">userdb</span><span class="p">[</span><span class="nx">loggedinuser</span><span class="p">.</span><span class="nx">uid</span><span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="nx">follower</span><span class="p">;</span>
+  <span class="nx">followerList</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">followerList</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">username</span><span class="p">),</span><span class="mi">1</span><span class="p">);</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-37" id="section-37">&#182;</a>
+</div>
+<p>remove logged in user from user's following list</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">var</span> <span class="nx">followingList</span> <span class="o">=</span> <span class="nx">getUserById</span><span class="p">(</span><span class="nx">username</span><span class="p">).</span><span class="nx">following</span><span class="p">;</span>
+  <span class="nx">followingList</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">followingList</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">loggedinuser</span><span class="p">.</span><span class="nx">username</span><span class="p">),</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">deleteFollower</span> <span class="o">=</span> <span class="nx">deleteFollower</span><span class="p">;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function--getfollowerlist">
+  <h3>
+    <a href="#function--getfollowerlist" class="pilcrow">&#182;</a>
+    <em>function</em>: getFollowerList
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>Returns follower list 
+ @param {string} username 
+ @return {object} follower list</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">getFollowerList</span> <span class="p">(</span><span class="nx">username</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">followerList</span> <span class="o">=</span> <span class="p">[];</span>
+  <span class="kd">var</span> <span class="nx">fl</span> <span class="o">=</span> <span class="nx">getUserById</span><span class="p">(</span><span class="nx">username</span><span class="p">).</span><span class="nx">follower</span><span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">fl</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">followerList</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">getUserById</span><span class="p">(</span><span class="nx">fl</span><span class="p">[</span><span class="nx">i</span><span class="p">]));</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">followerList</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">getFollowerList</span> <span class="o">=</span> <span class="nx">getFollowerList</span><span class="p">;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function--getfollowinglist">
+  <h3>
+    <a href="#function--getfollowinglist" class="pilcrow">&#182;</a>
+    <em>function</em>: getFollowingList
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>Returns following list 
+ @param {string} username 
+ @return {object} following list</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">getFollowingList</span> <span class="p">(</span><span class="nx">username</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">followingList</span> <span class="o">=</span> <span class="p">[];</span>
+  <span class="kd">var</span> <span class="nx">fl</span> <span class="o">=</span> <span class="nx">getUserById</span><span class="p">(</span><span class="nx">username</span><span class="p">).</span><span class="nx">following</span><span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">fl</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">followingList</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">getUserById</span><span class="p">(</span><span class="nx">fl</span><span class="p">[</span><span class="nx">i</span><span class="p">]));</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">followingList</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">getFollowingList</span> <span class="o">=</span> <span class="nx">getFollowingList</span><span class="p">;</span>
 </pre></div>
         </td>
       </tr>
