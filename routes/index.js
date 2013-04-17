@@ -71,36 +71,41 @@ exports.newtweet = function(req, res) {
 * GET profile page.
 */
 exports.profile = function(req, res) {
-  var loggedInUserName = "";
-  if (req.session.user !== undefined) {
-    loggedInUserName = req.session.user.username;
-	loggedinuser = req.session.user;
-  }
-  var user = users.getUserById(req.params.id);
-  if (user !== undefined ) {
-    //check if logged in user is allowed to view this profile
-	var permission = users.checkProfilePermission(loggedinuser, user);
-	if (permission) {	
-		var username = user.username;
-		console.log(username+" "+user.following);
-		var tl = tweets.getTByUser(username, 20);
-		res.render('profile',
-				  {title: 'Profile',
-				   loggedInUser: loggedInUserName,
-				   name: user.name,
-				   username: username,
-				   tweetN: users.getTNumberById(username),
-				   followerN: user.follower.length,
-				   followingN: user.following.length,
-				   tweets: tl });
+  //var loggedInUserName = "";
+  	var loggedInUser = req.session.user;
+	if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
+		res.redirect('/');
 	} else {
-		res.render('error', {title: 'Error', msg: "You are not allowed to view this profile."});
+	  loggedInUser = users.getUserById(loggedInUser.username);
+	  //loggedinuser = req.session.user;
+	  var user = users.getUserById(req.params.id);
+	  if (user !== undefined ) {
+	    //check if logged in user is allowed to view this profile
+		var permission = users.checkProfilePermission(loggedInUser, user);
+		if (permission) {	
+			var username = user.username;
+			console.log(username+" "+user.following);
+			var tl = tweets.getTByUser(username, 20);
+			var isFollowing = users.isFollowing(loggedInUser, user);
+			res.render('profile',
+					  {title: 'Profile',
+					   loggedInUser: loggedInUser.username,
+					   name: user.name,
+					   username: username,
+					   tweetN: users.getTNumberById(username),
+					   followerN: user.follower.length,
+					   followingN: user.following.length,
+					   isFollowing: isFollowing,
+					   tweets: tl });
+		} else {
+			res.render('error', {title: 'Error', msg: "You are not allowed to view this profile."});
+		}
+	  } else {
+	    res.render('error',
+	               {title: 'Error',
+	                msg: "Oops, this user does not exist."});
+	  }
 	}
-  } else {
-    res.render('error',
-               {title: 'Error',
-                msg: "Oops, this user does not exist."});
-  }
 }
 
 // ### follower
@@ -114,13 +119,23 @@ exports.follower = function(req, res) {
 	} else {
 		loggedInUser = users.getUserById(loggedInUser.username);
 		var user = users.getUserById(req.params.id);
-		var followerList = users.getFollowerList(user.username);
-		res.render('follower', 
-    			{ title: 'Follower',
-            	  loggedInUser: loggedInUser.username,
-    			  name: user.name,
-    			  username: user.username,
-    			  followers: followerList} );
+		if (loggedInUser.username === user.username) {
+			var followerList = users.getFollowerList(loggedInUser.username);
+			res.render('myfollower',
+						{title: 'Follower',
+						 loggedInUser: loggedInUser.username,
+						 name: loggedInUser.name,
+						 username: loggedInUser.username,
+						 followers: followerList});
+		} else {
+			var followerList = users.getFollowerList(user.username);
+			res.render('follower', 
+	    			{ title: 'Follower',
+	            	  loggedInUser: loggedInUser.username,
+	    			  name: user.name,
+	    			  username: user.username,
+	    			  followers: followerList} );
+		}
   }
 }
 
@@ -163,13 +178,15 @@ exports.following = function(req, res) {
 * Unfollowing users implemented using AJAX
 */
 exports.unfollow = function(req, res){
+	console.log("unfollow");
 	var loggedInUser = req.session.user;
 	if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
 		res.redirect('/');
 	} else {
-		var userUnfollow = req.body.userUnfollow;
-		users.unfollow(loggedInUser.username, userUnfollow);
-		res.send(userUnfollow);
+		var rmusername = req.body.rmusername;
+		users.unfollow(loggedInUser.username, rmusername);
+		var followerN = users.getFollowerNum(rmusername);
+		res.json([rmusername, followerN]);
 	}
 }
 
@@ -182,8 +199,11 @@ exports.follow = function(req, res){
   if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
      res.redirect('/');
   } else {
-      users.follow(loggedInUser.username, req.params.adduname);
-      res.redirect('/'+req.params.uname+'/'+req.params.redir);
+  	  var adduname = req.body.adduname;
+      users.follow(loggedInUser.username, adduname);
+      var followerN = users.getFollowerNum(adduname);
+      //res.redirect('/'+req.params.uname+'/'+req.params.redir);
+      res.json([adduname, followerN]);
   }
 
 }
@@ -399,11 +419,11 @@ exports.displaySimpleReply = function (req, res) {
  */
 exports.editSettings = function (req, res){
 	var user = req.session.user;
-	var username = user.username;
 	var settingsMsg = req.flash('changeSettings') || '';
 	if (user === undefined || online[user.uid] === undefined) {
 		res.redirect('/');
 	} else {
+		var username = user.username;
 		if(username !== req.params.id){
 			res.redirect('/'+username+'/editSettings');
 		} else {
@@ -424,10 +444,10 @@ exports.editSettings = function (req, res){
  */
 exports.changeSettings = function (req, res){
 	var user = req.session.user;
-	var username = user.username;
 	if (user === undefined || online[user.uid] === undefined) {
 		res.redirect('/');
 	} else {
+		var username = user.username;
 		users.changeUserSettings(username, req.body.profVis, req.body.mentionPerm, req.body.pmPerm);		
 		req.flash('changeSettings', 'Changes saved.');
 		res.redirect('/'+username+'/editSettings');
@@ -442,11 +462,11 @@ exports.changeSettings = function (req, res){
  */
 exports.editProfile = function (req, res){
 	var user = req.session.user;
-	var username = user.username;
 	var profileMsg = req.flash('changeProfile') || '';
 	if (user === undefined || online[user.uid] === undefined) {
 		res.redirect('/');
 	} else {
+		var username = user.username;
 		res.render('editProfile', { title: 'Edit Profile',
 					loggedInUser: username,
 					msg: profileMsg,
@@ -466,10 +486,10 @@ exports.editProfile = function (req, res){
 */
 exports.changeProfile = function (req, res) {
 	var user = req.session.user;
-	var username = user.username;
 	if (user === undefined || online[user.uid] === undefined) {
 		res.redirect('/');
 	} else {
+		var username = user.username;
 		var validChange = users.changeUserProfile(username, req.body.name, req.body.username, req.body.email, req.body.location, req.body.website, req.body.newpass, req.body.confirmnewpass, req.body.currentpass, req, user);		
 		if (validChange.b) {
 			username = validChange.user.username;
@@ -498,19 +518,23 @@ exports.changeProfile = function (req, res) {
 exports.changeProfilePic = function (req, res) {
 	var flag = false;
 	var user = req.session.user;
-    var username = user.username;
     if (user === undefined || online[user.uid] === undefined) {
       res.send("Login to view this page.");
-    }else if(username !== req.params.id){
-	   res.redirect('/'+username+'/editProfile'); 
-    }else {
-       var u = users.getUserById(user.username);
-		u.profilePic = 'fakeChangedPic.jpg';
-		profileMsg = 'Fake image generated here.';
-		res.redirect('/'+u.username+'/editProfile');
+    } else {
+    	var username = user.username;
+    	if(username !== req.params.id){
+	   		res.redirect('/'+username+'/editProfile'); 
+    	}else {
+	        var u = users.getUserById(user.username);
+			u.profilePic = 'fakeChangedPic.jpg';
+			profileMsg = 'Fake image generated here.';
+			res.redirect('/'+u.username+'/editProfile');
+    	}
     }
-};
 
+    
+};
+/*
 exports.chat = function (req, res){
 	var user = req.session.user
 	if (user === undefined || online[user.uid] === undefined) {
@@ -519,7 +543,7 @@ exports.chat = function (req, res){
 	  res.render('chat', { title: 'Chat', loggedInUser: user.username, username:user.username, online: online, messageList: chat.messageList })
     }
 }
-
+*/
 //## Functions
 
 // ### *function*: userToHtml

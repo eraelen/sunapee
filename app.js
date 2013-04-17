@@ -57,6 +57,7 @@ app.get('/:id/follower', routes.follower);
 app.get('/:id/following', routes.following);
 app.post('/deleteFollower', routes.deleteFollower);
 app.post('/unfollow', routes.unfollow);
+app.post('/follow', routes.follow);
 app.post('/:uname/follow/:adduname/:redir', routes.follow);
 //app.post('/:uname/unfollow/:rmuname/:redir', routes.unfollow);
 
@@ -95,3 +96,4 @@ var chatApp = require('./chat');
 io.sockets.on('connection', function (socket) {
   chatApp.init(socket);
 });
+

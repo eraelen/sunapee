@@ -19,9 +19,18 @@
 		<div id="userListContainer">
 			<h2><%= name %> is Following:</h2>
 			<ul>
-				<% for (var i=0; i < following.length; i++) { %>
-					<li id="<%= following[i].username %>"><%= following[i].name %> <a href = "/<%= following[i].username %>/profile">@<%= following[i].username %></a> <button class="unfollow" id="<%= following[i].username %>"> Unfollow </button></li>
+				<% if (loggedInUser === username) { %>
+					<script>console.log("my following");</script>
+					<% for (var i=0; i < following.length; i++) { %>
+					<li id="<%= following[i].username %>"><%= following[i].name %> <a href = "/<%= following[i].username %>/profile">@<%= following[i].username %></a>
+						<button class="unfollow" id="<%= following[i].username %>"> Unfollow </button></li>
+					<% } %>
+				<% } else { %>
+					<% for (var i=0; i < following.length; i++) { %>
+					<li id="<%= following[i].username %>"><%= following[i].name %> <a href = "/<%= following[i].username %>/profile">@<%= following[i].username %></a></li>
+					<% } %>
 				<% } %>
+				
 			</ul>
 		</div>
 	</div>
@@ -29,26 +38,23 @@
 </div>
 
 <script>
-	var unfollow = function (username) {
-		$.ajax({
-			type: 'POST',
-			url: '/unfollow',
-			data: 'userUnfollow=' + username,
-			success: function(bid) {
-				$("#"+bid).remove();
-			}
-			}).done(function(msg) {
-				console.log("error ",msg);
-			});
-	};
-
 	$('.unfollow').bind('click',
     function (event) {
-		var bid = $(this).attr("id");
-		unfollow(bid);	
-		
+		var username = $(this).attr("id");
+		unfollow(username);	
 		return false;
     });
+
+    var unfollow = function (username) {
+    	$.ajax({
+			type: 'POST',
+			url: '/unfollow',
+			data: {rmusername: username},
+			success: function(pair) {
+				$('li#'+pair[0]).remove();
+			}
+			});
+    }
 </script>
 
 <% include footer %>
