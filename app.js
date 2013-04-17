@@ -80,6 +80,9 @@ app.post('/:id/changeSettings', routes.changeSettings);
 app.post('/:id/changeProfile', routes.changeProfile);
 app.post('/:id/changeProfilePic', routes.changeProfilePic);
 
+io.sockets.on('connection', function (socket) {
+  chatApp.init(socket);
+});
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
