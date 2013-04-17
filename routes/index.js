@@ -546,7 +546,6 @@ exports.chat = function (req, res){
 	  res.render('chat', { title: 'Chat', loggedInUser: user.username, username:user.username, online: online, messageList: chat.messageList })
     }
 }
-*/
 //## Functions
 
 // ### *function*: userToHtml
