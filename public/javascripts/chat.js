@@ -86,6 +86,28 @@ function chatPostButton() {
   return obj;
 }
 
+function otherUsername(){
+  var obj = Object.create(publisher());
+  obj.elm = $('#other-user-area');
+
+  // Returns the text contained in the textarea:
+  obj.getText = function () {
+    return obj.elm.val();
+  };
+
+  // Removes the text from the text area:
+  obj.clearText = function () {
+    obj.elm.val('');
+  };
+
+  return obj;
+}
+function getLoggedInUser(){
+  var elem = document.getElementsByName("loggedInUser");
+  var id = elem[0].getAttribute("id");
+  return id;
+}
+
 // The message list that corresponds with the message list defined in
 // the view:
 function messageList() {
@@ -110,20 +132,25 @@ function chatApp(socket) {
 
   // Create each of the important UI objects:
   obj.text = chatTextArea();
+  obj.username = otherUsername();
   obj.post = chatPostButton();
   obj.list = messageList();
+  obj.loggedInUser = getLoggedInUser();
 
   // We let the post button deal with its own click event.  We simply
   // subscribe to the submit event on the post button.  It will invoke
   // our callback when it is ready to do so:
   obj.post.subscribe('submit', function () {
     // Grab the textarea's text and send to server:
-    var message = obj.text.getText();
-    socket.emit('post', { post : message });
+    var otherUser = obj.username.getText();
+    var message = obj.loggedInUser+": "+obj.text.getText();
+    socket.emit('post', { post : message, otherUser: otherUser, loggedInUser: obj.loggedInUser});
     // Clear the text box and add the message locally:
     obj.text.clearText();
     obj.list.addMessage(message);
   });
+
+
 
   // Handle incoming post messages from the server:
   socket.on('post', function (data) {
