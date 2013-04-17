@@ -17,7 +17,7 @@
 	<div id="rightContainer">
 	    <h2>Online Users</h2>
 	    <ul>
-	    <% for(var i = 1; i <= online.length; i++){ %>
+	    <% for(var i = 1; i < online.length+1; i++){ %>
           <li> <%= online[i].username %> </li>
 	    <% } %>
 	    </ul>
