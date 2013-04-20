@@ -499,7 +499,7 @@ exports.changeProfile = function (req, res) {
 			req.flash('changeProfile', 'Changes saved.');
 			res.redirect('/'+username+'/editProfile');
 		} else {
-			req.flash('changeProfile', 'Changes not saved. Please try again.');
+			req.flash('changeProfile', validChange.error);
 			res.redirect('/'+username+'/editProfile');
 		}
 	}
