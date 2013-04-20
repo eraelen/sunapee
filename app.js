@@ -91,4 +91,3 @@ var chatApp = require('./chat');
 io.sockets.on('connection', function (socket) {
   chatApp.init(socket);
 });
-
