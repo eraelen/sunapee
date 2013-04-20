@@ -1,7 +1,7 @@
-<% include header %>
-
-<h1>Error :( </h1>
-<p><%=msg %></p>
-
-
+<% include userHeader %>
+<% include navbar %>
+<div class="center">
+	<h1><%= errorHeader %></h1>
+	<font color="red"><p><%= msg %></p></font>
+</div>
 <% include footer %>

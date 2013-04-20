@@ -74,6 +74,7 @@ exports.profile = function(req, res) {
 	  if (user !== undefined ) {
 	    //check if logged in user is allowed to view this profile
 		var permission = users.checkProfilePermission(loggedInUser, user);
+		console.log("permission is " + permission);
 		if (permission) {	
 			var username = user.username;
 			var tl = tweets.getTByUser(username, 20);
@@ -89,7 +90,12 @@ exports.profile = function(req, res) {
 					   isFollowing: isFollowing,
 					   tweets: tl });
 		} else {
-			res.render('error', {title: 'Error', msg: "You are not allowed to view this profile."});
+			console.log("should go here");
+			res.render('error', {title: 'Error - Profile Permission', 
+						errorHeader: "Profile Permission",
+						msg: "You are not allowed to view " + user.username+ "'s profile.",
+						username: loggedInUser.username,
+						loggedInUser: loggedInUser.username});
 		}
 	  } else {
 	    res.render('error',
