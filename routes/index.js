@@ -15,6 +15,9 @@ var mytweets = tweets.tweetdb;
 var conversation = tweets.conversation;
 var profileMsg = '';
 
+
+var fs = require('fs');
+
 // ## User Server-Side Route-Handlers
 
 // ### home
@@ -528,6 +531,13 @@ exports.changeProfilePic = function (req, res) {
     	if(username !== req.params.id){
 	   		res.redirect('/'+username+'/editProfile'); 
     	}else {
+			console.log(req.files);
+			fs.readFile(req.files.profilepic.path, function (err, data) {
+			  var newPath = __dirname + "\\lib\\users\\" + username + "\\" + req.files.profilepic.name;
+			  fs.writeFile(newPath, data, function (err) {
+				console.log("saved into folder... "+newPath);
+			  });
+			});
 	        var u = users.getUserById(user.username);
 			u.profilePic = 'fakeChangedPic.jpg';
 			profileMsg = 'Fake image generated here.';

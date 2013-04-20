@@ -9,7 +9,9 @@ var express = require('express')
   , entry = require('./routes/entry')
   , http = require('http')
   , path = require('path')
-  , flash = require('connect-flash');
+  , flash = require('connect-flash')
+  , fs = require('fs')
+  , formidable = require('formidable');
 
 var app = express();
 
