@@ -1,5 +1,10 @@
 <% include userHeader %>
 <% include navbar %>
+
+<script>
+	
+</script>
+
 <div class="center2">
 	<div id="userInfo">
 		<table>
@@ -58,7 +63,14 @@
 					<% } %>
 				</div>
 				<%= convo[i].date %><br>
-				<a href="/<%= convo[i].id %>/detailedTweet">Detail</a> <a href="/<%= convo[i].id %>/simpleReply">Reply</a>
+				<a href="/<%= convo[i].id %>/detailedTweet">Detail</a> <button class="reply" id="<%= convo[i].username %>" href=>Reply</button>
+				<div class="replybox" id="<%= convo[i].username %>" style="display:none;">
+					<form method="post" id="compose" action="">
+						<textarea name="message" cols="60" rows="4">BLAH BLAH BLAH</textarea>
+						<br>
+						<input type="submit" name="submit" value="Reply" />
+					</form>
+				</div>
 			</div>
 		<% } %>
 	</div>
@@ -67,7 +79,16 @@
 <script src='/javascripts/follow.js'></script>
 <script>
 	onUnfollow();
-	onFollow();
+	onFollow();	
+</script>
+
+<script>
+	$('.reply').bind('click',
+    function (event) {
+		var id = $(this).attr("id");
+		$(".replybox#"+id).show();
+		$(".replybox#"+id+" textarea").text("reply to @"+id);
+    });
 </script>
 
 <% include footer %>
