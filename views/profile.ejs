@@ -12,7 +12,7 @@
 		<div id="userStats">
 			<table>
 				<tr height="175px">
-					<th vertical-align="middle" text-align="left"><img src="/images/defaultProfilePic.jpg" width="120" height="120" /></th>
+					<th vertical-align="middle" text-align="left"><img src="<%= profilepic %>" width="120" height="120" /></th>
 					<th vertical-align="middle" text-align="left"><%= name %><br><a href = "/<%= username %>/profile"> @<%= username %></th>
 					<% if (loggedInUser !== username) { %>
 						<th id='button'> <% if (isFollowing) { %>

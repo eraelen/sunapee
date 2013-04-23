@@ -40,6 +40,7 @@ exports.home = function(req, res){
             { title: 'Home',
               name: user.name,
               username: username,
+			  profilepic: user.profilePic,
               tweetN: users.getTNumberById(username),
               followerN: user.follower.length,
               followingN: user.following.length,
@@ -87,6 +88,7 @@ exports.profile = function(req, res) {
 					   loggedInUser: loggedInUser.username,
 					   name: user.name,
 					   username: username,
+					   profilepic: user.profilePic,
 					   tweetN: users.getTNumberById(username),
 					   followerN: user.follower.length,
 					   followingN: user.following.length,
@@ -538,14 +540,9 @@ exports.changeProfilePic = function (req, res) {
 				var u = users.getUserById(user.username);
 				console.log("written... " + newPath);
 				u.profilePic = "/images/users/" + username + "/" + req.files.profilepic.name;
-				//u.profilePic = '/images/fakeChangedPic.jpg'
 				res.redirect('/'+u.username+'/editProfile');
 			  });
 			});
-	        //var u = users.getUserById(user.username);
-			//u.profilePic = '/images/fakeChangedPic.jpg';
-			//profileMsg = 'Fake image generated here.';
-			//res.redirect('/'+u.username+'/editProfile');
     	}
     }
 };
