@@ -533,14 +533,11 @@ exports.changeProfilePic = function (req, res) {
     	}else {
 			console.log(req.files);
 			fs.readFile(req.files.profilepic.path, function (err, data) {
-			  //var newPath = __dirname + "..\\lib\\users\\" + username + "\\" + req.files.profilepic.name;
-			  var newPath = __dirname + "../public/images/" + req.files.profilepic.name;
-			  //have to hard code your Github public images folder
-			  //var newPath = "C:\\Users\\dEviLzGurL\\Documents\\GitHub\\sunapee\\public\\images\\" + req.files.profilepic.name;
+			  var newPath = __dirname + "/../public/images/users/" + username + "/" + req.files.profilepic.name;
 			  fs.writeFile(newPath, data, function (err) {
 				var u = users.getUserById(user.username);
 				console.log("written... " + newPath);
-				u.profilePic = "/images/" + req.files.profilepic.name;
+				u.profilePic = "/images/users/" + username + "/" + req.files.profilepic.name;
 				//u.profilePic = '/images/fakeChangedPic.jpg'
 				res.redirect('/'+u.username+'/editProfile');
 			  });
