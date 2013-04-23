@@ -6,13 +6,27 @@
         <p>Registration</p>
         <%=message %>
         <form method="post" action="/verify">
-           Name: <input type="text" name="name"/>*<br/>
-           Username: <input type="text" name="username"/>*<br/>
-           E-mail: <input type="text" name="email"/>*<br/>
-           Password: <input type="password" name="password"/>*<br/>
-           Retype P: <input type="password" name="retypeP"/>*<br/>
-           Location: <input type="text" name="location"/><br/>
-           Website: <input type="website" name="website"/><br/>
+           <label for="name">Name: </label>
+           <input type="text" name="name"/>*
+           <br/>
+           <label for="username">Username: </label>
+           <input type="text" name="username"/>*
+           <br/>
+           <label for="email">E-mail: </label>
+           <input type="text" name="email"/>*
+           <br/>
+           <label for="password">Password: </label>
+           <input type="password" name="password"/>*
+           <br/>
+           <label for="retypeP">Retype P: </label>
+           <input type="password" name="retypeP"/>*
+           <br/>
+           <label for="location">Location: </label>
+           <input type="text" name="location"/>..
+           <br/>
+           <label for="website">Website: </label>
+           <input type="website" name="website"/>..
+           <br/>
            <input type="submit" value="Submit"/>
         </form>
       </div>
