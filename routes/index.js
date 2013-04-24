@@ -554,9 +554,23 @@ exports.changeProfilePic = function (req, res) {
 exports.chat = function (req, res){
 	var user = req.session.user
 	if (user === undefined || online[user.uid] === undefined) {
-      res.send("Login to view this page.");
+      res.redirect('/');
     }else{
 	  res.render('chat', { title: 'Chat', loggedInUser: user.username, username:user.username, online: online, messageList: chat.messageList });
+    }
+}
+
+// ### pm
+/* 
+* GET pm page
+*/
+exports.pm = function (req, res){
+	var user = req.session.user
+	if (user === undefined || online[user.uid] === undefined) {
+      res.redirect('/');
+    }else{
+      var messageList= ["Here is a test list", "Of different things", "This is the third element"]
+	  res.render('pm', { title: 'PM', loggedInUser: user.username, username:user.username, pmfollowers: user.follower, messageList: "" });
     }
 }
 
