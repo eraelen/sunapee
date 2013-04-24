@@ -63,7 +63,8 @@
 					<% } %>
 				</div>
 				<%= convo[i].date %><br>
-				<a href="/<%= convo[i].id %>/detailedTweet">Detail</a> <button class="reply" id="<%= convo[i].username %>" href=>Reply</button>
+				<!--<a href="/<%= convo[i].id %>/detailedTweet">Detail</a> <a href="" class="reply" id="<%= convo[i].username %>" href=>Reply</a>-->
+				<a href="/<%= convo[i].id %>/detailedTweet">Detail</a> <a href="/<%= convo[i].id %>/simpleReply">Reply</a>
 				<div class="replybox" id="<%= convo[i].username %>" style="display:none;">
 					<form method="post" id="compose" action="">
 						<textarea name="message" cols="60" rows="4">BLAH BLAH BLAH</textarea>
