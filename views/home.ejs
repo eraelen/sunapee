@@ -37,7 +37,7 @@
 
 				<!-- tweets %>-->
 				<% for (var i=0; i < tweets.length; i++) { %>
-					<div id = "newtweet" >
+					<div class="tweet" id = "t<%= tweets[i].id %>" >
 						<b><%= tweets[i].name %></b> <a href="/<%= tweets[i].username %>/profile"> @<%= tweets[i].username %></a>
 						<div class="tmsg">
 							<% var msg = tweets[i].msg %><% msg = msg.split(" ") %>
@@ -52,9 +52,9 @@
 							<% } %>
 						</div>
 						<%= tweets[i].date %><br>
-						<a href="/<%= tweets[i].id %>/detailedTweet">Detail</a> <a href="/<%= tweets[i].id %>/simpleReply">Reply</a> <a href="/">Retweet</a>
+						<a href="/<%= tweets[i].id %>/detailedTweet">Detail</a> | <a href="/<%= tweets[i].id %>/simpleReply">Reply</a> | <a href="/">Retweet</a>
 						<% if (loggedInUser === tweets[i].username) { %>
-							<a href="/">Delete</a>
+							 | <a class="delT" id="<%= tweets[i].id %>" href=>Delete</a>
 						<% } %>
 					</div>
 				<% } %>
@@ -78,6 +78,21 @@
 				console.log("ejs msg ",msg);
 			});
 	};
+	
+	var deleteTweet = function (tweetID) {
+		$.ajax({
+			type: 'POST',
+			url: '/deleteTweet',
+			data: {tweetID: tweetID},
+			success: function(pair) {
+				console.log("pair[0] ",pair[0]);
+				$('#t'+pair[0]).remove();
+				$('#tweetCount').text("Tweets: "+pair[1]);
+			}
+			}).done(function(msg) { 
+				console.log("ejs msg ",msg); 
+			});
+	};
 
 	$('#newtweetSubmit').bind('click',
     function (event) {
@@ -87,6 +102,15 @@
 
 		// Reset input field:
 		$('textarea').val("What\'s on your mind?");
+		return false;
+    });
+	
+	$('.delT').bind('click',
+    function (event) {
+		// Get tweet message
+		var tweetID = $(this).attr("id");  
+		deleteTweet(tweetID);
+
 		return false;
     });
 </script>
