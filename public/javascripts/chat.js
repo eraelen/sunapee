@@ -116,7 +116,7 @@ function messageList() {
 
   // A method to add a message to the list:
   obj.addMessage = function (msg) {
-    var next = $('<li>');
+    var next = $('<ul>');
     next.text(msg);
     obj.elm.prepend(next);
   };
@@ -144,13 +144,19 @@ function chatApp(socket) {
     // Grab the textarea's text and send to server:
     var otherUser = obj.username.getText();
     var message = obj.loggedInUser+": "+obj.text.getText();
-    
+    var currentdate = new Date(); 
+    var datetime = " Date: " + (currentdate.getMonth()+1) + "/"
+                + currentdate.getDate()  + "/" 
+                + currentdate.getFullYear() + " @ "  
+                + currentdate.getHours() + ":"  
+                + currentdate.getMinutes() + ":" 
+                + currentdate.getSeconds();
+    message = message + datetime;
     socket.emit('post', { post : message, otherUser: otherUser, loggedInUser: obj.loggedInUser});
     // Clear the text box and add the message locally:
     obj.text.clearText();
     obj.list.addMessage(message);
   });
-
 
 
   // Handle incoming post messages from the server:

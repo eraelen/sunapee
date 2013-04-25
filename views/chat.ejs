@@ -2,6 +2,18 @@
 <% include navbar %>
 <div class = "center">
     <div id="leftContainer">
+      <div class="elem">
+	    <h2>Online Users</h2>
+	    <ul id="onlineUsers">
+	    <% for(var i = 0; i < Object.keys(online).length+2; i++){ %>
+	      <% if (online[i] !== undefined){%>
+             <li> <%= online[i].username %> </li>
+          <% } %>
+	    <% } %>
+	    </ul>
+	   </div>
+	</div>
+    <div id="rightContainer">
      <div id="chat-app" class="elem">  
         <h1>Chatbox</h1>
         <p id= <%= loggedInUser %> name=loggedInUser >
@@ -11,20 +23,9 @@
 		<input id="chat-post-button" type="submit" value="Post">
 		<ul id="message-list">
 		<% for (var i= messageList.length-1; i>-1; i--){ %>
-		    <li> <%= messageList[i]%> </li>
+		    <ul> <%= messageList[i]%> </ul>
 		<% } %>
 		</div> 
-
-	</div>
-	<div id="rightContainer" class="elem">
-	    <h2>Online Users</h2>
-	    <ul id="onlineUsers">
-	    <% for(var i = 0; i < Object.keys(online).length+2; i++){ %>
-	      <% if (online[i] !== undefined){%>
-             <li> <%= online[i].username %> </li>
-          <% } %>
-	    <% } %>
-	    </ul>
 	</div>
 </div>
 <% include footer %>
