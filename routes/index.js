@@ -263,33 +263,6 @@ exports.help = function (req,res) {
     }
 }
 
-// ### search
-/**
- * Renders Search Result Page
- * 
- * At the moment, only searches through hashtags. What is displayed is not what is returned, however.
- * We still need to figure out how to manipulate arrays in ejs.
- * Need also to add search through users, actual message content of tweets and possibly the help page.
- *
- * This current version displays the first tweet from the result of searching tweets for hashtag "#ftw".
- * It is also able to recognize active hashtags clicked/searched in a tweet.
- */
- 
-exports.search = function (req,res) {
-	var user = req.session.user;
-	if (user === undefined || online[user.uid] === undefined) {
-        res.redirect('/');
-    } else {
-		var query = "#"+req.params.query;
-		var results = tweets.searchTweetsByHT(query);
-		res.render('search', {title: 'Search Result',
-								loggedInUser: user.username,
-								background: user.background,
-								searchPhrase: query,
-								tweets: results, username: user.username});	
-   }
-};
-
 // ### Search Tweets Result Page
 /**
  * Searches through tweets (message only).
