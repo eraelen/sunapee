@@ -2,20 +2,20 @@
 <% include navbar %>
 <div class="center">
 	<div id="leftContainer">
-		<div id="searchResultCategory">
+		<div id="searchResultCategory" class="elem">
 			<p>
 				<b>Tweets</b><br>
 				<font color="#45c7b1">--------------</font><br>
 				<a href="/searchP/<%= searchPhrase %>">People</a><br>
 			</p>
 		</div>	
-		<div id="trendHashtags">
+		<div id="trendHashtags" class="elem">
 			<p>THIS IS trending hash tags</p>
 		</div>
 	</div>
 	
 	<div id="rightContainer">		
-		<div id="searchResults">
+		<div id="searchResults" class="elem">
 			<h3>Results for <font color="red"><%= searchPhrase %></font> :</h3>
 			<% if (tweets !== null) { %>
 				<% for (var i=0; i < tweets.length; i++) { %>

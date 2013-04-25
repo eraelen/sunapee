@@ -7,11 +7,34 @@
 	<script src="/javascripts/tohtml.js"></script>
 	<script src="/socket.io/socket.io.js"></script>
 	<script type="text/javascript" src="/javascripts/chat.js"></script>
+  <style>
+       body{background-image: <%= background %>}
+  </style>
+  <!--
+  <script>
+   var speed = 50;
+   $('html, body').hide();
+   $('html, body').fadeIn(speed);
+
+   $('html, body').fadeIn(speed, function() {
+        $('a[href], button[href]').click(function(event) {
+            var url = $(this).attr('href');
+            if (url.indexOf('#') == 0 || url.indexOf('javascript:') == 0) return;
+            event.preventDefault();
+            $('html, body').fadeOut(speed, function() {
+                window.location = url;
+            });
+        });
+      });
+
+  </script>-->
+  <style>
+      .fade{ 
+          padding:0 23px 0 0;
+       }
+  </style>
+
   </head>
-  <body>
+  <body bgproperties="fixed">
   	<div id="loggedInUser">
-    <a href="/chat">Chat with other users!</a>
-	  <center> 
-		Logged in user: <%= loggedInUser %> [<a href="/logout">Logout</a>]
-	  </center>
     </div>

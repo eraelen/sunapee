@@ -3,20 +3,20 @@
 <% include navbar %>
 <div class="center">
 	<div id="leftContainer">
-		<div id="viewFOption">
+		<div id="viewFOption" class="elem">
 			<p>
 				<a href="follower"><font color="gray"><b>Follower</b></font></a><br>
 				<font color="gray">------------------------------</font><br>
 				<font color="black"><b>Following</b></font><br>
 			</p>
 		</div>	
-		<div id="trendHashtags">
+		<div id="trendHashtags" class="elem">
 			<p>THIS IS trending hash tags</p>
 		</div>
 	</div>
 	
 	<div id="rightContainer">		
-		<div id="userListContainer">
+		<div id="userListContainer" class="elem">
 			<h2><%= name %> is Following:</h2>
 			<ul>
 				<% if (loggedInUser === username) { %>

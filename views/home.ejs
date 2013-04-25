@@ -2,7 +2,7 @@
 <% include navbar %>
 <div class="center">
 	<div id="leftContainer">
-		<div id="userStats">
+		<div id="userStats" class="elem">
 			<table>
 				<tr height="175px">
 					<th><img src="<%= profilepic %>" width="120" height="120" /></th>
@@ -15,12 +15,14 @@
 				</tr>
 			</table>
 		</div>	
-		<div id="trendHashtags">
+
+		<div id="trendHashtags" class="elem">
 			<p>THIS IS trending hash tags</p>
 		</div>
 	</div>
-	
+
 	<div id="rightContainer">
+	  <div class="elem">
 		<div id="composeTweetBox">
 			<form method="post" id="compose" action="/<%= username %>/newtweet">
 				<textarea name="message" cols="50" rows="4">What's on your mind?</textarea>
@@ -55,6 +57,7 @@
 				<% } %>
 			</div>
 		</div>
+	  </div>
 	</div>
 </div>
 

@@ -6,6 +6,7 @@
 </script>
 
 <div class="center2">
+  <div class="elem">
 	<div id="userInfo">
 		<table>
 			<tr>
@@ -45,8 +46,9 @@
 			<input type="submit" name="submit" value="Reply" />
 		</form>
 	</div>
+  </div>
 	
-	<div id="tweetListContainer">
+	<div id="tweetListContainer" class="elem">
 		<% for (var i=1; i < convo.length; i++) { %>
 			<div id = "newtweet" >
 				<b><%= convo[i].name %></b> <a href="/<%= convo[i].username %>/profile"> @<%= convo[i].username %></a>

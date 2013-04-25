@@ -1,12 +1,12 @@
 <% include userHeader %>
 <% include navbar %>
 <div class="center">
-	<h1>Settings:</h1>
+	<h1 class="elem">Settings:</h1>
 	<hr/>
-	<p>
-		<font color="red"><%- msg %></font>
-	</p>
-	<div id="formSettings">
+	<div id="formSettings" class="elem">
+	    <p>
+		  <font color="red"><%- msg %></font>
+    	</p>
 		<form method="post" id="editSettings" action="/<%= loggedInUser %>/changeSettings">
 			<b>Profile Visibility:</b> <font color="gray"> <%- pv %> </font> <br>
 			<p>

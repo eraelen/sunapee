@@ -3,13 +3,13 @@
 <div class="center">
 	<div id="leftContainer">
 			
-		<div id="trendHashtags">
+		<div id="trendHashtags" class="elem">
 			<p>THIS IS trending hash tags</p>
 		</div>
 	</div>
 	
 	<div id="rightContainer">
-		<div id="userStats">
+		<div id="userStats" class="elem">
 			<table>
 				<tr height="175px">
 					<th vertical-align="middle" text-align="left"><img src="<%= profilepic %>" width="120" height="120" /></th>
@@ -31,7 +31,7 @@
 			</table>
 		</div>
 
-		<div id="tweetListContainer">
+		<div id="tweetListContainer" class="elem">
 			<!-- tweets %>-->
 			<% for (var i=0; i < tweets.length; i++) { %>
 				<div id = "newtweet" >

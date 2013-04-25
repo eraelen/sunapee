@@ -80,6 +80,8 @@ app.post('/:id/changeSettings', routes.changeSettings);
 app.post('/:id/changeProfile', routes.changeProfile);
 app.post('/:id/changeProfilePic', routes.changeProfilePic);
 app.get('/pm', routes.pm);
+app.get('/changeBackground', routes.changeBackground);
+app.post('/saveBackground', routes.saveBackground);
 
 app.get('/chat', routes.chat);
 

@@ -1,9 +1,10 @@
 <% include userHeader %>
 <% include navbar %>
 <div class="center">
-	<h1>Profile:</h1>
+	<h1 class="elem">Profile:</h1>
 	<hr/>
-	<div id="allEditProfile">
+	<div class="elem">
+	  <div id="allEditProfile">
 		<div id="editInfo">
 			<p>
 				<font color="red"><%- msg %></font>
@@ -29,6 +30,7 @@
 				<br>
 				<font color="red">* Required</font>
 			</form>
+			<a href="/changeBackground">Change Background</a>
 		</div>
 		<div id="editImg">
 			<center>
@@ -38,10 +40,11 @@
 			</form>
 			</center>
 		</div>
-	</div>
-	<div id="submitEditProfile">
+	  </div>
+	  <div id="submitEditProfile">
 		<input type="submit" name="submit" value="Change Profile Picture" form="editProfilePic"/><br>
 		<input type="submit" name="submit" value="Submit" form="editProfileInfo"/> <br>
+	  </div>
 	</div>
 </div>
 <% include footer %>

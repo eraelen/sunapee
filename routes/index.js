@@ -35,6 +35,7 @@ exports.home = function(req, res){
     if (username !== req.params.id){
       res.redirect('/'+username+'/home');
     }else {
+      console.log("bg - "+user.background);
       var tl = tweets.getRecentT(username, user.following, 20);
       res.render('home', 
             { title: 'Home',
@@ -45,7 +46,8 @@ exports.home = function(req, res){
               followerN: user.follower.length,
               followingN: user.following.length,
               tweets: tl,
-			  loggedInUser: user.username
+			  loggedInUser: user.username,
+			  background: user.background,
                } );
     }
   }
@@ -86,6 +88,7 @@ exports.profile = function(req, res) {
 			res.render('profile',
 					  {title: 'Profile',
 					   loggedInUser: loggedInUser.username,
+					   background: user.background,
 					   name: user.name,
 					   username: username,
 					   profilepic: user.profilePic,
@@ -93,10 +96,12 @@ exports.profile = function(req, res) {
 					   followerN: user.follower.length,
 					   followingN: user.following.length,
 					   isFollowing: isFollowing,
-					   tweets: tl });
+					   tweets: tl,
+					   background: user.background});
 		} else {
 			console.log("should go here");
-			res.render('error', {title: 'Error - Profile Permission', 
+			res.render('error', {title: 'Error - Profile Permission',
+			            background: user.background, 
 						errorHeader: "Profile Permission",
 						msg: "You are not allowed to view " + user.username+ "'s profile.",
 						username: loggedInUser.username,
@@ -104,7 +109,7 @@ exports.profile = function(req, res) {
 		}
 	  } else {
 	    res.render('error',
-	               {title: 'Error',
+	               {title: 'Error', background: user.background,
 	                msg: "Oops, this user does not exist."});
 	  }
 	}
@@ -126,6 +131,7 @@ exports.follower = function(req, res) {
 			res.render('myfollower',
 						{title: 'Follower',
 						 loggedInUser: loggedInUser.username,
+						 background: user.background,
 						 name: loggedInUser.name,
 						 username: loggedInUser.username,
 						 followers: followerList});
@@ -134,6 +140,7 @@ exports.follower = function(req, res) {
 			res.render('follower', 
 	    			{ title: 'Follower',
 	            	  loggedInUser: loggedInUser.username,
+	            	  background: user.background,
 	    			  name: user.name,
 	    			  username: user.username,
 	    			  followers: followerList} );
@@ -169,6 +176,7 @@ exports.following = function(req, res) {
 		res.render('following', 
     			{ title: 'Following',
             	  loggedInUser: loggedInUser.username,
+            	  background: user.background,
     			  name: user.name,
     			  username: user.username,
     			  following: followingList} );
@@ -224,10 +232,12 @@ exports.interaction = function(req, res) {
         res.redirect('/'+username+'/interaction');
       } else {
        var tl = tweets.getTByMention(username, 20);
+       console.log('bg!'+user.background);
        res.render('interaction',
               { title: 'Interaction',
                 name: user.name,
                 username: username,
+                background: user.background,
                 tweets: tweetsToHtml(tl),
                 loggedInUser: user.username
                 });
@@ -241,12 +251,14 @@ exports.interaction = function(req, res) {
  */
 exports.help = function (req,res) {
 	var user = req.session.user;
+	console.log("Userback help"+user.background);
 	if (user === undefined || online[user.uid] === undefined) {
         //res.send("Login to view this page.");
         res.redirect('/');
     }else{
-    	res.render('help', {title: 'Help', username: 
-							user.username, 
+    	res.render('help', {title: 'Help', 
+    		                username: user.username, 
+    		                background: user.background,
 							loggedInUser: user.username});
     }
 }
@@ -272,6 +284,7 @@ exports.search = function (req,res) {
 		var results = tweets.searchTweetsByHT(query);
 		res.render('search', {title: 'Search Result',
 								loggedInUser: user.username,
+								background: user.background,
 								searchPhrase: query,
 								tweets: results, username: user.username});	
    }
@@ -290,6 +303,7 @@ exports.searchT = function (req,res) {
 		var results = tweets.searchTweets(query);
 		res.render('searchT', {title: 'Search Result',
 								loggedInUser: user.username,
+								background: user.background,
 								searchPhrase: query,
 								tweets: results, username: user.username});	
    }
@@ -308,6 +322,7 @@ exports.searchP = function (req, res) {
 		var results = users.searchPeople(query);
 		res.render('searchP', {title: 'Search Result',
 								loggedInUser: user.username,
+								background: user.background,
 								searchPhrase: query,
 								users: results, username: user.username});
 	}
@@ -346,6 +361,7 @@ exports.detailedTweet = function (req, res) {
 			var isFollowing = users.isFollowing(loggedInUser, user);
 			res.render('detailedTweet',{title: 'Detailed Tweet', 
 						loggedInUser: loggedInUser.username, 
+						background: user.background,
 						convo: "", 
 						profilePic: userdb[0].profilePic, //change later
 						origTweet: tweets.tweetdb[tweetId],
@@ -357,6 +373,7 @@ exports.detailedTweet = function (req, res) {
 			var isFollowing = users.isFollowing(loggedInUser, user);
 			res.render('detailedTweet',{title: 'Detailed Tweet', 
 						loggedInUser: user.username, 
+						background: user.background,
 						convo: tweetconvo, 
 						profilePic: userdb[0].profilePic, //change later
 						origTweet: tweetconvo[0],
@@ -399,6 +416,7 @@ exports.simpleReply = function (req, res) {
 		var tweetId = req.params.tweetId;
 		res.render('detailedTweet',{title: 'Simple Reply', 
 					loggedInUser: user.username, 
+					background: user.background,
 					convo: "", 
 					profilePic: userdb[0].profilePic, 
 					origTweet: tweets.tweetdb[tweetId],
@@ -438,6 +456,7 @@ exports.editSettings = function (req, res){
 			res.render('editSettings', {title: 'Edit Settings', 
 			loggedInUser: username,
 			msg: settingsMsg, 
+			background: user.background,
 			pv: users.userdb[user.uid-1].profVis, 
 			mp: users.userdb[user.uid-1].mentionPerm, 
 			pm: users.userdb[user.uid-1].pmPerm,
@@ -478,6 +497,7 @@ exports.editProfile = function (req, res){
 		res.render('editProfile', { title: 'Edit Profile',
 					loggedInUser: username,
 					msg: profileMsg,
+					background: user.background,
 					name: users.userdb[user.uid-1].name,
 					username: users.userdb[user.uid-1].username,
 					email: users.userdb[user.uid-1].email,
@@ -556,7 +576,7 @@ exports.chat = function (req, res){
 	if (user === undefined || online[user.uid] === undefined) {
       res.redirect('/');
     }else{
-	  res.render('chat', { title: 'Chat', loggedInUser: user.username, username:user.username, online: online, messageList: chat.messageList });
+	  res.render('chat', { title: 'Chat', loggedInUser: user.username, username:user.username, online: online, messageList: chat.messageList, background: user.background});
     }
 }
 
@@ -571,6 +591,34 @@ exports.pm = function (req, res){
     }else{
       var messageList= ["Here is a test list", "Of different things", "This is the third element"]
 	  res.render('pm', { title: 'PM', loggedInUser: user.username, username:user.username, pmfollowers: user.follower, messageList: "" });
+    }
+}
+
+// ### changeBackground
+/* 
+* GET changeBackground page
+*/
+exports.changeBackground = function (req, res){
+	var user = req.session.user
+	if (user === undefined || online[user.uid] === undefined) {
+      res.redirect('/');
+    }else{
+	  res.render('changeBackground', { title: 'Change Background', loggedInUser: user.username, username:user.username, background:user.background});
+    }
+}
+
+// ### saveBackground
+/* 
+* Post saveBackground page
+*/
+exports.saveBackground = function (req, res){
+	var user = req.session.user
+	if (user === undefined || online[user.uid] === undefined) {
+      res.redirect('/');
+    }else{
+      var bName = req.body.bName;
+      users.saveUserBackground(user,bName,req);
+	  res.redirect('/'+user.username+'/home');
     }
 }
 
