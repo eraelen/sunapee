@@ -328,7 +328,7 @@ exports.detailedTweet = function (req, res) {
 		req.flash('userAuth', 'Not logged in!');
 		res.redirect('/');
 	} else {
-		loggedInUser = users.getUserById(loggedInUser.username);
+		//loggedInUser = users.getUserById(loggedInUser.username);
 		var tweetId = req.params.tweetId;
 		var tweetconvo = tweets.getTweetConvoByTweetID(tweetId);
 		if (tweetconvo === null) {
@@ -347,7 +347,7 @@ exports.detailedTweet = function (req, res) {
 			var user = users.getUserById(tweetconvo[0].username);
 			var isFollowing = users.isFollowing(loggedInUser, user);
 			res.render('detailedTweet',{title: 'Detailed Tweet', 
-						loggedInUser: user.username, 
+						loggedInUser: loggedInUser.username, 
 						background: user.background,
 						convo: tweetconvo, 
 						profilePic: userdb[0].profilePic, //change later
