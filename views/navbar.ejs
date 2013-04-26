@@ -20,6 +20,9 @@
   /* IE8-9 gradient filter */
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00816B', endColorstr='#63E5CF', GradientType=0);
 }
+    @shadow{
+       color:black;
+    }
 
 
      </style>
@@ -27,14 +30,14 @@
      <div id="footer">
         <div class="navbar" >
         <div class="navbar-inner">
-          <a class="brand" href="/<%= username %>/home">@<%= username %></a>
+          <a class="brand" href="/<%= loggedInUser %>/home">@<%= loggedInUser %></a>
           <ul class="nav">
             <li class="divider-vertical"></li>
-            <li><a href="/<%= username %>/home"><img src="/images/navbar/homeIcon.png" class="icon"></a></li>
-            <li><a href="/<%= username %>/interaction"><img src="/images/navbar/interactionIcon.png" class="icon"></a></li>
+            <li><a href="/<%= loggedInUser %>/home"><img src="/images/navbar/homeIcon.png" class="icon"></a></li>
+            <li><a href="/<%= loggedInUser %>/interaction"><img src="/images/navbar/interactionIcon.png" class="icon"></a></li>
             <li><a href="/<%= loggedInUser %>/profile"><img src="/images/navbar/profileIcon.png" class="icon"></a></li>
 
-            <li><a href="/<%= username %>/home"><img src="/images/navbar/composeIcon.png" alt="direct to home page for composing" class="icon"></a></li>
+            <li><a href="/<%= loggedInUser %>/home"><img src="/images/navbar/composeIcon.png" alt="direct to home page for composing" class="icon"></a></li>
             <li><a href="/chat"><img src="/images/navbar/messageIcon.png" alt="global chat" class="icon"></a></li>
 
           </ul>
