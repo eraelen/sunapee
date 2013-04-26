@@ -49,35 +49,39 @@
   </div>
 	
 	<div id="tweetListContainer" class="elem">
-		<% for (var i=1; i < convo.length; i++) { %>
-			<div id = "newtweet" >
-				<b><%= convo[i].name %></b> <a href="/<%= convo[i].username %>/profile"> @<%= convo[i].username %></a>
-				<div class="tmsg">
-					<% var msg = convo[i].msg %><% msg = msg.split(" ") %>
-					<% for (var j=0; j < msg.length; j++) { %>
-						<% if (msg[j].charAt(0) === "@" && msg[j].split("\@").length === 2) { var word = msg[j].substring(1); %>
-							<a href="/<%= word %>/profile"> <%= msg[j] %></a> 
-						<% } else if (msg[j].charAt(0) === "#" && msg[j].split("\#").length === 2) { var word = msg[j].substring(1); %>
-							<a href="/searchT/<%= word %>"> <%= msg[j] %></a> 
-						<% } else { %>
-							<%= msg[j] %>
+		<div id="tweetList">
+			<% for (var i=1; i < convo.length; i++) { %>
+				<div class="tweet" id = "t<%= convo[i].id %>" >
+						<b><%= convo[i].name %></b> <a href="/<%= convo[i].username %>/profile"> @<%= convo[i].username %></a>
+						<div class="tmsg">
+							<% var msg = convo[i].msg %><% msg = msg.split(" ") %>
+							<% for (var j=0; j < msg.length; j++) { %>
+								<% if (msg[j].charAt(0) === "@" && msg[j].split("\@").length === 2) { var word = msg[j].substring(1); %>
+									<a href="/<%= word %>/profile"> <%= msg[j] %></a> 
+								<% } else if (msg[j].charAt(0) === "#" && msg[j].split("\#").length === 2) { var word = msg[j].substring(1); %>
+									<a href="/searchT/<%= word %>"> <%= msg[j] %></a> 
+								<% } else { %>
+									<%= msg[j] %>
+								<% } %>
+							<% } %>
+						</div>
+						<%= convo[i].date %><br>
+						<a href="/<%= convo[i].id %>/detailedTweet">Detail</a> | <a href="/<%= convo[i].id %>/simpleReply">Reply</a> | <a href="/">Retweet</a>
+						<% if (loggedInUser === convo[i].username) { %>
+							 | <a class="delT" id="<%= convo[i].id %>" href=>Delete</a>
 						<% } %>
-					<% } %>
+					</div>
 				</div>
-				<%= convo[i].date %><br>
-				<!--<a href="/<%= convo[i].id %>/detailedTweet">Detail</a> <a href="" class="reply" id="<%= convo[i].username %>" href=>Reply</a>-->
-				<a href="/<%= convo[i].id %>/detailedTweet">Detail</a> <a href="/<%= convo[i].id %>/simpleReply">Reply</a>
-				<div class="replybox" id="<%= convo[i].username %>" style="display:none;">
-					<form method="post" id="compose" action="">
-						<textarea name="message" cols="60" rows="4">BLAH BLAH BLAH</textarea>
-						<br>
-						<input type="submit" name="submit" value="Reply" />
-					</form>
-				</div>
-			</div>
-		<% } %>
+			<% } %>
+		</div>
 	</div>
 </div>
+
+<script src="/javascripts/tweet.js"> </script>
+<script>
+	newTweet();
+	delTweet();
+</script>
 
 <script src='/javascripts/follow.js'></script>
 <script>
