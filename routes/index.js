@@ -232,7 +232,6 @@ exports.interaction = function(req, res) {
         res.redirect('/'+username+'/interaction');
       } else {
        var tl = tweets.getTByMention(username, 20);
-       console.log('bg!'+user.background);
        res.render('interaction',
               { title: 'Interaction',
                 name: user.name,
