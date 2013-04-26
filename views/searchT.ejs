@@ -19,23 +19,26 @@
 			<h3>Results for <font color="red"><%= searchPhrase %></font> :</h3>
 			<% if (tweets !== null) { %>
 				<% for (var i=0; i < tweets.length; i++) { %>
-					<div class= "tweet">
-						<b><%= tweets[i].name %></b> <a href="/<%= tweets[i].username %>/profile"> @<%= tweets[i].username %></a>
-						<div class="tmsg">
-							<% var msg = tweets[i].msg %><% msg = msg.split(" ") %>
-							<% for (var j=0; j < msg.length; j++) { %>
-								<% if (msg[j].charAt(0) === "@" && msg[j].split("\@").length === 2) { var word = msg[j].substring(1); %>
-									<a href="/<%= word %>/profile"> <%= msg[j] %> </a>
-								<% } else if (msg[j].charAt(0) === "#" && msg[j].split("\#").length === 2) { var word = msg[j].substring(1); %>
-									<a href="/searchT/<%= word %>"> <%= msg[j] %> </a>
-								<% } else { %>
-									<%= msg[j] %>
-								<% } %>
+					<div class="tweet" id = "t<%= tweets[i].id %>" >
+					<b><%= tweets[i].name %></b> <a href="/<%= tweets[i].username %>/profile"> @<%= tweets[i].username %></a>
+					<div class="tmsg">
+						<% var msg = tweets[i].msg %><% msg = msg.split(" ") %>
+						<% for (var j=0; j < msg.length; j++) { %>
+							<% if (msg[j].charAt(0) === "@" && msg[j].split("\@").length === 2) { var word = msg[j].substring(1); %>
+								<a href="/<%= word %>/profile"> <%= msg[j] %></a> 
+							<% } else if (msg[j].charAt(0) === "#" && msg[j].split("\#").length === 2) { var word = msg[j].substring(1); %>
+								<a href="/searchT/<%= word %>"> <%= msg[j] %></a> 
+							<% } else { %>
+								<%= msg[j] %>
 							<% } %>
-						</div>
-						<%= tweets[i].date %><br>
-						<a href="/<%= tweets[i].id %>/detailedTweet">Detail</a> <a href="/<%= tweets[i].id %>/simpleReply">Reply</a>
+						<% } %>
 					</div>
+					<%= tweets[i].date %><br>
+					<a href="/<%= tweets[i].id %>/detailedTweet">Detail</a> | <a href="/<%= tweets[i].id %>/simpleReply">Reply</a> | <a href="/">Retweet</a>
+					<% if (loggedInUser === tweets[i].username) { %>
+						 | <a class="delT" id="<%= tweets[i].id %>" href=>Delete</a>
+					<% } %>
+				</div>
 				<% } %>
 			<% } else { %>
 				<p> No results found. </p>
