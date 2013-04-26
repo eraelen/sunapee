@@ -145,12 +145,12 @@ function chatApp(socket) {
     var otherUser = obj.username.getText();
     var message = obj.loggedInUser+": "+obj.text.getText();
     var currentdate = new Date(); 
-    var datetime = " Sent- " + (currentdate.getMonth()+1) + "/"
+    var datetime = " (sent- " + (currentdate.getMonth()+1) + "/"
                 + currentdate.getDate()  + "/" 
                 + currentdate.getFullYear() + " @ "  
                 + currentdate.getHours() + ":"  
                 + currentdate.getMinutes() + ":" 
-                + currentdate.getSeconds();
+                + currentdate.getSeconds()+")";
     message = message + datetime;
     socket.emit('post', { post : message, otherUser: otherUser, loggedInUser: obj.loggedInUser});
     // Clear the text box and add the message locally:
