@@ -108,9 +108,12 @@ exports.profile = function(req, res) {
 						loggedInUser: loggedInUser.username});
 		}
 	  } else {
-	    res.render('error',
-	               {title: 'Error', background: user.background,
-	                msg: "Oops, this user does not exist."});
+	    res.render('error', {title: 'Error - User Nonexistent',
+						background: loggedInUser.background,
+						errorHeader: "User does NOT exist",
+						msg: "No one with the username '" + req.params.id + "' exists in Tweetee. Invite your friend to register: tweetee.com/register",
+						username: loggedInUser.username,
+						loggedInUser: loggedInUser.username});
 	  }
 	}
 }
@@ -237,7 +240,7 @@ exports.interaction = function(req, res) {
                 name: user.name,
                 username: username,
                 background: user.background,
-                tweets: tweetsToHtml(tl),
+                tweets: tl,
                 loggedInUser: user.username
                 });
      }
