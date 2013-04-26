@@ -332,11 +332,11 @@ exports.detailedTweet = function (req, res) {
 		var tweetId = req.params.tweetId;
 		var tweetconvo = tweets.getTweetConvoByTweetID(tweetId);
 		if (tweetconvo === null) {
-			var user = tweets.tweetdb[tweetId];
+			var user = users.getUserById(tweets.tweetdb[tweetId].username);
 			var isFollowing = users.isFollowing(loggedInUser, user);
 			res.render('detailedTweet',{title: 'Detailed Tweet', 
 						loggedInUser: loggedInUser.username, 
-						background: user.background,
+						background: loggedInUser.background,
 						convo: "", 
 						profilePic: userdb[0].profilePic, //change later
 						origTweet: tweets.tweetdb[tweetId],
@@ -383,18 +383,21 @@ exports.detailedTweetReply = function (req, res) {
 *  Can be improved: Create a div for compose box once the "Reply" link is clicked.
 */
 exports.simpleReply = function (req, res) {
-	var user = req.session.user;
-	if (user === undefined || online[user.uid] === undefined) {
+	var loggedInUser = req.session.user;
+	if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
 		req.flash('userAuth', 'Not logged in!');
 		res.redirect('/');
 	} else {
 		var tweetId = req.params.tweetId;
+		var user = users.getUserById(tweets.tweetdb[tweetId].username);
+		var isFollowing = users.isFollowing(loggedInUser, user);
 		res.render('detailedTweet',{title: 'Simple Reply', 
-					loggedInUser: user.username, 
-					background: user.background,
+					loggedInUser: loggedInUser.username, 
+					background: loggedInUser.background,
 					convo: "", 
 					profilePic: userdb[0].profilePic, 
 					origTweet: tweets.tweetdb[tweetId],
+					isFollowing: isFollowing,
 					//had to include this because text area did not like <%= origTweet.username %>
 					username: tweets.tweetdb[tweetId].username});
 	}
