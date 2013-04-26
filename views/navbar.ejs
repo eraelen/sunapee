@@ -3,13 +3,34 @@
         .icon {
            height:25px;
            width:25px;}
+
+
+.navbar-inner {
+  background-color: #00816B; /* fallback color, place your own */
+
+  /* Gradients for modern browsers, replace as you see fit */
+  background-image: -moz-linear-gradient(top, #00816B, #63E5CF);
+  background-image: -ms-linear-gradient(top, #00816B, #63E5CF);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#00816B), to(#63E5CF));
+  background-image: -webkit-linear-gradient(top, #00816B, #63E5CF);
+  background-image: -o-linear-gradient(top, #00816B, #63E5CF);
+  background-image: linear-gradient(top, #00816B, #63E5CF);
+  background-repeat: repeat-x;
+
+  /* IE8-9 gradient filter */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00816B', endColorstr='#63E5CF', GradientType=0);
+}
+
+
      </style>
 
      <div id="footer">
         <div class="navbar" >
         <div class="navbar-inner">
-          <a class="brand" href="/<%= username %>/home">Tweetee</a>
+          <a class="brand" href="/<%= username %>/home"><%= username %></a>
           <ul class="nav">
+            <li class="divider-vertical"></li>
+            <li><a href="/<%= username %>/home"><img src="/images/navbar/homeIcon.png" class="icon"></a></li>
             <li><a href="/<%= username %>/interaction"><img src="/images/navbar/interactionIcon.png" class="icon"></a></li>
             <li><a href="/<%= loggedInUser %>/profile"><img src="/images/navbar/profileIcon.png" class="icon"></a></li>
 
@@ -26,15 +47,7 @@
                       <li><a href="/<%= username %>/editSettings"><img src="/images/navbar/settingsIcon.png" class="icon"></a></li>
                       <li><a href="/<%= username %>/editProfile"><img src="/images/navbar/editProfileIcon.png" class="icon"></a></li>
                      <li><a href="/help"><img src="/images/navbar/helpIcon.png" class="icon"></a></li>
-                      <li class="divider-vertical"></li>
-                      <li class="dropdown" id="accountmenu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">More<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                          <li><a href="#"><img src="/images/navbar/tweetee.png" alt="Tweetee">Tweetee</a></li>  
-                            <li class="divider"></li>  
-                            <li><a href="/logout">Logout</a></li> 
-                        </ul>
-                      </li>
+                     <li><a href="/logout"><img src="/images/navbar/logoutIcon.png" class="icon"></a></li>
                     </ul>
           </ul>
         </div>
