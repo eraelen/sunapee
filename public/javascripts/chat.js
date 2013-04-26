@@ -145,7 +145,7 @@ function chatApp(socket) {
     var otherUser = obj.username.getText();
     var message = obj.loggedInUser+": "+obj.text.getText();
     var currentdate = new Date(); 
-    var datetime = " Date: " + (currentdate.getMonth()+1) + "/"
+    var datetime = " Sent- " + (currentdate.getMonth()+1) + "/"
                 + currentdate.getDate()  + "/" 
                 + currentdate.getFullYear() + " @ "  
                 + currentdate.getHours() + ":"  

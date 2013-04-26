@@ -2,11 +2,14 @@ body {
   background-repeat:no-repeat;
   background-attachment:fixed;
   background-size: cover;
+  background: #00816B;
 }
 
 a {
   color: #00B7FF;
 }
+
+.input-mysize { width: 300px }
 
 .center {
 	margin:auto;

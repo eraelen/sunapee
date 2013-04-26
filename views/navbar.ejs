@@ -16,11 +16,6 @@
             <li><a href="/<%= username %>/home"><img src="/images/navbar/composeIcon.png" alt="direct to home page for composing" class="icon"></a></li>
             <li><a href="/chat"><img src="/images/navbar/messageIcon.png" alt="global chat" class="icon"></a></li>
 
-
-            <li><a href="/<%= username %>/editSettings"><img src="/images/navbar/settingsIcon.png" class="icon"></a></li>
-            <li><a href="/<%= username %>/editProfile"><img src="/images/navbar/editProfileIcon.png" class="icon"></a></li>
-            <li><a href="/help"><img src="/images/navbar/helpIcon.png" class="icon"></a></li>
-
           </ul>
           <form class="navbar-search pull-left" method="post" id="search" action="/searchbox">
             <input type="text" class="search-query" name="query" placeholder="Search">
@@ -28,6 +23,9 @@
           <ul>
 
                     <ul class="nav pull-right">
+                      <li><a href="/<%= username %>/editSettings"><img src="/images/navbar/settingsIcon.png" class="icon"></a></li>
+                      <li><a href="/<%= username %>/editProfile"><img src="/images/navbar/editProfileIcon.png" class="icon"></a></li>
+                     <li><a href="/help"><img src="/images/navbar/helpIcon.png" class="icon"></a></li>
                       <li class="divider-vertical"></li>
                       <li class="dropdown" id="accountmenu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">More<b class="caret"></b></a>
