@@ -11,7 +11,8 @@ var express = require('express')
   , path = require('path')
   , flash = require('connect-flash')
   , fs = require('fs')
-  , formidable = require('formidable');
+  , formidable = require('formidable')
+  , mkdirp = require('mkdirp');
 
 var app = express();
 
