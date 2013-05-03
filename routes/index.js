@@ -17,19 +17,29 @@ var profileMsg = '';
 
 var fs = require('fs');
 
+var db = require('../lib/sql.js');
+
+/*var t = db.getUserById('tim',function(u){
+	console.log(u);
+});*/
+
+var t = db.getFollowing('caleb');
+/*
+users.getUserById('tim', function(user) {
+		console.log(JSON.stringify(user));
+	});*/
+//users.getFollowing('caleb');
 
 exports.test = function(req, res) {
 	//console.log(JSON.stringify(users.getUserById('tim')));
 	//console.log(JSON.stringify(users.getUserTweets('tim')));
 	//console.log(users.getUserTweets('tim', function(){}));
-	users.getUserTweets('tim', function(tl){
+	/*users.getUserTweets('tim', function(tl){
 		console.log(JSON.stringify(tl));
-	});
+	});*/
 	/*
-	users.getUserById('tim', function(user) {
-		console.log(user);
-	}
-		);*/
+	*/
+	
 
 
 }
@@ -81,7 +91,7 @@ exports.home = function(req, res){
   	if (username !== req.params.id){
     	res.redirect('/'+username+'/home');
     }else {
-    	
+
     }
   });
 
