@@ -36,19 +36,6 @@ users.getUserById('tim', function(user) {
 //db.getTNumberById('tim');
 //db.getUserStats('tim');
 //db.getRecentT('tim');
-exports.test = function(req, res) {
-	//console.log(JSON.stringify(users.getUserById('tim')));
-	//console.log(JSON.stringify(users.getUserTweets('tim')));
-	//console.log(users.getUserTweets('tim', function(){}));
-	/*users.getUserTweets('tim', function(tl){
-		console.log(JSON.stringify(tl));
-	});*/
-	/*
-	*/
-	
-
-
-}
 
 
 

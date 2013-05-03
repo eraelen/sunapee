@@ -1,16 +1,16 @@
 CREATE TABLE users (
-	uid integer primary key autoincrement,
-	username varchar(15) not null,
-	name varchar(30) not null,
-	password varchar(30) not null,
-	email varchar(30) not null,
-	location varchar(30),
-	website varchar(50),
-	profilepic varchar(100) not null,
-	profvis varchar(20),
-	mentionperm varchar(20),
-	pmperm varchar(20),
-	background varchar(100)
+uid integer primary key autoincrement,
+username varchar(15) not null,
+name varchar(30) not null,
+password varchar(30) not null,
+email varchar(30) not null,
+location varchar(30),
+website varchar(50),
+profilepic varchar(100) not null,
+profvis varchar(20),
+mentionperm varchar(20),
+pmperm varchar(20),
+background varchar(100)
 );
 insert into users values
 (1,'tim','Tim Berners-Lee','mit',"aqua_manga@yahoo.com","Massachusetts","amazon.com","/images/defaultProfilePic.jpg","Public","Public","Public",null);
