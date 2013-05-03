@@ -15,8 +15,27 @@ var mytweets = tweets.tweetdb;
 var conversation = tweets.conversation;
 var profileMsg = '';
 
-
 var fs = require('fs');
+
+
+exports.test = function(req, res) {
+	//console.log(JSON.stringify(users.getUserById('tim')));
+	//console.log(JSON.stringify(users.getUserTweets('tim')));
+	//console.log(users.getUserTweets('tim', function(){}));
+	users.getUserTweets('tim', function(tl){
+		console.log(JSON.stringify(tl));
+	});
+	/*
+	users.getUserById('tim', function(user) {
+		console.log(user);
+	}
+		);*/
+
+
+}
+
+
+
 
 // ## User Server-Side Route-Handlers
 
@@ -24,7 +43,7 @@ var fs = require('fs');
 /*
 *GET home page.
 */
-exports.home = function(req, res){
+/*exports.home = function(req, res){
   var loggedInUser = req.session.user;
   if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
     req.flash('userAuth', 'Not logged in!');
@@ -50,6 +69,44 @@ exports.home = function(req, res){
 			  background: user.background,
                } );
     }
+  }
+}*/
+
+exports.home = function(req, res){
+  var loggedInUser = req.session.user;
+  users.getUserById(loggedInUser.username, function(user){
+  	console.log(JSON.stringify(user));
+  	var name = user.name;
+  	var username = user.username;
+  	if (username !== req.params.id){
+    	res.redirect('/'+username+'/home');
+    }else {
+    	
+    }
+  });
+
+
+
+    var user = users.getUserById(loggedInUser.username);
+    var username = user.username;
+    if (username !== req.params.id){
+      res.redirect('/'+username+'/home');
+    }else {
+      console.log("bg - "+user.background);
+      var tl = tweets.getRecentT(username, user.following, 20);
+      res.render('home', 
+            { title: 'Home',
+              name: user.name,
+              username: username,
+			  profilepic: user.profilePic,
+              tweetN: users.getTNumberById(username),
+              followerN: user.follower.length,
+              followingN: user.following.length,
+              tweets: tl,
+			  loggedInUser: user.username,
+			  background: user.background,
+               } );
+    
   }
 }
 
