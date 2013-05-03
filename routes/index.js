@@ -520,7 +520,7 @@ exports.changeSettings = function (req, res){
 		res.redirect('/');
 	} else {
 		var username = user.username;
-		users.changeUserSettings(username, req.body.profVis, req.body.mentionPerm, req.body.pmPerm);		
+		users.changeUserSettings(username, req.body.profVis);		
 		req.flash('changeSettings', 'Changes saved.');
 		res.redirect('/'+username+'/editSettings');
 	}
