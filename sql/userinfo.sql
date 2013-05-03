@@ -1,16 +1,16 @@
 CREATE TABLE users (
-uid integer primary key autoincrement,
-username varchar(15) not null,
-name varchar(30) not null,
-password varchar(30) not null,
-email varchar(30) not null,
-location varchar(30),
-website varchar(50),
-profilepic varchar(100) not null,
-profvis varchar(20),
-mentionperm varchar(20),
-pmperm varchar(20),
-background varchar(100)
+	uid integer primary key autoincrement,
+	username varchar(15) not null,
+	name varchar(30) not null,
+	password varchar(30) not null,
+	email varchar(30) not null,
+	location varchar(30),
+	website varchar(50),
+	profilepic varchar(100) not null,
+	profvis varchar(20),
+	mentionperm varchar(20),
+	pmperm varchar(20),
+	background varchar(100)
 );
 insert into users values
 (1,'tim','Tim Berners-Lee','mit',"aqua_manga@yahoo.com","Massachusetts","amazon.com","/images/defaultProfilePic.jpg","Public","Public","Public",null);
@@ -25,10 +25,10 @@ insert into users values
 
 
 CREATE TABLE isfollowings (
-username varchar(15) not null,
-fusername varchar(15) not null,
-primary key (username, fusername),
-foreign key (username) references userinfo(username)
+	username varchar(15) not null,
+	fusername varchar(15) not null,
+	primary key (username, fusername),
+	foreign key (username) references userinfo(username)
 );
 insert into isfollowings values 
 ('tim','caleb');
@@ -43,15 +43,15 @@ insert into isfollowings values
 
 
 CREATE TABLE tweets (
-tweetid integer primary key autoincrement,
-username varchar(15) not null,
-name varchar(30) not null,
-date datetime not null,
-msg varchar(140) not null,
-reply integer,
-retweet integer,
-convo integer,
-foreign key (username) references userinfo(username)
+	tweetid integer primary key autoincrement,
+	username varchar(15) not null,
+	name varchar(30) not null,
+	date datetime not null,
+	msg varchar(140) not null,
+	reply integer,
+	retweet integer,
+	convo integer,
+	foreign key (username) references userinfo(username)
 );
 insert into tweets values
 (0,'tim',"Tim Berners-Lee", "thursday","I'm in #Ford !",null,null,0);
@@ -60,16 +60,16 @@ insert into tweets values
 
 
 CREATE TABLE hashtags (
-tweetid integer primary key not null,
-hashtag varchar(40) not null,
-foreign key (tweetid) references userinfo(tweetid)
+	tweetid integer primary key not null,
+	hashtag varchar(40) not null,
+	foreign key (tweetid) references userinfo(tweetid)
 );
 
 CREATE TABLE mentions (
-tweetid integer not null,
-atusername varchar(15) not null,
-primary key (tweetid, atusername),
-foreign key (tweetid) references userinfo(tweetid)
+	tweetid integer not null,
+	atusername varchar(15) not null,
+	primary key (tweetid, atusername),
+	foreign key (tweetid) references userinfo(tweetid)
 );
 
 
