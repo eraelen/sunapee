@@ -492,7 +492,7 @@ exports.editSettings = function (req, res){
 							mp: user.mentionPerm, 
 							pm: user.pmPerm,
 							username: user.username});
-			}
+			});
 		//}
 	//}
 };
