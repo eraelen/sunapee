@@ -22,14 +22,20 @@ var db = require('../lib/sql.js');
 /*var t = db.getUserById('tim',function(u){
 	console.log(u);
 });*/
-
-var t = db.getFollowing('caleb');
+//var u = db.getUserById('tim');
+//console.log(u);
+/*
+var t = db.getFollowing('caleb',function(fl){
+	console.log(fl);
+});*/
 /*
 users.getUserById('tim', function(user) {
 		console.log(JSON.stringify(user));
 	});*/
 //users.getFollowing('caleb');
-
+//db.getTNumberById('tim');
+//db.getUserStats('tim');
+//db.getRecentT('tim');
 exports.test = function(req, res) {
 	//console.log(JSON.stringify(users.getUserById('tim')));
 	//console.log(JSON.stringify(users.getUserTweets('tim')));
@@ -83,42 +89,33 @@ exports.test = function(req, res) {
 }*/
 
 exports.home = function(req, res){
-  var loggedInUser = req.session.user;
-  users.getUserById(loggedInUser.username, function(user){
+  //var loggedInUser = req.session.user;
+  var uname = 'tim';
+  users.getUserById(uname, function(user){
   	console.log(JSON.stringify(user));
-  	var name = user.name;
-  	var username = user.username;
-  	if (username !== req.params.id){
-    	res.redirect('/'+username+'/home');
-    }else {
-
-    }
-  });
-
-
-
-    var user = users.getUserById(loggedInUser.username);
-    var username = user.username;
-    if (username !== req.params.id){
-      res.redirect('/'+username+'/home');
-    }else {
-      console.log("bg - "+user.background);
-      var tl = tweets.getRecentT(username, user.following, 20);
-      res.render('home', 
-            { title: 'Home',
+  	/*if (user.username !== req.params.id){
+    	res.redirect('/'+user.username+'/home');
+    }else {*/
+    	db.getRecentT(uname, function(tl){
+    		console.log(tl);
+    		db.getUserStats(uname, function(stats){
+    		res.render('home', 
+    		 { title: 'Home',
               name: user.name,
-              username: username,
+              username: user.username,
 			  profilepic: user.profilePic,
-              tweetN: users.getTNumberById(username),
-              followerN: user.follower.length,
-              followingN: user.following.length,
+              tweetN: stats.tweetN,
+              followerN: stats.followerN,
+              followingN: stats.followingN,
               tweets: tl,
 			  loggedInUser: user.username,
 			  background: user.background,
                } );
-    
+    		});
+    	});
+    });
   }
-}
+
 
 // ### newtweet
 /*
