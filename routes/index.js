@@ -408,7 +408,7 @@ exports.detailedTweet = function (req, res) {
 						username: user.username});
 		}
 	}
-}
+};
 
 // ### Detailed Tweet REPLY Page
 /**
@@ -425,7 +425,7 @@ exports.detailedTweetReply = function (req, res) {
 		tweets.addTweet(user.name, user.username, req.body.message, parseInt(tweetId), null);
 		res.redirect('/'+tweetId+'/detailedTweet');
 	}
-}
+};
 
 // ### Simple Reply Page View
 /**
@@ -452,7 +452,7 @@ exports.simpleReply = function (req, res) {
 					//had to include this because text area did not like <%= origTweet.username %>
 					username: tweets.tweetdb[tweetId].username});
 	}
-}
+};
 
 // ### Simple Reply Page Handler
 /**
@@ -464,7 +464,7 @@ exports.displaySimpleReply = function (req, res) {
 	var tweetId = req.params.tweetId;	
 	tweets.addTweet(user.name, user.username, req.body.message, parseInt(tweetId), null);
 	res.redirect('/'+tweetId+'/simpleReply');
-}
+};
 
 // ### Edit Settings Page View
 /**
@@ -495,7 +495,7 @@ exports.editSettings = function (req, res){
 			}
 		//}
 	//}
-}
+};
 
 // ### Change Settings
 /**
