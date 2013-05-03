@@ -8,20 +8,18 @@ location varchar(30),
 website varchar(50),
 profilepic varchar(100) not null,
 profvis varchar(20),
-mentionperm varchar(20),
-pmperm varchar(20),
 background varchar(100)
 );
 insert into users values
-(1,'tim','Tim Berners-Lee','mit',"aqua_manga@yahoo.com","Massachusetts","amazon.com","/images/defaultProfilePic.jpg","Public","Public","Public",null);
+(1,'tim','Tim Berners-Lee','mit',"aqua_manga@yahoo.com","Massachusetts","amazon.com","/images/defaultProfilePic.jpg","Public",null);
 insert into users values
-(2,'hazel','Hazel Rozetta','lezah',"ysasaki@smith.edu","United States","petco.com", "/images/defaultProfilePic.jpg","Public","Public","Public",null);
+(2,'hazel','Hazel Rozetta','lezah',"ysasaki@smith.edu","United States","petco.com", "/images/defaultProfilePic.jpg","Public",null);
 insert into users values
-(3,'caleb','Caleb Marks','belac',"ysasaki2014@gmail.com","Asia","ebay.com","/images/defaultProfilePic.jpg","Public","Public","Public","");
+(3,'caleb','Caleb Marks','belac',"ysasaki2014@gmail.com","Asia","ebay.com","/images/defaultProfilePic.jpg","Public","");
 insert into users values
-(4,'cheerfuldonkey','Eeyore','eeyore',"mynameiseeyore@hundredacrewood.com","Hundred Acre Wood",null,"/images/users/cheerfuldonkey/eeyore_profilepic.jpg","Public","Public","Public",null);
+(4,'cheerfuldonkey','Eeyore','eeyore',"mynameiseeyore@hundredacrewood.com","Hundred Acre Wood",null,"/images/users/cheerfuldonkey/eeyore_profilepic.jpg","Public",null);
 insert into users values
-(5,'thepooh','Winnie','winnie',"mynameiswinnie@hundredacrewood.com","Hundred Acre Wood", null,"/images/users/thepooh/pooh_profilepic.jpg","Public","Public","Public",null);
+(5,'thepooh','Winnie','winnie',"mynameiswinnie@hundredacrewood.com","Hundred Acre Wood", null,"/images/users/thepooh/pooh_profilepic.jpg","Public",null);
 
 
 CREATE TABLE isfollowings (

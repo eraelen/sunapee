@@ -473,26 +473,29 @@ exports.displaySimpleReply = function (req, res) {
  * To get to this page, user can click on Tools icon.
  */
 exports.editSettings = function (req, res){
-	var user = req.session.user;
+	//var user = req.session.user;
+	var username = 'tim';
 	var settingsMsg = req.flash('changeSettings') || '';
-	if (user === undefined || online[user.uid] === undefined) {
+	/*if (user === undefined || online[user.uid] === undefined) {
 		res.redirect('/');
 	} else {
 		var username = user.username;
 		if(username !== req.params.id){
 			res.redirect('/'+username+'/editSettings');
-		} else {
-			res.render('editSettings', {title: 'Edit Settings', 
-			loggedInUser: username,
-			msg: settingsMsg, 
-			background: user.background,
-			pv: users.userdb[user.uid-1].profVis, 
-			mp: users.userdb[user.uid-1].mentionPerm, 
-			pm: users.userdb[user.uid-1].pmPerm,
-			username: username});
-		}
-	} 
-};
+		} else {*/
+			db.getUserInfo(username, function(user) {
+				res.render('editSettings', {title: 'Edit Settings', 
+							loggedInUser: user.username,
+							msg: settingsMsg, 
+							background: user.background,
+							pv: user.profVis, 
+							mp: user.mentionPerm, 
+							pm: user.pmPerm,
+							username: user.username});
+			}
+		//}
+	//}
+}
 
 // ### Change Settings
 /**
