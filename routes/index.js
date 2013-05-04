@@ -22,8 +22,8 @@ var db = require('../lib/sql.js');
 /*var t = db.getUserById('tim',function(u){
 	console.log(u);
 });*/
-
-var t = db.getFollowing('caleb');
+//var t = db.getFollowing('caleb');
+//console.log(t);
 /*
 users.getUserById('tim', function(user) {
 		console.log(JSON.stringify(user));
@@ -31,6 +31,7 @@ users.getUserById('tim', function(user) {
 //users.getFollowing('caleb');
 
 exports.test = function(req, res) {
+
 	//console.log(JSON.stringify(users.getUserById('tim')));
 	//console.log(JSON.stringify(users.getUserTweets('tim')));
 	//console.log(users.getUserTweets('tim', function(){}));
