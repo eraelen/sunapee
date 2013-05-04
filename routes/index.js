@@ -484,6 +484,7 @@ exports.editSettings = function (req, res){
 			res.redirect('/'+username+'/editSettings');
 		} else {*/
 			db.getUserInfo(username, function(user) {
+				console.log(user);
 				res.render('editSettings', {title: 'Edit Settings', 
 							loggedInUser: user.username,
 							msg: settingsMsg, 
