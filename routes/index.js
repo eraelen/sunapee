@@ -76,8 +76,8 @@ users.getUserById('tim', function(user) {
 }*/
 
 exports.home = function(req, res){
-  //var loggedInUser = req.session.user;
-  var uname = 'tim';
+  var loggedInUser = req.session.user;
+  var uname = loggedInUser.username;
   users.getUserById(uname, function(user){
   	//console.log(JSON.stringify(user));
   	/*if (user.username !== req.params.id){
