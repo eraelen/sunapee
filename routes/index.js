@@ -145,6 +145,58 @@ exports.profile = function(req, res) {
 	if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
 		res.redirect('/');
 	} else {
+		db.getUserById(req.params.id, function(user){
+			if (user !== null) {
+				//user exists
+				db.checkProfilePermission(loggedInUser.username, user.username, function(allow){
+					if (allow) {
+						db.getUserStats(user.username, function(stats){
+							db.isFollowing(loggedInUser.username, user.username, function(isFollowing){
+								db.getUserT(user.username, function(tl){
+									res.render('profile',
+									  {title: 'Profile',
+									   loggedInUser: loggedInUser.username,
+									   background: user.background,
+									   name: user.name,
+									   username: user.username,
+									   profilepic: user.profilePic,
+									   tweetN: stats.tweetN,
+									   followerN: stats.followerN,
+									   followingN: stats.followingN,
+									   isFollowing: isFollowing,
+									   tweets: tl,
+									   background: loggedInUser.background});
+								});
+							});
+						});
+					} else {
+						res.render('error', {title: 'Error - Profile Permission',
+				            background: loggedInUser.background, 
+							errorHeader: "Profile Permission",
+							msg: "You are not allowed to view " + user.username+ "'s profile.",
+							username: loggedInUser.username,
+							loggedInUser: loggedInUser.username});
+					}
+				});
+			} else {
+				//user doesn't exist
+				res.render('error', {title: 'Error - User Nonexistent',
+						background: loggedInUser.background,
+						errorHeader: "User does NOT exist",
+						msg: "No one with the username '" + req.params.id + "' exists in Tweetee. Invite your friend to register: tweetee.com/register",
+						username: loggedInUser.username,
+						loggedInUser: loggedInUser.username});
+			}
+		});
+
+	}
+}
+/*
+exports.profile = function(req, res) {
+  	var loggedInUser = req.session.user;
+	if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
+		res.redirect('/');
+	} else {
 	  loggedInUser = users.getUserById(loggedInUser.username);
 	  var user = users.getUserById(req.params.id);
 	  if (user !== undefined ) {
@@ -186,7 +238,7 @@ exports.profile = function(req, res) {
 						loggedInUser: loggedInUser.username});
 	  }
 	}
-}
+}*/
 
 // ### follower
 /* 
