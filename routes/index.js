@@ -157,19 +157,23 @@ exports.profile = function(req, res) {
 							db.isFollowing(loggedInUser.username, user.username, function(isFollowing){
 								console.log("isFollowing in profile " + isFollowing);
 								db.getUserT(user.username, function(tl){
-									res.render('profile',
-									  {title: 'Profile',
-									   loggedInUser: loggedInUser.username,
-									   background: user.background,
-									   name: user.name,
-									   username: user.username,
-									   profilepic: user.profilepic,
-									   tweetN: stats.tweetN,
-									   followerN: stats.followerN,
-									   followingN: stats.followingN,
-									   isFollowing: isFollowing,
-									   tweets: tl,
-									   background: loggedInUser.background});
+									db.getTrendingHT(function(ht){
+										res.render('profile',
+										  {title: 'Profile',
+										   loggedInUser: loggedInUser.username,
+										   background: user.background,
+										   name: user.name,
+										   username: user.username,
+										   profilepic: user.profilepic,
+										   tweetN: stats.tweetN,
+										   followerN: stats.followerN,
+										   followingN: stats.followingN,
+										   isFollowing: isFollowing,
+										   tweets: tl,
+										   background: loggedInUser.background,
+										   ht: ht
+										   });
+									});
 								});
 							});
 						});
@@ -259,23 +263,31 @@ exports.follower = function(req, res) {
 			if (loggedInUser.username === user.username) {
 				db.getFollowerList(loggedInUser.username, function(fl){
 					console.log(fl);
-					res.render('myfollower',
+					db.getTrendingHT(function(ht){
+						res.render('myfollower',
 							{title: 'Follower',
 							 loggedInUser: loggedInUser.username,
 							 background: loggedInUser.background,
 							 name: loggedInUser.name,
 							 username: loggedInUser.username,
-							 followers: fl});
+							 followers: fl,
+							 ht: ht
+							 });
+					});
 				});
 			} else {
 				db.getFollowerList(user.username, function(fl){
-					res.render('follower', 
-		    			{ title: 'Follower',
-		            	  loggedInUser: loggedInUser.username,
-		            	  background: loggedInUser.background,
-		    			  name: user.name,
-		    			  username: loggedInUser.username,
-			    			  followers: fl} );
+					db.getTrendingHT(function(ht){
+						res.render('follower', 
+							{ title: 'Follower',
+							  loggedInUser: loggedInUser.username,
+							  background: loggedInUser.background,
+							  name: user.name,
+							  username: loggedInUser.username,
+							  followers: fl,
+							  ht: ht
+							  });
+					});
 				});
 			}
 		});	
@@ -336,13 +348,17 @@ exports.following = function(req, res) {
 	} else {
 		db.getUserById(req.params.id, function(user){
 			db.getFollowingList(user.username,function(fl){
-				res.render('following', 
-    			{ title: 'Following',
-            	  loggedInUser: loggedInUser.username,
-            	  background: loggedInUser.background,
-    			  name: user.name,
-    			  username: user.username,
-    			  following: fl} );
+				db.getTrendingHT(function(ht){
+					res.render('following', 
+					{ title: 'Following',
+					  loggedInUser: loggedInUser.username,
+					  background: loggedInUser.background,
+					  name: user.name,
+					  username: user.username,
+					  following: fl,
+					  ht: ht
+					  } );
+				});
 			});
 		});
   }
@@ -446,14 +462,17 @@ exports.interaction = function(req, res) {
       } else {
 
        db.getTByMention(username, 20, function(err, tl){
+		db.getTrendingHT(function(ht){
           res.render('interaction',
               { title: 'Interaction',
                 name: user.name,
                 username: username,
                 background: user.background,
                 tweets: tl,
-                loggedInUser: user.username
+                loggedInUser: user.username,
+				ht: ht
                 });
+		});
        });
      }
    }
@@ -491,12 +510,15 @@ exports.searchT = function (req,res) {
 			if(err){
 				results(err);
 			}else{
-                res.render('searchT', {title: 'Search Result',
+                db.getTrendingHT(function(ht){
+					res.render('searchT', {title: 'Search Result',
 								loggedInUser: user.username,
 								background: user.background,
 								searchPhrase: query,
 								tweets: results, 
-								username: user.username});
+								username: user.username,
+								ht: ht});
+				});
 			}	
 		});
    }
@@ -516,14 +538,15 @@ exports.searchP = function (req, res) {
 			if(err){
 				results(err);
 			}else{
-                console.log("here....");
-			    console.log(results);
-                res.render('searchP', {title: 'Search Result',
+				db.getTrendingHT(function(ht){
+					res.render('searchP', {title: 'Search Result',
 								loggedInUser: user.username,
 								background: user.background,
 								searchPhrase: query,
 								users: results, username: 
-								user.username});
+								user.username,
+								ht:ht});
+				});
 			}	
 		});
    }
