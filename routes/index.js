@@ -601,6 +601,8 @@ exports.displaySimpleReply = function (req, res) {
 		res.redirect('/');
 	} else {
 		var tweetId = req.params.tweetId;
+		console.log(user.name);
+		console.log(user.username);
 		db.addTweet(user.name, user.username, req.body.message, parseInt(tweetId), null, function() {
 			res.redirect('/'+tweetId+'/simpleReply');
 		});		
@@ -810,8 +812,12 @@ exports.deleteTweet = function (req, res) {
 	if (user === undefined || online[user.uid] === undefined) {
 		res.redirect('/');
     } else {
-		tweets.deleteTweet(user.username, req.body.tweetID);
-		res.json([req.body.tweetID,users.getTNumberById(user.username)]);
+		var tweetId = req.body.tweetID;
+		db.deleteTweet(tweetId);
+		db.getTNumberById(user.username, function(tc) {
+			console.log("tweetCount " + tc);
+			res.json([req.body.tweetID,tc]);
+		});		
 	}	
 }
 
