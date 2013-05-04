@@ -520,7 +520,7 @@ exports.displaySimpleReply = function (req, res) {
  * To get to this page, user can click on Tools icon.
  */
 exports.editSettings = function (req, res){
-	var username = 'tim';
+	var username = 'cheerfuldonkey';
 	var settingsMsg = req.flash('changeSettings') || '';
 	
 	//var user = req.session.user;
@@ -554,7 +554,7 @@ exports.changeSettings = function (req, res){
 		res.redirect('/');
 	} else {*/
 		//var username = user.username;
-		var username = 'tim';
+		var username = 'cheerfuldonkey';
 		db.changeUserSettings(username, req.body.profVis);		
 		req.flash('changeSettings', 'Changes saved.');
 		res.redirect('/'+username+'/editSettings');
@@ -568,7 +568,7 @@ exports.changeSettings = function (req, res){
  * User must always enter current password to allow changes.
  */
 exports.editProfile = function (req, res){
-	var username = 'tim';
+	var username = 'cheerfuldonkey';
 	var profileMsg = req.flash('changeProfile') || '';
 	
 	/*var user = req.session.user;
@@ -599,7 +599,7 @@ exports.editProfile = function (req, res){
 *  Users will be informed whether the changes are saved or not.
 */
 exports.changeProfile = function (req, res) {
-	var username = 'tim';
+	var username = 'cheerfuldonkey';
 	/*var user = req.session.user;
 	if (user === undefined || online[user.uid] === undefined) {
 		res.redirect('/');
@@ -608,6 +608,8 @@ exports.changeProfile = function (req, res) {
 		console.log("location is " + req.body.location);
 		console.log("email is " + req.body.email);
 		db.changeUserProfile(username, req.body.name, req.body.username, req.body.email, req.body.location, req.body.website, req.body.newpass, req.body.confirmnewpass, req.body.currentpass, function(validChange) {		
+		db.getUserInfo(username, function(user) {
+				console.log(user);});	
 			if (validChange.b) {
 				username = validChange.username;
 				req.flash('changeProfile', 'Changes saved.');
