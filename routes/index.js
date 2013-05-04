@@ -485,9 +485,11 @@ exports.detailedTweet = function (req, res) {
 		var loggedinusername = 'tim';
 		var tweetId = req.params.tweetId;
 		var isFollowing = false; //default
-		db.getTweetConvoByTweetID(parseInt(tweetId), function(tc) {
+		db.getTweetConvoByTweetID(parseInt(tweetId), function(myReturn) {
+			var tc = myReturn.tc;
+			var len = myReturn.length;
 			console.log("tc is --- " + tc.username);
-			if (tc === null) {
+			if (len === 1) {
 				console.log("only one tweet");
 				db.getUserById(tc.username,function(user) {
 					db.isF(loggedinusername,tc.username,function(f) {
