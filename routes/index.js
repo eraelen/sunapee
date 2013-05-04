@@ -476,40 +476,61 @@ exports.searchBox = function (req,res) {
  * The rest of the conversation appears below the box.
  */
 exports.detailedTweet = function (req, res) {
-	var loggedInUser = req.session.user;
+	/*var loggedInUser = req.session.user;
 	if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
 		req.flash('userAuth', 'Not logged in!');
 		res.redirect('/');
 	} else {
-		//loggedInUser = users.getUserById(loggedInUser.username);
+		//loggedInUser = users.getUserById(loggedInUser.username);*/
+		var loggedinusername = 'tim';
 		var tweetId = req.params.tweetId;
-		var tweetconvo = tweets.getTweetConvoByTweetID(tweetId);
-		if (tweetconvo === null) {
-			var user = users.getUserById(tweets.tweetdb[tweetId].username);
-			var isFollowing = users.isFollowing(loggedInUser, user);
-			res.render('detailedTweet',{title: 'Detailed Tweet', 
-						loggedInUser: loggedInUser.username, 
-						background: loggedInUser.background,
-						convo: "", 
-						profilePic: userdb[0].profilePic, //change later
-						origTweet: tweets.tweetdb[tweetId],
-						isFollowing: isFollowing,
-						//had to include this because text area did not like <%= origTweet.username %>
-						username: user.username});
-		} else {
-			var user = users.getUserById(tweetconvo[0].username);
-			var isFollowing = users.isFollowing(loggedInUser, user);
-			res.render('detailedTweet',{title: 'Detailed Tweet', 
-						loggedInUser: loggedInUser.username, 
-						background: user.background,
-						convo: tweetconvo, 
-						profilePic: userdb[0].profilePic, //change later
-						origTweet: tweetconvo[0],
-						isFollowing: isFollowing,
-						//had to include this because text area did not like <%= origTweet.username %>
-						username: user.username});
-		}
-	}
+		var isFollowing = false; //default
+		db.getTweetConvoByTweetID(parseInt(tweetId), function(tc) {
+			console.log(tc);
+			if (tc.length === 1) {
+				console.log("only one tweet");
+				db.getUserById(tc[0][0].username,function(user) {
+					db.isF(loggedinusername,tc[0][0].username,function(f) {
+						console.log("inside isF");
+						isFollowing = f;
+						console.log(f);
+						console.log("passed it");
+				});
+					res.render('detailedTweet',{title: 'Detailed Tweet',
+									loggedInUser: loggedinusername, 
+									background: user.background,
+									convo: "", 
+									profilePic: user.profilepic, 
+									origTweet: tc[0][0],
+									isFollowing: isFollowing,
+									//had to include this because text area did not like <%= origTweet.username %>
+									username: loggedinusername});
+				});
+			} else {
+				console.log("entire convo here------");
+				console.log(tc[0][0].username);
+				db.isF(loggedinusername,tc[0][0].username,function(f) {
+						console.log("inside isF");
+						isFollowing = f;
+						console.log(f);
+						console.log("passed it");
+				});
+				db.getUserById(tc[0][0].username,function(user) {
+					var temp = tc[0].slice(1);
+					console.log(temp);
+					console.log(temp.length);
+					res.render('detailedTweet',{title: 'Detailed Tweet',
+									loggedInUser: loggedinusername, 
+									background: user.background,
+									convo: tc[0].slice(1), 
+									profilePic: user.profilepic, 
+									origTweet: tc[0][0],
+									isFollowing: isFollowing,
+									//had to include this because text area did not like <%= origTweet.username %>
+									username: loggedinusername});
+				});
+			}
+		});
 }
 
 // ### Detailed Tweet REPLY Page
@@ -575,17 +596,16 @@ exports.displaySimpleReply = function (req, res) {
  * To get to this page, user can click on Tools icon.
  */
 exports.editSettings = function (req, res){
-	var username = 'cheerfuldonkey';
 	var settingsMsg = req.flash('changeSettings') || '';
 	
-	//var user = req.session.user;
-	/*if (user === undefined || online[user.uid] === undefined) {
+	var user = req.session.user;
+	if (user === undefined || online[user.uid] === undefined) {
 		res.redirect('/');
 	} else {
 		var username = user.username;
 		if(username !== req.params.id){
 			res.redirect('/'+username+'/editSettings');
-		} else {*/
+		} else {
 			db.getUserInfo(username, function(user) {
 				console.log(user);
 				res.render('editSettings', {title: 'Edit Settings', 
@@ -595,8 +615,8 @@ exports.editSettings = function (req, res){
 							pv: user.profvis, 
 							username: user.username});
 			});
-		//}
-	//}
+		}
+	}
 }
 
 // ### Change Settings
@@ -604,16 +624,15 @@ exports.editSettings = function (req, res){
  * Makes changes to user settings.
  */
 exports.changeSettings = function (req, res){
-	/*var user = req.session.user;
+	var user = req.session.user;
 	if (user === undefined || online[user.uid] === undefined) {
 		res.redirect('/');
-	} else {*/
-		//var username = user.username;
-		var username = 'cheerfuldonkey';
+	} else {
+		var username = user.username;
 		db.changeUserSettings(username, req.body.profVis);		
 		req.flash('changeSettings', 'Changes saved.');
 		res.redirect('/'+username+'/editSettings');
-	//}
+	}
 }
 
 // ### Edit Profile Page View
@@ -623,14 +642,13 @@ exports.changeSettings = function (req, res){
  * User must always enter current password to allow changes.
  */
 exports.editProfile = function (req, res){
-	var username = 'cheerfuldonkey';
 	var profileMsg = req.flash('changeProfile') || '';
 	
-	/*var user = req.session.user;
+	var user = req.session.user;
 	if (user === undefined || online[user.uid] === undefined) {
 		res.redirect('/');
 	} else {
-		var username = user.username;*/
+		var username = user.username;
 		db.getUserInfo(username, function(user) {
 				console.log(user);
 				res.render('editProfile', { title: 'Edit Profile',
@@ -644,7 +662,7 @@ exports.editProfile = function (req, res){
 							website: user.website,
 							profilePic: user.profilepic});
 		});
-   //}
+   }
 }
 
 //  ### Change Profile Page
@@ -655,11 +673,11 @@ exports.editProfile = function (req, res){
 */
 exports.changeProfile = function (req, res) {
 	var username = 'cheerfuldonkey';
-	/*var user = req.session.user;
+	var user = req.session.user;
 	if (user === undefined || online[user.uid] === undefined) {
 		res.redirect('/');
 	} else {
-		var username = user.username;*/
+		var username = user.username;
 		console.log("location is " + req.body.location);
 		console.log("email is " + req.body.email);
 		db.changeUserProfile(username, req.body.name, req.body.username, req.body.email, req.body.location, req.body.website, req.body.newpass, req.body.confirmnewpass, req.body.currentpass, function(validChange) {		
@@ -674,7 +692,7 @@ exports.changeProfile = function (req, res) {
 				res.redirect('/'+username+'/editProfile');
 			}
 		});
-	//}
+	}
 }
 
 // ### changeProfilePic
@@ -702,13 +720,13 @@ exports.changeProfilePic = function (req, res) {
     	}else {
 			console.log(req.files);
 			fs.readFile(req.files.profilepic.path, function (err, data) {
-			  var newPath = __dirname + "/../public/images/users/" + req.files.profilepic.name;
-			  fs.writeFile(newPath, data, function (err) {
-				var u = users.getUserById(user.username);
-				console.log("written... " + newPath);
-				u.profilePic = "/images/" + req.files.profilepic.name;
-				res.redirect('/'+u.username+'/editProfile');
-			  });
+				var newPath = __dirname + "/../public/images/users/" + req.files.profilepic.name;
+				fs.writeFile(newPath, data, function (err) {
+					var ppp = "/images/users/" + req.files.profilepic.name;
+					db.changeprofilepic(user.username, ppp);
+					console.log("written... " + newPath);
+					res.redirect('/'+user.username+'/editProfile');
+				});
 			});
     	}
     }
