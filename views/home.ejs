@@ -35,7 +35,7 @@
 			<h2>Timeline:</h2>
 			<div id="tweetList">
 				<% for (var i=0; i < tweets.length; i++) { %>
-					<div class="tweet" id = "t<%= tweets[i].id %>" >
+					<div class="tweet" id = "t<%= tweets[i].tweetid %>" >
 						<b><%= tweets[i].name %></b> <a href="/<%= tweets[i].username %>/profile"> @<%= tweets[i].username %></a>
 						<div class="tmsg">
 							<% var msg = tweets[i].msg %><% msg = msg.split(" ") %>
@@ -50,9 +50,9 @@
 							<% } %>
 						</div>
 						<%= tweets[i].date %><br>
-						<a href="/<%= tweets[i].id %>/detailedTweet">Detail</a> | <a href="/<%= tweets[i].id %>/simpleReply">Reply</a> | <a href="/">Retweet</a>
+						<a href="/<%= tweets[i].tweetid %>/detailedTweet">Detail</a> | <a href="/<%= tweets[i].tweetid %>/simpleReply">Reply</a> | <a href="/">Retweet</a>
 						<% if (loggedInUser === tweets[i].username) { %>
-							 | <a class="delT" id="<%= tweets[i].id %>" href=>Delete</a>
+							 | <a class="delT" id="<%= tweets[i].tweetid %>" href=>Delete</a>
 						<% } %>
 					</div>
 				<% } %>
