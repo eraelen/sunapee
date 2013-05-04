@@ -260,35 +260,6 @@ exports.follower = function(req, res) {
   }
 }*/
 
-/*exports.follower = function(req, res) {
-	var loggedInUser = req.session.user;
-	if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
-		res.redirect('/');
-	} else {
-		loggedInUser = users.getUserById(loggedInUser.username);
-		var user = users.getUserById(req.params.id);
-		if (loggedInUser.username === user.username) {
-			var followerList = users.getFollowerList(loggedInUser.username);
-			res.render('myfollower',
-						{title: 'Follower',
-						 loggedInUser: loggedInUser.username,
-						 background: user.background,
-						 name: loggedInUser.name,
-						 username: loggedInUser.username,
-						 followers: followerList});
-		} else {
-			var followerList = users.getFollowerList(user.username);
-			res.render('follower', 
-	    			{ title: 'Follower',
-	            	  loggedInUser: loggedInUser.username,
-	            	  background: user.background,
-	    			  name: user.name,
-	    			  username: user.username,
-	    			  followers: followerList} );
-		}
-  }
-}*/
-
 //  ### Delete Follower
 /*
 *	In our implementation, users can delete followers.
@@ -310,6 +281,26 @@ loggedInUser = {username: 'tim', name: 'TIM', background: null};
 */
 exports.following = function(req, res) {
 	var loggedInUser = req.session.user;
+	/*if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
+		res.redirect('/');
+	} else {*/
+loggedInUser = {username: 'tim', name: 'TIM', background: null};	
+		db.getUserById(req.params.id, function(user){
+			db.getFollowingList(user.username,function(fl){
+				res.render('following', 
+    			{ title: 'Following',
+            	  loggedInUser: loggedInUser.username,
+            	  background: loggedInUser.background,
+    			  name: user.name,
+    			  username: user.username,
+    			  following: fl} );
+			});
+		});
+  //}
+}
+/*
+exports.following = function(req, res) {
+	var loggedInUser = req.session.user;
 	if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
 		res.redirect('/');
 	} else {
@@ -324,13 +315,29 @@ exports.following = function(req, res) {
     			  username: user.username,
     			  following: followingList} );
   }
-}
+}*/
 
 // ### Unfollow
 /* 
 * Unfollowing users implemented using AJAX
 */
 exports.unfollow = function(req, res){
+	console.log("unfollow");
+	var loggedInUser = req.session.user;
+	/*if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
+		res.redirect('/');
+	} else {*/
+loggedInUser = {username: 'tim', name: 'TIM', background: null};	
+		var rmusername = req.body.rmusername;
+		db.unfollow(loggedInUser.username, rmusername, function(){
+			db.getUserStats(rmusername,function(stats){
+				res.json([rmusername, stats.followerN]);
+			});
+		});
+	//}
+}
+
+/*exports.unfollow = function(req, res){
 	console.log("unfollow");
 	var loggedInUser = req.session.user;
 	if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
@@ -341,7 +348,7 @@ exports.unfollow = function(req, res){
 		var followerN = users.getFollowerNum(rmusername);
 		res.json([rmusername, followerN]);
 	}
-}
+}*/
 
 // ### follow
 /* 
@@ -679,26 +686,26 @@ exports.changeProfile = function (req, res) {
  */
 exports.changeProfilePic = function (req, res) {
 	var flag = false;
-	/*var user = req.session.user;
+	var user = req.session.user;
     if (user === undefined || online[user.uid] === undefined) {
       res.send("Login to view this page.");
     } else {
     	var username = user.username;
     	if(username !== req.params.id){
 	   		res.redirect('/'+username+'/editProfile'); 
-    	}else {*/
-			var username = 'cheerfuldonkey';
+    	}else {
 			console.log(req.files);
 			fs.readFile(req.files.profilepic.path, function (err, data) {
 			  var newPath = __dirname + "/../public/images/" + req.files.profilepic.name;
 			  fs.writeFile(newPath, data, function (err) {
-				db.changeprofilepic(username, req.files.profilepic.name);
+				var u = users.getUserById(user.username);
 				console.log("written... " + newPath);
-				res.redirect('/'+username+'/editProfile');
+				u.profilePic = "/images/" + req.files.profilepic.name;
+				res.redirect('/'+u.username+'/editProfile');
 			  });
 			});
-    	//}
-    //}
+    	}
+    }
 };
 
 // ### chat
