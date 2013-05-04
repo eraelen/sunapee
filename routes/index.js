@@ -18,6 +18,7 @@ var profileMsg = '';
 var fs = require('fs');
 
 var db = require('../lib/sql.js');
+//db.getTByMention("tim", 20, function(err, callback){console.log(callback)});
 //db.searchPeople("tim", function(err,cb){console.log("inindex")});
 //db.searchTweets("Ford", function(err, cb){});
 /*var t = db.getUserById('tim',function(u){
@@ -387,8 +388,9 @@ exports.interaction = function(req, res) {
       if(username !== req.params.id){
         res.redirect('/'+username+'/interaction');
       } else {
-       var tl = tweets.getTByMention(username, 20);
-       res.render('interaction',
+
+       db.getTByMention(username, 20, function(err, tl){
+          res.render('interaction',
               { title: 'Interaction',
                 name: user.name,
                 username: username,
@@ -396,6 +398,7 @@ exports.interaction = function(req, res) {
                 tweets: tl,
                 loggedInUser: user.username
                 });
+       });
      }
    }
 }
@@ -453,15 +456,19 @@ exports.searchP = function (req, res) {
         res.redirect('/');
     } else {
 		var query = req.params.query;
-		db.searchPeople(query, function(results){
-			console.log("here....");
-			console.log(results);
-            res.render('searchP', {title: 'Search Result',
+		db.searchPeople(query, function(err,results){
+			if(err){
+				results(err);
+			}else{
+                console.log("here....");
+			    console.log(results);
+                res.render('searchP', {title: 'Search Result',
 								loggedInUser: user.username,
 								background: user.background,
 								searchPhrase: query,
 								users: results, username: 
-								user.username});	
+								user.username});
+			}	
 		});
    }
 };
