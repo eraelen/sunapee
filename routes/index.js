@@ -557,10 +557,11 @@ exports.detailedTweet = function (req, res) {
 		var tweetId = req.params.tweetId;
 		console.log("tweetId"+tweetId);
 		var isFollowing = false; //default
-		db.getTweetConvoByTweetID(parseInt(tweetId), function(tc) {
-			console.log("tc!!!")
-			console.log(tc);
-			if (tc.length === 1) {
+		db.getTweetConvoByTweetID(parseInt(tweetId), function(myReturn) {
+			var tc = myReturn.tc;
+			var len = myReturn.length;
+			console.log("tc is --- " + tc.username);
+			if (len === 1) {
 				console.log("only one tweet");
 				db.getUserById(tc.username,function(user) {
 					db.isF(loggedinusername,tc.username,function(f) {
@@ -606,6 +607,7 @@ exports.detailedTweet = function (req, res) {
 		});
 	}
 }
+
 
 // ### Detailed Tweet REPLY Page
 /**
