@@ -489,9 +489,7 @@ exports.editSettings = function (req, res){
 							loggedInUser: user.username,
 							msg: settingsMsg, 
 							background: user.background,
-							pv: user.profVis, 
-							mp: user.mentionPerm, 
-							pm: user.pmPerm,
+							pv: user.profvis, 
 							username: user.username});
 			});
 		//}
@@ -512,8 +510,8 @@ exports.changeSettings = function (req, res){
 		db.changeUserSettings(username, req.body.profVis);		
 		req.flash('changeSettings', 'Changes saved.');
 		res.redirect('/'+username+'/editSettings');
-	}
-};
+	//}
+}
 
 // ### Edit Profile Page View
 /**
