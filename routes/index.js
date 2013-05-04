@@ -77,30 +77,36 @@ users.getUserById('tim', function(user) {
 
 exports.home = function(req, res){
   var loggedInUser = req.session.user;
-  var uname = loggedInUser.username;
-  users.getUserById(uname, function(user){
-  	//console.log(JSON.stringify(user));
-  	/*if (user.username !== req.params.id){
-    	res.redirect('/'+user.username+'/home');
-    }else {*/
-    	db.getRecentT(uname, function(tl){
-    		//console.log(tl);
-    		db.getUserStats(uname, function(stats){
-    		res.render('home', 
-    		 { title: 'Home',
-              name: user.name,
-              username: user.username,
-			  profilepic: user.profilepic,
-              tweetN: stats.tweetN,
-              followerN: stats.followerN,
-              followingN: stats.followingN,
-              tweets: tl,
-			  loggedInUser: user.username,
-			  background: user.background,
-               } );
-    		});
-    	});
-    });
+  if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
+    req.flash('userAuth', 'Not logged in!');
+    res.redirect('/');
+  } else {
+	  var uname = loggedInUser.username;
+	  users.getUserById(uname, function(user){
+	  	//console.log(JSON.stringify(user));
+	  	if (user.username !== req.params.id){
+	    	res.redirect('/'+user.username+'/home');
+	    }else {
+	    	db.getRecentT(uname, function(tl){
+	    		//console.log(tl);
+	    		db.getUserStats(uname, function(stats){
+	    		res.render('home', 
+	    		 { title: 'Home',
+	              name: user.name,
+	              username: user.username,
+				  profilepic: user.profilepic,
+	              tweetN: stats.tweetN,
+	              followerN: stats.followerN,
+	              followingN: stats.followingN,
+	              tweets: tl,
+				  loggedInUser: user.username,
+				  background: user.background,
+	               } );
+	    		});
+	    	});
+	    }
+	  });	
+	}
   }
 
 
@@ -116,7 +122,7 @@ exports.newtweet = function(req, res) {
 	var ntweet = tweets.addTweet(user.name, username, req.body.msg, null, null);
 	*/
     var loggedInUser = req.session.user;
-	var username = 'tim';
+	var username = loggedInUser.username;
 	db.addTweet(loggedInUser.name, username, req.body.msg, null, null,function(){
 		db.getUserNT(username,function(t){
 			db.getUserStats(username, function(stats){
@@ -128,13 +134,6 @@ exports.newtweet = function(req, res) {
 	});
 }
 
-/*
-exports.newtweet = function(req, res) {
-	var user = req.session.user;
-	var username = user.username;
-	var ntweet = tweets.addTweet(user.name, username, req.body.msg, null, null);
-	res.json([ntweet,users.getTNumberById(username)]);
-}*/
 
 // ### profile
 /*
@@ -194,12 +193,9 @@ exports.profile = function(req, res) {
 */
 exports.follower = function(req, res) {
 	var loggedInUser = req.session.user;
-	/*if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
+	if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
 		res.redirect('/');
-	} else {*/
-
-		//loggedInUser = users.getUserById(loggedInUser.username);
-		loggedInUser = {username: 'tim', name: 'TIM', background: null};
+	} else {
 		db.getUserById(req.params.id, function(user){
 			console.log("username "+user.username);
 			console.log("logg "+loggedInUser.username);
@@ -225,11 +221,8 @@ exports.follower = function(req, res) {
 			    			  followers: fl} );
 				});
 			}
-		});
-
-
-		
-  //}
+		});	
+  }
 }
 
 /*exports.follower = function(req, res) {
@@ -270,7 +263,6 @@ exports.follower = function(req, res) {
 exports.deleteFollower = function(req, res) {
 	var loggedInUser = req.session.user;
 	var username = req.body.usertbd;
-loggedInUser = {username: 'tim', name: 'TIM', background: null};	
 	db.deleteFollower(loggedInUser.username, username, function(){
 		res.send(username);
 	});
@@ -282,10 +274,9 @@ loggedInUser = {username: 'tim', name: 'TIM', background: null};
 */
 exports.following = function(req, res) {
 	var loggedInUser = req.session.user;
-	/*if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
+	if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
 		res.redirect('/');
-	} else {*/
-loggedInUser = {username: 'tim', name: 'TIM', background: null};	
+	} else {
 		db.getUserById(req.params.id, function(user){
 			db.getFollowingList(user.username,function(fl){
 				res.render('following', 
@@ -297,7 +288,7 @@ loggedInUser = {username: 'tim', name: 'TIM', background: null};
     			  following: fl} );
 			});
 		});
-  //}
+  }
 }
 /*
 exports.following = function(req, res) {
@@ -325,17 +316,16 @@ exports.following = function(req, res) {
 exports.unfollow = function(req, res){
 	console.log("unfollow");
 	var loggedInUser = req.session.user;
-	/*if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
+	if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
 		res.redirect('/');
-	} else {*/
-loggedInUser = {username: 'tim', name: 'TIM', background: null};	
+	} else {
 		var rmusername = req.body.rmusername;
 		db.unfollow(loggedInUser.username, rmusername, function(){
 			db.getUserStats(rmusername,function(stats){
 				res.json([rmusername, stats.followerN]);
 			});
 		});
-	//}
+	}
 }
 
 /*exports.unfollow = function(req, res){
