@@ -648,7 +648,7 @@ exports.changeProfilePic = function (req, res) {
 			var username = 'cheerfuldonkey';
 			console.log(req.files);
 			fs.readFile(req.files.profilepic.path, function (err, data) {
-			  var newPath = __dirname + "/../public/images/" + req.files.profilepic.name;
+			  var newPath = __dirname + "/../public/images/users/" + req.files.profilepic.name;
 			  fs.writeFile(newPath, data, function (err) {
 				db.changeprofilepic(username, req.files.profilepic.name);
 				console.log("written... " + newPath);
