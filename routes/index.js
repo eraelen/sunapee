@@ -91,18 +91,21 @@ exports.home = function(req, res){
 	    }else {
 	    	db.getRecentT(uname, function(err, tl){
 	    		db.getUserStats(uname, function(stats){
-	    		res.render('home', 
-	    		 { title: 'Home',
-	              name: user.name,
-	              username: user.username,
-				  profilepic: user.profilepic,
-	              tweetN: stats.tweetN,
-	              followerN: stats.followerN,
-	              followingN: stats.followingN,
-	              tweets: tl,
-				  loggedInUser: user.username,
-				  background: user.background,
-	               } );
+					db.getTrendingHT(function(ht){
+						res.render('home', 
+						 { title: 'Home',
+						  name: user.name,
+						  username: user.username,
+						  profilepic: user.profilepic,
+						  tweetN: stats.tweetN,
+						  followerN: stats.followerN,
+						  followingN: stats.followingN,
+						  tweets: tl,
+						  loggedInUser: user.username,
+						  background: user.background,
+						  ht: ht
+						   } );
+					});
 	    		});
 	    	});
 	    }
