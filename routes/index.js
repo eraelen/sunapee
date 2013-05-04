@@ -605,8 +605,9 @@ exports.changeProfile = function (req, res) {
 		res.redirect('/');
 	} else {
 		var username = user.username;*/
+		console.log("location is " + req.body.location);
+		console.log("email is " + req.body.email);
 		db.changeUserProfile(username, req.body.name, req.body.username, req.body.email, req.body.location, req.body.website, req.body.newpass, req.body.confirmnewpass, req.body.currentpass, function(validChange) {		
-			console.log("in index.js " + validChange);
 			if (validChange.b) {
 				username = validChange.username;
 				req.flash('changeProfile', 'Changes saved.');
