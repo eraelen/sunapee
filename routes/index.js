@@ -503,12 +503,13 @@ exports.editSettings = function (req, res){
  * Makes changes to user settings.
  */
 exports.changeSettings = function (req, res){
-	var user = req.session.user;
+	/*var user = req.session.user;
 	if (user === undefined || online[user.uid] === undefined) {
 		res.redirect('/');
-	} else {
-		var username = user.username;
-		users.changeUserSettings(username, req.body.profVis, req.body.mentionPerm, req.body.pmPerm);		
+	} else {*/
+		//var username = user.username;
+		var username = 'tim';
+		db.changeUserSettings(username, req.body.profVis);		
 		req.flash('changeSettings', 'Changes saved.');
 		res.redirect('/'+username+'/editSettings');
 	}
