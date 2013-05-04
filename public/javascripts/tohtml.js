@@ -75,7 +75,7 @@ function tweetToHtml(t) {
 	var a = t.msg.split(" ");
 	content += '<div class="tweet" id = "t'+t.id+'" ><b>'+t.name+'</b> <a href="/'+t.username+'/profile"> @'+t.username+'</a>'
 		  +'<div class="tmsg">'+msgToHtml(t.msg)+'</div>'
-		  +new Date(t.date)+'<br>'
+		  + t.date +'<br>'
 		  +'<a href="/'+t.id+'/detailedTweet">Detail</a> | ' 
 		  +'<a href="/'+t.id+'/simpleReply">Reply</a> | '
 		  +'<a href="/">Retweet</a> | '

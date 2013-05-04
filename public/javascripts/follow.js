@@ -1,4 +1,5 @@
 function delFollower(username) {
+	console.log("deleteFollower "+username);
 	$.ajax({
 		type: 'POST',
 		url: '/deleteFollower',

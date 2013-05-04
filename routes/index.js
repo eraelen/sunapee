@@ -193,6 +193,46 @@ exports.profile = function(req, res) {
 */
 exports.follower = function(req, res) {
 	var loggedInUser = req.session.user;
+	/*if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
+		res.redirect('/');
+	} else {*/
+
+		//loggedInUser = users.getUserById(loggedInUser.username);
+		loggedInUser = {username: 'tim', name: 'TIM', background: null};
+		db.getUserById(req.params.id, function(user){
+			console.log("username "+user.username);
+			console.log("logg "+loggedInUser.username);
+			if (loggedInUser.username === user.username) {
+				db.getFollowerList(loggedInUser.username, function(fl){
+					console.log(fl);
+					res.render('myfollower',
+							{title: 'Follower',
+							 loggedInUser: loggedInUser.username,
+							 background: loggedInUser.background,
+							 name: loggedInUser.name,
+							 username: loggedInUser.username,
+							 followers: fl});
+				});
+			} else {
+				db.getFollowerList(user.username, function(fl){
+					res.render('follower', 
+		    			{ title: 'Follower',
+		            	  loggedInUser: loggedInUser.username,
+		            	  background: loggedInUser.background,
+		    			  name: user.name,
+		    			  username: loggedInUser.username,
+			    			  followers: fl} );
+				});
+			}
+		});
+
+
+		
+  //}
+}
+
+/*exports.follower = function(req, res) {
+	var loggedInUser = req.session.user;
 	if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
 		res.redirect('/');
 	} else {
@@ -218,7 +258,7 @@ exports.follower = function(req, res) {
 	    			  followers: followerList} );
 		}
   }
-}
+}*/
 
 /*exports.follower = function(req, res) {
 	var loggedInUser = req.session.user;
@@ -257,9 +297,11 @@ exports.follower = function(req, res) {
 */
 exports.deleteFollower = function(req, res) {
 	var loggedInUser = req.session.user;
-	var user = req.body.usertbd;
-	users.deleteFollower(loggedInUser, user);
-	res.send(user);
+	var username = req.body.usertbd;
+loggedInUser = {username: 'tim', name: 'TIM', background: null};	
+	db.deleteFollower(loggedInUser.username, username, function(){
+		res.send(username);
+	});
 }
 
 // ### following
