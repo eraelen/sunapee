@@ -567,23 +567,24 @@ exports.simpleReply = function (req, res) {
 		req.flash('userAuth', 'Not logged in!');
 		res.redirect('/');
 	} else {
+		var loggedinusername = loggedInUser.username;
 		var tweetId = req.params.tweetId;
-		db.getUserById(loggedInUser.username, function(user){
-			db.isF(loggedinusername,user.username,function(f) {
-						console.log("inside isF");
-						isFollowing = f;
-						console.log(f);
-						console.log("passed it");
+		db.getTweetById(parseInt(tweetId), function(t) {
+			console.log("returned t is " + t.username);
+			db.getUserById(t.username,function(user) {
+				db.isF(loggedinusername,t.username,function(f) {
+					isFollowing = f;
+				});
+				res.render('detailedTweet',{title: 'Simple Reply',
+								loggedInUser: loggedinusername, 
+								background: user.background,
+								convo: "", 
+								profilePic: user.profilepic, 
+								origTweet: t,
+								isFollowing: isFollowing,
+								//had to include this because text area did not like <%= origTweet.username %>
+								username: loggedinusername});
 			});
-			res.render('detailedTweet',{title: 'Simple Reply', 
-					loggedInUser: loggedInUser.username, 
-					background: loggedInUser.background,
-					convo: "", 
-					profilePic: user.profilePic, 
-					origTweet: tweets.tweetdb[tweetId],
-					isFollowing: isFollowing,
-					//had to include this because text area did not like <%= origTweet.username %>
-					username: tweets.tweetdb[tweetId].username});
 		});
 	}
 }
@@ -595,9 +596,15 @@ exports.simpleReply = function (req, res) {
 */
 exports.displaySimpleReply = function (req, res) {
 	var user = req.session.user;
-	var tweetId = req.params.tweetId;	
-	tweets.addTweet(user.name, user.username, req.body.message, parseInt(tweetId), null);
-	res.redirect('/'+tweetId+'/simpleReply');
+	if (user === undefined || online[user.uid] === undefined) {
+		req.flash('userAuth', 'Not logged in!');
+		res.redirect('/');
+	} else {
+		var tweetId = req.params.tweetId;
+		db.addTweet(user.name, user.username, req.body.message, parseInt(tweetId), null, function() {
+			res.redirect('/'+tweetId+'/simpleReply');
+		});		
+	}
 }
 
 // ### Edit Settings Page View
