@@ -10,7 +10,7 @@
 	<div id="userInfo">
 		<table>
 			<tr>
-				<td><img src="/images/defaultProfilePic.jpg" width="120" height="120" /></td>
+				<td><img src="<%= profilePic %>" width="120" height="120" /></td>
 				<td><%= origTweet.name %><br><a href = "/<%= origTweet.username %>/profile"> @<%= origTweet.username %></td>
 					<% if (loggedInUser !== username) { %>
 						<td id='button'> <% if (isFollowing) { %>
@@ -50,7 +50,7 @@
 	
 	<div id="tweetListContainer" class="elem">
 		<div id="tweetList">
-			<% for (var i=1; i < convo.length; i++) { %>
+			<% for (var i=0; i < convo.length; i++) { %>
 				<div class="tweet" id = "t<%= convo[i].id %>" >
 						<b><%= convo[i].name %></b> <a href="/<%= convo[i].username %>/profile"> @<%= convo[i].username %></a>
 						<div class="tmsg">

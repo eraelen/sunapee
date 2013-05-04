@@ -15,8 +15,30 @@ var mytweets = tweets.tweetdb;
 var conversation = tweets.conversation;
 var profileMsg = '';
 
-
 var fs = require('fs');
+
+var db = require('../lib/sql.js');
+
+/*var t = db.getUserById('tim',function(u){
+	console.log(u);
+});*/
+//var u = db.getUserById('tim');
+//console.log(u);
+/*
+var t = db.getFollowing('caleb',function(fl){
+	console.log(fl);
+});*/
+/*
+users.getUserById('tim', function(user) {
+		console.log(JSON.stringify(user));
+	});*/
+//users.getFollowing('caleb');
+//db.getTNumberById('tim');
+//db.getUserStats('tim');
+//db.getRecentT('tim');
+
+
+
 
 // ## User Server-Side Route-Handlers
 
@@ -24,7 +46,7 @@ var fs = require('fs');
 /*
 *GET home page.
 */
-exports.home = function(req, res){
+/*exports.home = function(req, res){
   var loggedInUser = req.session.user;
   if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
     req.flash('userAuth', 'Not logged in!');
@@ -51,7 +73,42 @@ exports.home = function(req, res){
                } );
     }
   }
-}
+}*/
+
+exports.home = function(req, res){
+  var loggedInUser = req.session.user;
+  if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
+    req.flash('userAuth', 'Not logged in!');
+    res.redirect('/');
+  } else {
+	  var uname = loggedInUser.username;
+	  users.getUserById(uname, function(user){
+	  	//console.log(JSON.stringify(user));
+	  	if (user.username !== req.params.id){
+	    	res.redirect('/'+user.username+'/home');
+	    }else {
+	    	db.getRecentT(uname, function(tl){
+	    		//console.log(tl);
+	    		db.getUserStats(uname, function(stats){
+	    		res.render('home', 
+	    		 { title: 'Home',
+	              name: user.name,
+	              username: user.username,
+				  profilepic: user.profilepic,
+	              tweetN: stats.tweetN,
+	              followerN: stats.followerN,
+	              followingN: stats.followingN,
+	              tweets: tl,
+				  loggedInUser: user.username,
+				  background: user.background,
+	               } );
+	    		});
+	    	});
+	    }
+	  });	
+	}
+  }
+
 
 // ### newtweet
 /*
@@ -60,11 +117,23 @@ exports.home = function(req, res){
 * And redirect to Home page.
 */
 exports.newtweet = function(req, res) {
-	var user = req.session.user;
+	/*var user = req.session.user;
 	var username = user.username;
 	var ntweet = tweets.addTweet(user.name, username, req.body.msg, null, null);
-	res.json([ntweet,users.getTNumberById(username)]);
+	*/
+    var loggedInUser = req.session.user;
+	var username = loggedInUser.username;
+	db.addTweet(loggedInUser.name, username, req.body.msg, null, null,function(){
+		db.getUserNT(username,function(t){
+			db.getUserStats(username, function(stats){
+				console.log(t);
+				res.json([t,stats.tweetN]);
+			});
+		});
+		
+	});
 }
+
 
 // ### profile
 /*
@@ -101,7 +170,7 @@ exports.profile = function(req, res) {
 		} else {
 			console.log("should go here");
 			res.render('error', {title: 'Error - Profile Permission',
-			            background: user.background, 
+			            background: loggedInUser.background, 
 						errorHeader: "Profile Permission",
 						msg: "You are not allowed to view " + user.username+ "'s profile.",
 						username: loggedInUser.username,
@@ -123,6 +192,40 @@ exports.profile = function(req, res) {
 * GET follower page.
 */
 exports.follower = function(req, res) {
+	var loggedInUser = req.session.user;
+	if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
+		res.redirect('/');
+	} else {
+		db.getUserById(req.params.id, function(user){
+			console.log("username "+user.username);
+			console.log("logg "+loggedInUser.username);
+			if (loggedInUser.username === user.username) {
+				db.getFollowerList(loggedInUser.username, function(fl){
+					console.log(fl);
+					res.render('myfollower',
+							{title: 'Follower',
+							 loggedInUser: loggedInUser.username,
+							 background: loggedInUser.background,
+							 name: loggedInUser.name,
+							 username: loggedInUser.username,
+							 followers: fl});
+				});
+			} else {
+				db.getFollowerList(user.username, function(fl){
+					res.render('follower', 
+		    			{ title: 'Follower',
+		            	  loggedInUser: loggedInUser.username,
+		            	  background: loggedInUser.background,
+		    			  name: user.name,
+		    			  username: loggedInUser.username,
+			    			  followers: fl} );
+				});
+			}
+		});	
+  }
+}
+
+/*exports.follower = function(req, res) {
 	var loggedInUser = req.session.user;
 	if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
 		res.redirect('/');
@@ -149,7 +252,7 @@ exports.follower = function(req, res) {
 	    			  followers: followerList} );
 		}
   }
-}
+}*/
 
 //  ### Delete Follower
 /*
@@ -159,15 +262,35 @@ exports.follower = function(req, res) {
 */
 exports.deleteFollower = function(req, res) {
 	var loggedInUser = req.session.user;
-	var user = req.body.usertbd;
-	users.deleteFollower(loggedInUser, user);
-	res.send(user);
+	var username = req.body.usertbd;
+	db.deleteFollower(loggedInUser.username, username, function(){
+		res.send(username);
+	});
 }
 
 // ### following
 /* 
 * GET following page
 */
+exports.following = function(req, res) {
+	var loggedInUser = req.session.user;
+	if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
+		res.redirect('/');
+	} else {
+		db.getUserById(req.params.id, function(user){
+			db.getFollowingList(user.username,function(fl){
+				res.render('following', 
+    			{ title: 'Following',
+            	  loggedInUser: loggedInUser.username,
+            	  background: loggedInUser.background,
+    			  name: user.name,
+    			  username: user.username,
+    			  following: fl} );
+			});
+		});
+  }
+}
+/*
 exports.following = function(req, res) {
 	var loggedInUser = req.session.user;
 	if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
@@ -184,7 +307,7 @@ exports.following = function(req, res) {
     			  username: user.username,
     			  following: followingList} );
   }
-}
+}*/
 
 // ### Unfollow
 /* 
@@ -197,11 +320,26 @@ exports.unfollow = function(req, res){
 		res.redirect('/');
 	} else {
 		var rmusername = req.body.rmusername;
+		db.unfollow(loggedInUser.username, rmusername, function(){
+			db.getUserStats(rmusername,function(stats){
+				res.json([rmusername, stats.followerN]);
+			});
+		});
+	}
+}
+
+/*exports.unfollow = function(req, res){
+	console.log("unfollow");
+	var loggedInUser = req.session.user;
+	if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
+		res.redirect('/');
+	} else {
+		var rmusername = req.body.rmusername;
 		users.unfollow(loggedInUser.username, rmusername);
 		var followerN = users.getFollowerNum(rmusername);
 		res.json([rmusername, followerN]);
 	}
-}
+}*/
 
 // ### follow
 /* 
@@ -214,12 +352,27 @@ exports.follow = function(req, res){
      res.redirect('/');
   } else {
   	  var adduname = req.body.adduname;
+	  db.follow(loggedInUser.username, adduname,function(){
+	  	db.getUserStats(adduname, function(stats){
+	  		res.json([adduname, stats.followerN]);
+	  	})
+	  });
+  }
+
+}
+/*exports.follow = function(req, res){
+	console.log("follow");
+  var loggedInUser = req.session.user;
+  if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
+     res.redirect('/');
+  } else {
+  	  var adduname = req.body.adduname;
       users.follow(loggedInUser.username, adduname);
       var followerN = users.getFollowerNum(adduname);
       res.json([adduname, followerN]);
   }
 
-}
+}*/
 
 // ### interaction
 /* 
@@ -323,40 +476,61 @@ exports.searchBox = function (req,res) {
  * The rest of the conversation appears below the box.
  */
 exports.detailedTweet = function (req, res) {
-	var loggedInUser = req.session.user;
+	/*var loggedInUser = req.session.user;
 	if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
 		req.flash('userAuth', 'Not logged in!');
 		res.redirect('/');
 	} else {
-		//loggedInUser = users.getUserById(loggedInUser.username);
+		//loggedInUser = users.getUserById(loggedInUser.username);*/
+		var loggedinusername = 'tim';
 		var tweetId = req.params.tweetId;
-		var tweetconvo = tweets.getTweetConvoByTweetID(tweetId);
-		if (tweetconvo === null) {
-			var user = users.getUserById(tweets.tweetdb[tweetId].username);
-			var isFollowing = users.isFollowing(loggedInUser, user);
-			res.render('detailedTweet',{title: 'Detailed Tweet', 
-						loggedInUser: loggedInUser.username, 
-						background: loggedInUser.background,
-						convo: "", 
-						profilePic: userdb[0].profilePic, //change later
-						origTweet: tweets.tweetdb[tweetId],
-						isFollowing: isFollowing,
-						//had to include this because text area did not like <%= origTweet.username %>
-						username: user.username});
-		} else {
-			var user = users.getUserById(tweetconvo[0].username);
-			var isFollowing = users.isFollowing(loggedInUser, user);
-			res.render('detailedTweet',{title: 'Detailed Tweet', 
-						loggedInUser: loggedInUser.username, 
-						background: user.background,
-						convo: tweetconvo, 
-						profilePic: userdb[0].profilePic, //change later
-						origTweet: tweetconvo[0],
-						isFollowing: isFollowing,
-						//had to include this because text area did not like <%= origTweet.username %>
-						username: user.username});
-		}
-	}
+		var isFollowing = false; //default
+		db.getTweetConvoByTweetID(parseInt(tweetId), function(tc) {
+			console.log(tc);
+			if (tc.length === 1) {
+				console.log("only one tweet");
+				db.getUserById(tc[0][0].username,function(user) {
+					db.isF(loggedinusername,tc[0][0].username,function(f) {
+						console.log("inside isF");
+						isFollowing = f;
+						console.log(f);
+						console.log("passed it");
+				});
+					res.render('detailedTweet',{title: 'Detailed Tweet',
+									loggedInUser: loggedinusername, 
+									background: user.background,
+									convo: "", 
+									profilePic: user.profilepic, 
+									origTweet: tc[0][0],
+									isFollowing: isFollowing,
+									//had to include this because text area did not like <%= origTweet.username %>
+									username: loggedinusername});
+				});
+			} else {
+				console.log("entire convo here------");
+				console.log(tc[0][0].username);
+				db.isF(loggedinusername,tc[0][0].username,function(f) {
+						console.log("inside isF");
+						isFollowing = f;
+						console.log(f);
+						console.log("passed it");
+				});
+				db.getUserById(tc[0][0].username,function(user) {
+					var temp = tc[0].slice(1);
+					console.log(temp);
+					console.log(temp.length);
+					res.render('detailedTweet',{title: 'Detailed Tweet',
+									loggedInUser: loggedinusername, 
+									background: user.background,
+									convo: tc[0].slice(1), 
+									profilePic: user.profilepic, 
+									origTweet: tc[0][0],
+									isFollowing: isFollowing,
+									//had to include this because text area did not like <%= origTweet.username %>
+									username: loggedinusername});
+				});
+			}
+		});
 }
 
 // ### Detailed Tweet REPLY Page
@@ -422,8 +596,9 @@ exports.displaySimpleReply = function (req, res) {
  * To get to this page, user can click on Tools icon.
  */
 exports.editSettings = function (req, res){
-	var user = req.session.user;
 	var settingsMsg = req.flash('changeSettings') || '';
+	
+	var user = req.session.user;
 	if (user === undefined || online[user.uid] === undefined) {
 		res.redirect('/');
 	} else {
@@ -431,17 +606,18 @@ exports.editSettings = function (req, res){
 		if(username !== req.params.id){
 			res.redirect('/'+username+'/editSettings');
 		} else {
-			res.render('editSettings', {title: 'Edit Settings', 
-			loggedInUser: username,
-			msg: settingsMsg, 
-			background: user.background,
-			pv: users.userdb[user.uid-1].profVis, 
-			mp: users.userdb[user.uid-1].mentionPerm, 
-			pm: users.userdb[user.uid-1].pmPerm,
-			username: username});
+			db.getUserInfo(username, function(user) {
+				console.log(user);
+				res.render('editSettings', {title: 'Edit Settings', 
+							loggedInUser: user.username,
+							msg: settingsMsg, 
+							background: user.background,
+							pv: user.profvis, 
+							username: user.username});
+			});
 		}
-	} 
-};
+	}
+}
 
 // ### Change Settings
 /**
@@ -453,11 +629,11 @@ exports.changeSettings = function (req, res){
 		res.redirect('/');
 	} else {
 		var username = user.username;
-		users.changeUserSettings(username, req.body.profVis, req.body.mentionPerm, req.body.pmPerm);		
+		db.changeUserSettings(username, req.body.profVis);		
 		req.flash('changeSettings', 'Changes saved.');
 		res.redirect('/'+username+'/editSettings');
 	}
-};
+}
 
 // ### Edit Profile Page View
 /**
@@ -466,24 +642,29 @@ exports.changeSettings = function (req, res){
  * User must always enter current password to allow changes.
  */
 exports.editProfile = function (req, res){
-	var user = req.session.user;
 	var profileMsg = req.flash('changeProfile') || '';
+	
+	var user = req.session.user;
 	if (user === undefined || online[user.uid] === undefined) {
 		res.redirect('/');
 	} else {
 		var username = user.username;
-		res.render('editProfile', { title: 'Edit Profile',
-					loggedInUser: username,
-					msg: profileMsg,
-					background: user.background,
-					name: users.userdb[user.uid-1].name,
-					username: users.userdb[user.uid-1].username,
-					email: users.userdb[user.uid-1].email,
-					location: users.userdb[user.uid-1].location,
-					website: users.userdb[user.uid-1].website,
-					profilePic: users.userdb[user.uid-1].profilePic});
+		db.getUserInfo(username, function(user) {
+				console.log(user);
+				res.render('editProfile', { title: 'Edit Profile',
+							loggedInUser: user.username,
+							msg: profileMsg,
+							background: user.background,
+							name: user.name,
+							username: user.username,
+							email: user.email,
+							location: user.location,
+							website: user.website,
+							profilePic: user.profilepic});
+		});
    }
-};
+}
+
 //  ### Change Profile Page
 /**
 *  Route for actually changing the profile page.
@@ -491,20 +672,26 @@ exports.editProfile = function (req, res){
 *  Users will be informed whether the changes are saved or not.
 */
 exports.changeProfile = function (req, res) {
+	var username = 'cheerfuldonkey';
 	var user = req.session.user;
 	if (user === undefined || online[user.uid] === undefined) {
 		res.redirect('/');
 	} else {
 		var username = user.username;
-		var validChange = users.changeUserProfile(username, req.body.name, req.body.username, req.body.email, req.body.location, req.body.website, req.body.newpass, req.body.confirmnewpass, req.body.currentpass, req, user);		
-		if (validChange.b) {
-			username = validChange.user.username;
-			req.flash('changeProfile', 'Changes saved.');
-			res.redirect('/'+username+'/editProfile');
-		} else {
-			req.flash('changeProfile', validChange.error);
-			res.redirect('/'+username+'/editProfile');
-		}
+		console.log("location is " + req.body.location);
+		console.log("email is " + req.body.email);
+		db.changeUserProfile(username, req.body.name, req.body.username, req.body.email, req.body.location, req.body.website, req.body.newpass, req.body.confirmnewpass, req.body.currentpass, function(validChange) {		
+		db.getUserInfo(username, function(user) {
+				console.log(user);});	
+			if (validChange.b) {
+				username = validChange.username;
+				req.flash('changeProfile', 'Changes saved.');
+				res.redirect('/'+username+'/editProfile');
+			} else {
+				req.flash('changeProfile', validChange.error);
+				res.redirect('/'+username+'/editProfile');
+			}
+		});
 	}
 }
 
@@ -533,13 +720,13 @@ exports.changeProfilePic = function (req, res) {
     	}else {
 			console.log(req.files);
 			fs.readFile(req.files.profilepic.path, function (err, data) {
-			  var newPath = __dirname + "/../public/images/users/" + username + "/" + req.files.profilepic.name;
-			  fs.writeFile(newPath, data, function (err) {
-				var u = users.getUserById(user.username);
-				console.log("written... " + newPath);
-				u.profilePic = "/images/users/" + username + "/" + req.files.profilepic.name;
-				res.redirect('/'+u.username+'/editProfile');
-			  });
+				var newPath = __dirname + "/../public/images/users/" + req.files.profilepic.name;
+				fs.writeFile(newPath, data, function (err) {
+					var ppp = "/images/users/" + req.files.profilepic.name;
+					db.changeprofilepic(user.username, ppp);
+					console.log("written... " + newPath);
+					res.redirect('/'+user.username+'/editProfile');
+				});
 			});
     	}
     }

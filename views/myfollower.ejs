@@ -34,6 +34,7 @@
 	$('.delFollower').bind('click',
     function (event) {
 		var bid = $(this).attr("id");
+		console.log("listener");
 		delFollower(bid);	
 		return false;
     });
