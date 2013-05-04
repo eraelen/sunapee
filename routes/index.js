@@ -637,26 +637,26 @@ exports.changeProfile = function (req, res) {
  */
 exports.changeProfilePic = function (req, res) {
 	var flag = false;
-	var user = req.session.user;
+	/*var user = req.session.user;
     if (user === undefined || online[user.uid] === undefined) {
       res.send("Login to view this page.");
     } else {
     	var username = user.username;
     	if(username !== req.params.id){
 	   		res.redirect('/'+username+'/editProfile'); 
-    	}else {
+    	}else {*/
+			var username = 'cheerfuldonkey';
 			console.log(req.files);
 			fs.readFile(req.files.profilepic.path, function (err, data) {
 			  var newPath = __dirname + "/../public/images/" + req.files.profilepic.name;
 			  fs.writeFile(newPath, data, function (err) {
-				var u = users.getUserById(user.username);
+				db.changeprofilepic(username, req.files.profilepic.name);
 				console.log("written... " + newPath);
-				u.profilePic = "/images/" + req.files.profilepic.name;
-				res.redirect('/'+u.username+'/editProfile');
+				res.redirect('/'+username+'/editProfile');
 			  });
 			});
-    	}
-    }
+    	//}
+    //}
 };
 
 // ### chat
