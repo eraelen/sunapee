@@ -170,7 +170,7 @@ exports.profile = function(req, res) {
 		} else {
 			console.log("should go here");
 			res.render('error', {title: 'Error - Profile Permission',
-			            background: user.background, 
+			            background: loggedInUser.background, 
 						errorHeader: "Profile Permission",
 						msg: "You are not allowed to view " + user.username+ "'s profile.",
 						username: loggedInUser.username,
