@@ -79,12 +79,12 @@ exports.home = function(req, res){
   //var loggedInUser = req.session.user;
   var uname = 'tim';
   users.getUserById(uname, function(user){
-  	console.log(JSON.stringify(user));
+  	//console.log(JSON.stringify(user));
   	/*if (user.username !== req.params.id){
     	res.redirect('/'+user.username+'/home');
     }else {*/
     	db.getRecentT(uname, function(tl){
-    		console.log(tl);
+    		//console.log(tl);
     		db.getUserStats(uname, function(stats){
     		res.render('home', 
     		 { title: 'Home',
@@ -111,11 +111,29 @@ exports.home = function(req, res){
 * And redirect to Home page.
 */
 exports.newtweet = function(req, res) {
+	/*var user = req.session.user;
+	var username = user.username;
+	var ntweet = tweets.addTweet(user.name, username, req.body.msg, null, null);
+	*/
+	var username = 'tim';
+	db.addTweet('TIM', username, req.body.msg, null, null,function(){
+		db.getUserNT(username,function(t){
+			db.getUserStats(username, function(stats){
+				console.log(t);
+				res.json([t,stats.tweetN]);
+			});
+		});
+		
+	});
+}
+
+/*
+exports.newtweet = function(req, res) {
 	var user = req.session.user;
 	var username = user.username;
 	var ntweet = tweets.addTweet(user.name, username, req.body.msg, null, null);
 	res.json([ntweet,users.getTNumberById(username)]);
-}
+}*/
 
 // ### profile
 /*
@@ -201,6 +219,35 @@ exports.follower = function(req, res) {
 		}
   }
 }
+
+/*exports.follower = function(req, res) {
+	var loggedInUser = req.session.user;
+	if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
+		res.redirect('/');
+	} else {
+		loggedInUser = users.getUserById(loggedInUser.username);
+		var user = users.getUserById(req.params.id);
+		if (loggedInUser.username === user.username) {
+			var followerList = users.getFollowerList(loggedInUser.username);
+			res.render('myfollower',
+						{title: 'Follower',
+						 loggedInUser: loggedInUser.username,
+						 background: user.background,
+						 name: loggedInUser.name,
+						 username: loggedInUser.username,
+						 followers: followerList});
+		} else {
+			var followerList = users.getFollowerList(user.username);
+			res.render('follower', 
+	    			{ title: 'Follower',
+	            	  loggedInUser: loggedInUser.username,
+	            	  background: user.background,
+	    			  name: user.name,
+	    			  username: user.username,
+	    			  followers: followerList} );
+		}
+  }
+}*/
 
 //  ### Delete Follower
 /*
