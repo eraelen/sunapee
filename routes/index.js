@@ -476,13 +476,12 @@ exports.searchBox = function (req,res) {
  * The rest of the conversation appears below the box.
  */
 exports.detailedTweet = function (req, res) {
-	/*var loggedInUser = req.session.user;
+	var loggedInUser = req.session.user;
 	if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
 		req.flash('userAuth', 'Not logged in!');
 		res.redirect('/');
 	} else {
-		//loggedInUser = users.getUserById(loggedInUser.username);*/
-		var loggedinusername = 'tim';
+		var loggedinusername = loggedInUser.username;
 		var tweetId = req.params.tweetId;
 		var isFollowing = false; //default
 		db.getTweetConvoByTweetID(parseInt(tweetId), function(myReturn) {
@@ -533,6 +532,7 @@ exports.detailedTweet = function (req, res) {
 				});
 			}
 		});
+	}
 }
 
 // ### Detailed Tweet REPLY Page
