@@ -505,7 +505,7 @@ exports.detailedTweet = function (req, res) {
 									origTweet: tc,
 									isFollowing: isFollowing,
 									//had to include this because text area did not like <%= origTweet.username %>
-									username: loggedinusername});
+									username: tc.username});
 				});
 			} else {
 				console.log("entire convo here------");
@@ -528,7 +528,7 @@ exports.detailedTweet = function (req, res) {
 									origTweet: tc[0],
 									isFollowing: isFollowing,
 									//had to include this because text area did not like <%= origTweet.username %>
-									username: loggedinusername});
+									username: tc[0].username});
 				});
 			}
 		});
@@ -583,7 +583,7 @@ exports.simpleReply = function (req, res) {
 								origTweet: t,
 								isFollowing: isFollowing,
 								//had to include this because text area did not like <%= origTweet.username %>
-								username: loggedinusername});
+								username: t.username});
 			});
 		});
 	}
