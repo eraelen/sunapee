@@ -545,8 +545,9 @@ exports.detailedTweetReply = function (req, res) {
 		res.redirect('/');
 	} else {
 		var tweetId = req.params.tweetId;	
-		tweets.addTweet(user.name, user.username, req.body.message, parseInt(tweetId), null);
-		res.redirect('/'+tweetId+'/detailedTweet');
+		db.addTweet(user.name, user.username, req.body.message, parseInt(tweetId), null, function() {
+			res.redirect('/'+tweetId+'/detailedTweet');
+		});		
 	}
 }
 
@@ -557,23 +558,30 @@ exports.detailedTweetReply = function (req, res) {
 *  Can be improved: Create a div for compose box once the "Reply" link is clicked.
 */
 exports.simpleReply = function (req, res) {
+	var isFollowing = false;
 	var loggedInUser = req.session.user;
 	if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
 		req.flash('userAuth', 'Not logged in!');
 		res.redirect('/');
 	} else {
 		var tweetId = req.params.tweetId;
-		var user = users.getUserById(tweets.tweetdb[tweetId].username);
-		var isFollowing = users.isFollowing(loggedInUser, user);
-		res.render('detailedTweet',{title: 'Simple Reply', 
+		db.getUserById(loggedInUser.username, function(user){
+			db.isF(loggedinusername,user.username,function(f) {
+						console.log("inside isF");
+						isFollowing = f;
+						console.log(f);
+						console.log("passed it");
+			});
+			res.render('detailedTweet',{title: 'Simple Reply', 
 					loggedInUser: loggedInUser.username, 
 					background: loggedInUser.background,
 					convo: "", 
-					profilePic: userdb[0].profilePic, 
+					profilePic: user.profilePic, 
 					origTweet: tweets.tweetdb[tweetId],
 					isFollowing: isFollowing,
 					//had to include this because text area did not like <%= origTweet.username %>
 					username: tweets.tweetdb[tweetId].username});
+		});
 	}
 }
 
