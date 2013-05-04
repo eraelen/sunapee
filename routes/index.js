@@ -473,9 +473,10 @@ exports.displaySimpleReply = function (req, res) {
  * To get to this page, user can click on Tools icon.
  */
 exports.editSettings = function (req, res){
-	//var user = req.session.user;
 	var username = 'tim';
 	var settingsMsg = req.flash('changeSettings') || '';
+	
+	//var user = req.session.user;
 	/*if (user === undefined || online[user.uid] === undefined) {
 		res.redirect('/');
 	} else {
@@ -520,24 +521,30 @@ exports.changeSettings = function (req, res){
  * User must always enter current password to allow changes.
  */
 exports.editProfile = function (req, res){
-	var user = req.session.user;
+	var username = 'tim';
 	var profileMsg = req.flash('changeProfile') || '';
+	
+	/*var user = req.session.user;
 	if (user === undefined || online[user.uid] === undefined) {
 		res.redirect('/');
 	} else {
-		var username = user.username;
-		res.render('editProfile', { title: 'Edit Profile',
-					loggedInUser: username,
-					msg: profileMsg,
-					background: user.background,
-					name: users.userdb[user.uid-1].name,
-					username: users.userdb[user.uid-1].username,
-					email: users.userdb[user.uid-1].email,
-					location: users.userdb[user.uid-1].location,
-					website: users.userdb[user.uid-1].website,
-					profilePic: users.userdb[user.uid-1].profilePic});
-   }
-};
+		var username = user.username;*/
+		db.getUserInfo(username, function(user) {
+				console.log(user);
+				res.render('editProfile', { title: 'Edit Profile',
+							loggedInUser: user.username,
+							msg: profileMsg,
+							background: user.background,
+							name: user.name,
+							username: user.username,
+							email: user.email,
+							location: user.location,
+							website: user.website,
+							profilePic: user.profilePic});
+		});
+   //}
+}
+
 //  ### Change Profile Page
 /**
 *  Route for actually changing the profile page.
@@ -545,21 +552,24 @@ exports.editProfile = function (req, res){
 *  Users will be informed whether the changes are saved or not.
 */
 exports.changeProfile = function (req, res) {
-	var user = req.session.user;
+	var username = 'tim';
+	/*var user = req.session.user;
 	if (user === undefined || online[user.uid] === undefined) {
 		res.redirect('/');
 	} else {
-		var username = user.username;
-		var validChange = users.changeUserProfile(username, req.body.name, req.body.username, req.body.email, req.body.location, req.body.website, req.body.newpass, req.body.confirmnewpass, req.body.currentpass, req, user);		
-		if (validChange.b) {
-			username = validChange.user.username;
-			req.flash('changeProfile', 'Changes saved.');
-			res.redirect('/'+username+'/editProfile');
-		} else {
-			req.flash('changeProfile', validChange.error);
-			res.redirect('/'+username+'/editProfile');
-		}
-	}
+		var username = user.username;*/
+		db.changeUserProfile(username, req.body.name, req.body.username, req.body.email, req.body.location, req.body.website, req.body.newpass, req.body.confirmnewpass, req.body.currentpass, function(validChange) {		
+			console.log("in index.js " + validChange);
+			if (validChange.b) {
+				username = validChange.username;
+				req.flash('changeProfile', 'Changes saved.');
+				res.redirect('/'+username+'/editProfile');
+			} else {
+				req.flash('changeProfile', validChange.error);
+				res.redirect('/'+username+'/editProfile');
+			}
+		});
+	//}
 }
 
 // ### changeProfilePic
