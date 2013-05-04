@@ -152,6 +152,7 @@ exports.profile = function(req, res) {
 					if (allow) {
 						db.getUserStats(user.username, function(stats){
 							db.isFollowing(loggedInUser.username, user.username, function(isFollowing){
+								console.log("isFollowing in profile " + isFollowing);
 								db.getUserT(user.username, function(tl){
 									res.render('profile',
 									  {title: 'Profile',
