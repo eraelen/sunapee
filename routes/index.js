@@ -361,12 +361,27 @@ exports.follow = function(req, res){
      res.redirect('/');
   } else {
   	  var adduname = req.body.adduname;
+	  db.follow(loggedInUser.username, adduname,function(){
+	  	db.getUserStats(adduname, function(stats){
+	  		res.json([adduname, stats.followerN]);
+	  	})
+	  });
+  }
+
+}
+/*exports.follow = function(req, res){
+	console.log("follow");
+  var loggedInUser = req.session.user;
+  if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
+     res.redirect('/');
+  } else {
+  	  var adduname = req.body.adduname;
       users.follow(loggedInUser.username, adduname);
       var followerN = users.getFollowerNum(adduname);
       res.json([adduname, followerN]);
   }
 
-}
+}*/
 
 // ### interaction
 /* 
