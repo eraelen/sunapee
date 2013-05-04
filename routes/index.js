@@ -90,7 +90,7 @@ exports.home = function(req, res){
     		 { title: 'Home',
               name: user.name,
               username: user.username,
-			  profilepic: user.profilePic,
+			  profilepic: user.profilepic,
               tweetN: stats.tweetN,
               followerN: stats.followerN,
               followingN: stats.followingN,
@@ -587,7 +587,7 @@ exports.editProfile = function (req, res){
 							email: user.email,
 							location: user.location,
 							website: user.website,
-							profilePic: user.profilePic});
+							profilePic: user.profilepic});
 		});
    //}
 }
@@ -647,11 +647,11 @@ exports.changeProfilePic = function (req, res) {
     	}else {
 			console.log(req.files);
 			fs.readFile(req.files.profilepic.path, function (err, data) {
-			  var newPath = __dirname + "/../public/images/users/" + username + "/" + req.files.profilepic.name;
+			  var newPath = __dirname + "/../public/images/" + req.files.profilepic.name;
 			  fs.writeFile(newPath, data, function (err) {
 				var u = users.getUserById(user.username);
 				console.log("written... " + newPath);
-				u.profilePic = "/images/users/" + username + "/" + req.files.profilepic.name;
+				u.profilePic = "/images/" + req.files.profilepic.name;
 				res.redirect('/'+u.username+'/editProfile');
 			  });
 			});
