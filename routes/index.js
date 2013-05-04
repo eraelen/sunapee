@@ -486,12 +486,11 @@ exports.detailedTweet = function (req, res) {
 		var tweetId = req.params.tweetId;
 		var isFollowing = false; //default
 		db.getTweetConvoByTweetID(parseInt(tweetId), function(tc) {
-			console.log("tc is --- " + tc);
-			console.log("tc[0] is --- " + tc[0]);
-			if (tc.length === 1) {
+			console.log("tc is --- " + tc.username);
+			if (tc === null) {
 				console.log("only one tweet");
-				db.getUserById(tc[0].username,function(user) {
-					db.isF(loggedinusername,tc[0].username,function(f) {
+				db.getUserById(tc.username,function(user) {
+					db.isF(loggedinusername,tc.username,function(f) {
 						console.log("inside isF");
 						isFollowing = f;
 						console.log(f);
@@ -502,7 +501,7 @@ exports.detailedTweet = function (req, res) {
 									background: user.background,
 									convo: "", 
 									profilePic: user.profilepic, 
-									origTweet: tc[0],
+									origTweet: tc,
 									isFollowing: isFollowing,
 									//had to include this because text area did not like <%= origTweet.username %>
 									username: loggedinusername});
