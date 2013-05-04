@@ -88,7 +88,7 @@ exports.home = function(req, res){
 	    	res.redirect('/'+user.username+'/home');
 	    }else {
 	    	db.getRecentT(uname, function(tl){
-	    		//console.log(tl);
+	    		console.log(tl);
 	    		db.getUserStats(uname, function(stats){
 	    		res.render('home', 
 	    		 { title: 'Home',
