@@ -18,7 +18,8 @@ var profileMsg = '';
 var fs = require('fs');
 
 var db = require('../lib/sql.js');
-
+//db.searchPeople("tim", function(err,cb){console.log("inindex")});
+//db.searchTweets("Ford", function(err, cb){});
 /*var t = db.getUserById('tim',function(u){
 	console.log(u);
 });*/
@@ -35,9 +36,7 @@ users.getUserById('tim', function(user) {
 //users.getFollowing('caleb');
 //db.getTNumberById('tim');
 //db.getUserStats('tim');
-//db.getRecentT('tim');
-
-
+//db.getRecentT('hazel');
 
 
 // ## User Server-Side Route-Handlers
@@ -82,13 +81,14 @@ exports.home = function(req, res){
     res.redirect('/');
   } else {
 	  var uname = loggedInUser.username;
+	  console.log("uname "+uname);
 	  users.getUserById(uname, function(user){
 	  	//console.log(JSON.stringify(user));
+	  	console.log("user "+user.username);
 	  	if (user.username !== req.params.id){
 	    	res.redirect('/'+user.username+'/home');
 	    }else {
-	    	db.getRecentT(uname, function(tl){
-	    		console.log(tl);
+	    	db.getRecentT(uname, function(err, tl){
 	    		db.getUserStats(uname, function(stats){
 	    		res.render('home', 
 	    		 { title: 'Home',
@@ -428,12 +428,18 @@ exports.searchT = function (req,res) {
         res.redirect('/');
     } else {
 		var query = req.params.query;
-		var results = tweets.searchTweets(query);
-		res.render('searchT', {title: 'Search Result',
+		db.searchTweets(query, function(err, results){
+			if(err){
+				results(err);
+			}else{
+                res.render('searchT', {title: 'Search Result',
 								loggedInUser: user.username,
 								background: user.background,
 								searchPhrase: query,
-								tweets: results, username: user.username});	
+								tweets: results, 
+								username: user.username});
+			}	
+		});
    }
 };
 
@@ -444,16 +450,20 @@ exports.searchT = function (req,res) {
 exports.searchP = function (req, res) {
 	var user = req.session.user;
 	if (user === undefined || online[user.uid] === undefined) {
-		res.redirect('/');
-	} else {
+        res.redirect('/');
+    } else {
 		var query = req.params.query;
-		var results = users.searchPeople(query);
-		res.render('searchP', {title: 'Search Result',
+		db.searchPeople(query, function(results){
+			console.log("here....");
+			console.log(results);
+            res.render('searchP', {title: 'Search Result',
 								loggedInUser: user.username,
 								background: user.background,
 								searchPhrase: query,
-								users: results, username: user.username});
-	}
+								users: results, username: 
+								user.username});	
+		});
+   }
 };
 
 // ### Search Box from Navigation Bar
@@ -481,14 +491,17 @@ exports.detailedTweet = function (req, res) {
 		req.flash('userAuth', 'Not logged in!');
 		res.redirect('/');
 	} else {
-		var loggedinusername = loggedInUser.username;
+		//loggedInUser = users.getUserById(loggedInUser.username);*/
+		console.log("username");
+		console.log(req.session.user.username);
+		var loggedinusername = req.session.user.username;
 		var tweetId = req.params.tweetId;
+		console.log("tweetId"+tweetId);
 		var isFollowing = false; //default
-		db.getTweetConvoByTweetID(parseInt(tweetId), function(myReturn) {
-			var tc = myReturn.tc;
-			var len = myReturn.length;
-			console.log("tc is --- " + tc.username);
-			if (len === 1) {
+		db.getTweetConvoByTweetID(parseInt(tweetId), function(tc) {
+			console.log("tc!!!")
+			console.log(tc);
+			if (tc.length === 1) {
 				console.log("only one tweet");
 				db.getUserById(tc.username,function(user) {
 					db.isF(loggedinusername,tc.username,function(f) {

@@ -17,7 +17,7 @@
 	<div id="rightContainer">		
 		<div id="searchResults" class="elem">
 			<h3>Results for <font color="red"><%= searchPhrase %></font> :</h3>
-			<% if (tweets !== null) { %>
+			<% if (tweets.length > 0) { %>
 				<% for (var i=0; i < tweets.length; i++) { %>
 					<div class="tweet" id = "t<%= tweets[i].id %>" >
 					<b><%= tweets[i].name %></b> <a href="/<%= tweets[i].username %>/profile"> @<%= tweets[i].username %></a>
