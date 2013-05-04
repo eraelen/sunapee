@@ -578,11 +578,8 @@ exports.detailedTweet = function (req, res) {
 		res.redirect('/');
 	} else {
 		//loggedInUser = users.getUserById(loggedInUser.username);*/
-		console.log("username");
-		console.log(req.session.user.username);
 		var loggedinusername = req.session.user.username;
 		var tweetId = req.params.tweetId;
-		console.log("tweetId"+tweetId);
 		var isFollowing = false; //default
 		db.getTweetConvoByTweetID(parseInt(tweetId), function(myReturn) {
 			var tc = myReturn.tc;
@@ -591,13 +588,8 @@ exports.detailedTweet = function (req, res) {
 			if (len === 1) {
 				console.log("only one tweet");
 				db.getUserById(tc.username,function(user) {
-					db.isF(loggedinusername,tc.username,function(f) {
-						console.log("inside isF");
-						isFollowing = f;
-						console.log(f);
-						console.log("passed it");
-				});
-					res.render('detailedTweet',{title: 'Detailed Tweet',
+					db.isFollowing(loggedinusername, user.username, function(isFollowing){	
+						res.render('detailedTweet',{title: 'Detailed Tweet',
 									loggedInUser: loggedinusername, 
 									background: user.background,
 									convo: "", 
@@ -606,29 +598,22 @@ exports.detailedTweet = function (req, res) {
 									isFollowing: isFollowing,
 									//had to include this because text area did not like <%= origTweet.username %>
 									username: tc.username});
+					});
 				});
 			} else {
-				console.log("entire convo here------");
-				console.log(tc[0].username);
-				db.isF(loggedinusername,tc[0].username,function(f) {
-						console.log("inside isF");
-						isFollowing = f;
-						console.log(f);
-						console.log("passed it");
-				});
 				db.getUserById(tc[0].username,function(user) {
-					var temp = tc.slice(1);
-					console.log(temp);
-					console.log(temp.length);
-					res.render('detailedTweet',{title: 'Detailed Tweet',
-									loggedInUser: loggedinusername, 
-									background: user.background,
-									convo: tc.slice(1), 
-									profilePic: user.profilepic, 
-									origTweet: tc[0],
-									isFollowing: isFollowing,
-									//had to include this because text area did not like <%= origTweet.username %>
-									username: tc[0].username});
+					db.isFollowing(loggedinusername, user.username, function(isFollowing){	
+						var temp = tc.slice(1);
+						res.render('detailedTweet',{title: 'Detailed Tweet',
+										loggedInUser: loggedinusername, 
+										background: user.background,
+										convo: tc.slice(1), 
+										profilePic: user.profilepic, 
+										origTweet: tc[0],
+										isFollowing: isFollowing,
+										//had to include this because text area did not like <%= origTweet.username %>
+										username: tc[0].username});
+					});
 				});
 			}
 		});
@@ -648,7 +633,6 @@ exports.detailedTweetReply = function (req, res) {
 		res.redirect('/');
 	} else {
 		var tweetId = req.params.tweetId;
-		console.log("tweetId is --- " + tweetId);
 		db.addTweet(user.name, user.username, req.body.message, parseInt(tweetId), null, function() {
 			res.redirect('/'+tweetId+'/detailedTweet');
 		});		
@@ -671,12 +655,9 @@ exports.simpleReply = function (req, res) {
 		var loggedinusername = loggedInUser.username;
 		var tweetId = req.params.tweetId;
 		db.getTweetById(parseInt(tweetId), function(t) {
-			console.log("returned t is " + t.username);
 			db.getUserById(t.username,function(user) {
-				db.isF(loggedinusername,t.username,function(f) {
-					isFollowing = f;
-				});
-				res.render('detailedTweet',{title: 'Simple Reply',
+				db.isFollowing(loggedinusername, t.username, function(isFollowing){	
+					res.render('detailedTweet',{title: 'Simple Reply',
 								loggedInUser: loggedinusername, 
 								background: user.background,
 								convo: "", 
@@ -685,6 +666,7 @@ exports.simpleReply = function (req, res) {
 								isFollowing: isFollowing,
 								//had to include this because text area did not like <%= origTweet.username %>
 								username: t.username});
+				});
 			});
 		});
 	}
@@ -702,8 +684,6 @@ exports.displaySimpleReply = function (req, res) {
 		res.redirect('/');
 	} else {
 		var tweetId = req.params.tweetId;
-		console.log(user.name);
-		console.log(user.username);
 		db.addTweet(user.name, user.username, req.body.message, parseInt(tweetId), null, function() {
 			res.redirect('/'+tweetId+'/simpleReply');
 		});		
@@ -728,7 +708,6 @@ exports.editSettings = function (req, res){
 			res.redirect('/'+username+'/editSettings');
 		} else {
 			db.getUserInfo(username, function(user) {
-				console.log(user);
 				res.render('editSettings', {title: 'Edit Settings', 
 							loggedInUser: user.username,
 							msg: settingsMsg, 
@@ -771,7 +750,6 @@ exports.editProfile = function (req, res){
 	} else {
 		var username = user.username;
 		db.getUserInfo(username, function(user) {
-				console.log(user);
 				res.render('editProfile', { title: 'Edit Profile',
 							loggedInUser: user.username,
 							msg: profileMsg,
@@ -793,40 +771,30 @@ exports.editProfile = function (req, res){
 *  Users will be informed whether the changes are saved or not.
 */
 exports.changeProfile = function (req, res) {
-	var username = 'cheerfuldonkey';
 	var user = req.session.user;
 	if (user === undefined || online[user.uid] === undefined) {
 		res.redirect('/');
 	} else {
 		var username = user.username;
-		console.log("location is " + req.body.location);
-		console.log("email is " + req.body.email);
 		db.changeUserProfile(username, req.body.name, req.body.username, req.body.email, req.body.location, req.body.website, req.body.newpass, req.body.confirmnewpass, req.body.currentpass, function(validChange) {		
-		db.getUserInfo(username, function(user) {
-				console.log(user);});	
 			if (validChange.b) {
 				username = validChange.username;
-				req.flash('changeProfile', 'Changes saved.');
-				res.redirect('/'+username+'/editProfile');
+				db.getUserInfo(username, function(user) {	
+					req.flash('changeProfile', 'Changes saved.');
+					res.redirect('/'+username+'/editProfile');
+				});
 			} else {
 				req.flash('changeProfile', validChange.error);
 				res.redirect('/'+username+'/editProfile');
 			}
+			
 		});
 	}
 }
 
 // ### changeProfilePic
 /**
- * Makes changes to profile picture
- * 
- * This version does not support uploading the file though that form is active.
- * It returns fake image upload at the moment.
- * 
- * This is separated from the rest of the form for changing profile information because it was
- * getting frustrating to figure out the uploading image part which was not really part of this project.
- * Once the image upload is figured out, it will be merged with the rest of the data for changing profile
- * or user information.
+ * Makes changes to profile picture. This is separated from the rest of the form for changing profile information.
  * 
  */
 exports.changeProfilePic = function (req, res) {
@@ -839,13 +807,11 @@ exports.changeProfilePic = function (req, res) {
     	if(username !== req.params.id){
 	   		res.redirect('/'+username+'/editProfile'); 
     	}else {
-			console.log(req.files);
 			fs.readFile(req.files.profilepic.path, function (err, data) {
 				var newPath = __dirname + "/../public/images/users/" + req.files.profilepic.name;
 				fs.writeFile(newPath, data, function (err) {
 					var ppp = "/images/users/" + req.files.profilepic.name;
 					db.changeprofilepic(user.username, ppp);
-					console.log("written... " + newPath);
 					res.redirect('/'+user.username+'/editProfile');
 				});
 			});
@@ -908,6 +874,10 @@ exports.saveBackground = function (req, res){
     }
 }
 
+// ### deleteTweet
+/*
+*	Deletes tweet using AJAX. Users can only delete their own tweets.
+*/
 exports.deleteTweet = function (req, res) {
 	var user = req.session.user
 	if (user === undefined || online[user.uid] === undefined) {
@@ -916,7 +886,6 @@ exports.deleteTweet = function (req, res) {
 		var tweetId = req.body.tweetID;
 		db.deleteTweet(tweetId);
 		db.getTNumberById(user.username, function(tc) {
-			console.log("tweetCount " + tc);
 			res.json([req.body.tweetID,tc]);
 		});		
 	}	
