@@ -73,13 +73,13 @@ function tweetToHtml(t) {
 	console.log("went to tweettohtml");
 	var content='';
 	var a = t.msg.split(" ");
-	content += '<div class="tweet" id = "t'+t.id+'" ><b>'+t.name+'</b> <a href="/'+t.username+'/profile"> @'+t.username+'</a>'
+	content += '<div class="tweet" id = "t'+t.tweetid+'" ><b>'+t.name+'</b> <a href="/'+t.username+'/profile"> @'+t.username+'</a>'
 		  +'<div class="tmsg">'+msgToHtml(t.msg)+'</div>'
 		  + t.date +'<br>'
-		  +'<a href="/'+t.id+'/detailedTweet">Detail</a> | ' 
-		  +'<a href="/'+t.id+'/simpleReply">Reply</a> | '
+		  +'<a href="/'+t.tweetid+'/detailedTweet">Detail</a> | ' 
+		  +'<a href="/'+t.tweetid+'/simpleReply">Reply</a> | '
 		  +'<a href="/">Retweet</a> | '
-		  + '<a class="delT" id="'+t.id+'" href=>Delete</a> '
+		  + '<a class="delT" id="'+t.tweetid+'" href=>Delete</a> '
 		  +'</div>';
   return content;
 }
