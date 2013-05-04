@@ -82,6 +82,16 @@ foreign key (tweetid) references tweets(tweetid),
 foreign key (atusername) references users(username)
 
 );
+CREATE TABLE verifyUsers (
+uid integer primary key autoincrement,
+username varchar(15) not null,
+name varchar(30) not null,
+password varchar(30) not null,
+email varchar(30) not null,
+location varchar(30),
+website varchar(50),
+randVarCode varchar(15)
+);
 
 
 
