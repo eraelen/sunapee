@@ -115,8 +115,9 @@ exports.newtweet = function(req, res) {
 	var username = user.username;
 	var ntweet = tweets.addTweet(user.name, username, req.body.msg, null, null);
 	*/
+    var loggedInUser = req.session.user;
 	var username = 'tim';
-	db.addTweet('TIM', username, req.body.msg, null, null,function(){
+	db.addTweet(loggedInUser.name, username, req.body.msg, null, null,function(){
 		db.getUserNT(username,function(t){
 			db.getUserStats(username, function(stats){
 				console.log(t);
