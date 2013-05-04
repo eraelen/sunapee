@@ -486,11 +486,12 @@ exports.detailedTweet = function (req, res) {
 		var tweetId = req.params.tweetId;
 		var isFollowing = false; //default
 		db.getTweetConvoByTweetID(parseInt(tweetId), function(tc) {
-			console.log(tc);
+			console.log("tc is --- " + tc);
+			console.log("tc[0] is --- " + tc[0]);
 			if (tc.length === 1) {
 				console.log("only one tweet");
-				db.getUserById(tc[0][0].username,function(user) {
-					db.isF(loggedinusername,tc[0][0].username,function(f) {
+				db.getUserById(tc[0].username,function(user) {
+					db.isF(loggedinusername,tc[0].username,function(f) {
 						console.log("inside isF");
 						isFollowing = f;
 						console.log(f);
@@ -501,30 +502,30 @@ exports.detailedTweet = function (req, res) {
 									background: user.background,
 									convo: "", 
 									profilePic: user.profilepic, 
-									origTweet: tc[0][0],
+									origTweet: tc[0],
 									isFollowing: isFollowing,
 									//had to include this because text area did not like <%= origTweet.username %>
 									username: loggedinusername});
 				});
 			} else {
 				console.log("entire convo here------");
-				console.log(tc[0][0].username);
-				db.isF(loggedinusername,tc[0][0].username,function(f) {
+				console.log(tc[0].username);
+				db.isF(loggedinusername,tc[0].username,function(f) {
 						console.log("inside isF");
 						isFollowing = f;
 						console.log(f);
 						console.log("passed it");
 				});
-				db.getUserById(tc[0][0].username,function(user) {
-					var temp = tc[0].slice(1);
+				db.getUserById(tc[0].username,function(user) {
+					var temp = tc.slice(1);
 					console.log(temp);
 					console.log(temp.length);
 					res.render('detailedTweet',{title: 'Detailed Tweet',
 									loggedInUser: loggedinusername, 
 									background: user.background,
-									convo: tc[0].slice(1), 
+									convo: tc.slice(1), 
 									profilePic: user.profilepic, 
-									origTweet: tc[0][0],
+									origTweet: tc[0],
 									isFollowing: isFollowing,
 									//had to include this because text area did not like <%= origTweet.username %>
 									username: loggedinusername});
@@ -544,7 +545,8 @@ exports.detailedTweetReply = function (req, res) {
 		req.flash('userAuth', 'Not logged in!');
 		res.redirect('/');
 	} else {
-		var tweetId = req.params.tweetId;	
+		var tweetId = req.params.tweetId;
+		console.log("tweetId is --- " + tweetId);
 		db.addTweet(user.name, user.username, req.body.message, parseInt(tweetId), null, function() {
 			res.redirect('/'+tweetId+'/detailedTweet');
 		});		
