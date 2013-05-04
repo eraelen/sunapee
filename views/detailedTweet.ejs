@@ -51,7 +51,7 @@
 	<div id="tweetListContainer" class="elem">
 		<div id="tweetList">
 			<% for (var i=0; i < convo.length; i++) { %>
-				<div class="tweet" id = "t<%= convo[i].id %>" >
+				<div class="tweet" id = "t<%= convo[i].tweetid %>" >
 						<b><%= convo[i].name %></b> <a href="/<%= convo[i].username %>/profile"> @<%= convo[i].username %></a>
 						<div class="tmsg">
 							<% var msg = convo[i].msg %><% msg = msg.split(" ") %>
@@ -66,9 +66,9 @@
 							<% } %>
 						</div>
 						<%= convo[i].date %><br>
-						<a href="/<%= convo[i].id %>/detailedTweet">Detail</a> | <a href="/<%= convo[i].id %>/simpleReply">Reply</a> | <a href="/">Retweet</a>
+						<a href="/<%= convo[i].tweetid %>/detailedTweet">Detail</a> | <a href="/<%= convo[i].tweetid %>/simpleReply">Reply</a> | <a href="/">Retweet</a>
 						<% if (loggedInUser === convo[i].username) { %>
-							 | <a class="delT" id="<%= convo[i].id %>" href=>Delete</a>
+							 | <a class="delT" id="<%= convo[i].tweetid %>" href=>Delete</a>
 						<% } %>
 				</div>
 			<% } %>
