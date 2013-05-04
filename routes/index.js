@@ -159,7 +159,7 @@ exports.profile = function(req, res) {
 									   background: user.background,
 									   name: user.name,
 									   username: user.username,
-									   profilepic: user.profilePic,
+									   profilepic: user.profilepic,
 									   tweetN: stats.tweetN,
 									   followerN: stats.followerN,
 									   followingN: stats.followingN,
