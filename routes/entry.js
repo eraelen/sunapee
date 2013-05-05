@@ -4,7 +4,6 @@
 // ## Global variables
 //The user and tweet files in the lib directory is accessed. 
 //Variable 'online' is a logged in database.
-var tweets = require('../lib/tweets');
 var users = require('../lib/initEntry.js');
 var online = {};
 exports.online = online; 

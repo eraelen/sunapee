@@ -1,4 +1,3 @@
-var users = require('../lib/users');
 var messageList = [];
 exports.messageList = messageList;
 // Server-side support for chat app:

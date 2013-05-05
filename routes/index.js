@@ -4,15 +4,11 @@
 // ## Global variables
 //The user and tweet files in the lib directory is accessed. 
 //Variable 'online' is a logged in database.
-var users = require('../lib/users');
-var tweets = require('../lib/tweets');
 var entry = require('../routes/entry');
 var online = entry.online;
 var chat = require('../chat/index');
 
-var userdb = users.userdb;
-var mytweets = tweets.tweetdb;
-var conversation = tweets.conversation;
+
 var profileMsg = '';
 
 var fs = require('fs');
@@ -34,7 +30,7 @@ exports.home = function(req, res){
     res.redirect('/');
   } else {
 	  var uname = loggedInUser.username;
-	  users.getUserById(uname, function(user){
+	  db.getUserById(uname, function(user){
 	  	if (user.username !== req.params.id){
 	    	res.redirect('/'+user.username+'/home');
 	    }else {
@@ -79,6 +75,21 @@ exports.newtweet = function(req, res) {
 			});
 		});
 		
+	});
+}
+
+// ### retweet
+/*
+* GET retweet and redirect to home.
+*/
+exports.retweet = function(req, res) {
+	var loggedInUser = req.session.user;
+	var username = loggedInUser.username;
+	var retid = req.params.tweetId;
+	db.getTweetById(retid, function(t){
+		db.addTweet(loggedInUser.name, username, "retweet from @"+t.username+" : "+t.msg, null, retid,function(){
+			res.redirect('/');
+		});
 	});
 }
 

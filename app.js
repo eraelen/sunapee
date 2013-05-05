@@ -74,6 +74,7 @@ app.post('/:tweetId/detailedTweetReply', routes.detailedTweetReply);
 app.get('/:tweetId/simpleReply', routes.simpleReply);
 app.post('/:tweetId/displaySimpleReply', routes.detailedTweetReply);
 app.post('/deleteTweet', routes.deleteTweet);
+app.get('/:tweetId/retweet', routes.retweet);
 
 //###4. Edit Content Routes
 app.get('/:id/editProfile', routes.editProfile);

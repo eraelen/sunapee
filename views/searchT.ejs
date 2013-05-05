@@ -39,7 +39,7 @@
 						<% } %>
 					</div>
 					<%= tweets[i].date %><br>
-					<a href="/<%= tweets[i].id %>/detailedTweet">Detail</a> | <a href="/<%= tweets[i].id %>/simpleReply">Reply</a> | <a href="/">Retweet</a>
+					<a href="/<%= tweets[i].id %>/detailedTweet">Detail</a> | <a href="/<%= tweets[i].id %>/simpleReply">Reply</a> | <a href="/<%= tweets[i].tweetid %>/retweet">Retweet</a>
 					<% if (loggedInUser === tweets[i].username) { %>
 						 | <a class="delT" id="<%= tweets[i].id %>" href=>Delete</a>
 					<% } %>
