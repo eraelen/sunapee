@@ -34,10 +34,7 @@ exports.home = function(req, res){
     res.redirect('/');
   } else {
 	  var uname = loggedInUser.username;
-	  console.log("uname "+uname);
 	  users.getUserById(uname, function(user){
-	  	//console.log(JSON.stringify(user));
-	  	console.log("user "+user.username);
 	  	if (user.username !== req.params.id){
 	    	res.redirect('/'+user.username+'/home');
 	    }else {
@@ -78,7 +75,6 @@ exports.newtweet = function(req, res) {
 	db.addTweet(loggedInUser.name, username, req.body.msg, null, null,function(){
 		db.getUserNT(username,function(t){
 			db.getUserStats(username, function(stats){
-				console.log(t);
 				res.json([t,stats.tweetN]);
 			});
 		});
@@ -103,7 +99,6 @@ exports.profile = function(req, res) {
 					if (allow) {
 						db.getUserStats(user.username, function(stats){
 							db.isFollowing(loggedInUser.username, user.username, function(isFollowing){
-								console.log("isFollowing in profile " + isFollowing);
 								db.getUserT(user.username, function(tl){
 									db.getTrendingHT(function(ht){
 										res.render('profile',
@@ -147,54 +142,6 @@ exports.profile = function(req, res) {
 
 	}
 }
-/*
-exports.profile = function(req, res) {
-  	var loggedInUser = req.session.user;
-	if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
-		res.redirect('/');
-	} else {
-	  loggedInUser = users.getUserById(loggedInUser.username);
-	  var user = users.getUserById(req.params.id);
-	  if (user !== undefined ) {
-	    //check if logged in user is allowed to view this profile
-		var permission = users.checkProfilePermission(loggedInUser, user);
-		console.log("permission is " + permission);
-		if (permission) {	
-			var username = user.username;
-			var tl = tweets.getTByUser(username, 20);
-			var isFollowing = users.isFollowing(loggedInUser, user);
-			res.render('profile',
-					  {title: 'Profile',
-					   loggedInUser: loggedInUser.username,
-					   background: user.background,
-					   name: user.name,
-					   username: username,
-					   profilepic: user.profilePic,
-					   tweetN: users.getTNumberById(username),
-					   followerN: user.follower.length,
-					   followingN: user.following.length,
-					   isFollowing: isFollowing,
-					   tweets: tl,
-					   background: user.background});
-		} else {
-			console.log("should go here");
-			res.render('error', {title: 'Error - Profile Permission',
-			            background: loggedInUser.background, 
-						errorHeader: "Profile Permission",
-						msg: "You are not allowed to view " + user.username+ "'s profile.",
-						username: loggedInUser.username,
-						loggedInUser: loggedInUser.username});
-		}
-	  } else {
-	    res.render('error', {title: 'Error - User Nonexistent',
-						background: loggedInUser.background,
-						errorHeader: "User does NOT exist",
-						msg: "No one with the username '" + req.params.id + "' exists in Tweetee. Invite your friend to register: tweetee.com/register",
-						username: loggedInUser.username,
-						loggedInUser: loggedInUser.username});
-	  }
-	}
-}*/
 
 // ### follower
 /* 
@@ -206,11 +153,8 @@ exports.follower = function(req, res) {
 		res.redirect('/');
 	} else {
 		db.getUserById(req.params.id, function(user){
-			console.log("username "+user.username);
-			console.log("logg "+loggedInUser.username);
 			if (loggedInUser.username === user.username) {
 				db.getFollowerList(loggedInUser.username, function(fl){
-					console.log(fl);
 					db.getTrendingHT(function(ht){
 						res.render('myfollower',
 							{title: 'Follower',
@@ -241,35 +185,6 @@ exports.follower = function(req, res) {
 		});	
   }
 }
-
-/*exports.follower = function(req, res) {
-	var loggedInUser = req.session.user;
-	if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
-		res.redirect('/');
-	} else {
-		loggedInUser = users.getUserById(loggedInUser.username);
-		var user = users.getUserById(req.params.id);
-		if (loggedInUser.username === user.username) {
-			var followerList = users.getFollowerList(loggedInUser.username);
-			res.render('myfollower',
-						{title: 'Follower',
-						 loggedInUser: loggedInUser.username,
-						 background: user.background,
-						 name: loggedInUser.name,
-						 username: loggedInUser.username,
-						 followers: followerList});
-		} else {
-			var followerList = users.getFollowerList(user.username);
-			res.render('follower', 
-	    			{ title: 'Follower',
-	            	  loggedInUser: loggedInUser.username,
-	            	  background: user.background,
-	    			  name: user.name,
-	    			  username: user.username,
-	    			  followers: followerList} );
-		}
-  }
-}*/
 
 //  ### Delete Follower
 /*
@@ -311,31 +226,12 @@ exports.following = function(req, res) {
 		});
   }
 }
-/*
-exports.following = function(req, res) {
-	var loggedInUser = req.session.user;
-	if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
-		res.redirect('/');
-	} else {
-		loggedInUser = users.getUserById(loggedInUser.username);
-		var user = users.getUserById(req.params.id);
-		var followingList = users.getFollowingList(user.username);
-		res.render('following', 
-    			{ title: 'Following',
-            	  loggedInUser: loggedInUser.username,
-            	  background: user.background,
-    			  name: user.name,
-    			  username: user.username,
-    			  following: followingList} );
-  }
-}*/
 
 // ### Unfollow
 /* 
 * Unfollowing users implemented using AJAX
 */
 exports.unfollow = function(req, res){
-	console.log("unfollow");
 	var loggedInUser = req.session.user;
 	if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
 		res.redirect('/');
@@ -349,25 +245,12 @@ exports.unfollow = function(req, res){
 	}
 }
 
-/*exports.unfollow = function(req, res){
-	console.log("unfollow");
-	var loggedInUser = req.session.user;
-	if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
-		res.redirect('/');
-	} else {
-		var rmusername = req.body.rmusername;
-		users.unfollow(loggedInUser.username, rmusername);
-		var followerN = users.getFollowerNum(rmusername);
-		res.json([rmusername, followerN]);
-	}
-}*/
 
 // ### follow
 /* 
 * POST follow tweets of a user implemented using AJAX
 */
 exports.follow = function(req, res){
-	console.log("follow");
   var loggedInUser = req.session.user;
   if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
      res.redirect('/');
@@ -381,19 +264,6 @@ exports.follow = function(req, res){
   }
 
 }
-/*exports.follow = function(req, res){
-	console.log("follow");
-  var loggedInUser = req.session.user;
-  if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
-     res.redirect('/');
-  } else {
-  	  var adduname = req.body.adduname;
-      users.follow(loggedInUser.username, adduname);
-      var followerN = users.getFollowerNum(adduname);
-      res.json([adduname, followerN]);
-  }
-
-}*/
 
 // ### interaction
 /* 
@@ -410,7 +280,6 @@ exports.interaction = function(req, res) {
       } else {
 
        db.getTByMention(username, 20, function(tl){
-       	console.log("tl "+tl);
 		db.getTrendingHT(function(ht){
           res.render('interaction',
               { title: 'Interaction',
@@ -433,7 +302,6 @@ exports.interaction = function(req, res) {
  */
 exports.help = function (req,res) {
 	var user = req.session.user;
-	console.log("Userback help"+user.background);
 	if (user === undefined || online[user.uid] === undefined) {
         //res.send("Login to view this page.");
         res.redirect('/');
@@ -533,9 +401,7 @@ exports.detailedTweet = function (req, res) {
 		db.getTweetConvoByTweetID(parseInt(tweetId), function(myReturn) {
 			var tc = myReturn.tc;
 			var len = myReturn.length;
-			console.log("tc is --- " + tc.username);
 			if (len === 1) {
-				console.log("only one tweet");
 				db.getUserById(tc.username,function(user) {
 					db.isFollowing(loggedinusername, user.username, function(isFollowing){	
 						res.render('detailedTweet',{title: 'Detailed Tweet',

@@ -1,8 +1,0 @@
-{ 
-    "name"     : "tweets",
-    "verstion" : "0.0.1",
-    "author"   : "Weini Yu, Yoshie Sasaki, Raelen Recto",
-    "description" : "a library for accessing tweets",
-    "main": "./tweets.js" 
-}
-
