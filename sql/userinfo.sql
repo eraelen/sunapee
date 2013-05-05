@@ -26,7 +26,7 @@ CREATE TABLE isfollowings (
 username varchar(15) not null,
 fusername varchar(15) not null,
 primary key (username, fusername),
-foreign key (username, fusername) references userinfo(username, username)
+foreign key (username, fusername) references users(username, username)
 );
 insert into isfollowings values 
 ('tim','tim');
@@ -71,7 +71,7 @@ insert into tweets values
 CREATE TABLE hashtags (
 tweetid integer primary key not null,
 hashtag varchar(40) not null,
-foreign key (tweetid) references users(tweetid)
+foreign key (tweetid) references tweets(tweetid)
 );
 
 CREATE TABLE mentions (
