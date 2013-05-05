@@ -19,9 +19,7 @@ var fs = require('fs');
 
 var db = require('../lib/sql.js');
 
-db.test(function(){
-	console.log("finished");
-});
+
 
 // ## User Server-Side Route-Handlers
 
@@ -29,35 +27,6 @@ db.test(function(){
 /*
 *GET home page.
 */
-/*exports.home = function(req, res){
-  var loggedInUser = req.session.user;
-  if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
-    req.flash('userAuth', 'Not logged in!');
-    res.redirect('/');
-  } else {
-    var user = users.getUserById(loggedInUser.username);
-    var username = user.username;
-    if (username !== req.params.id){
-      res.redirect('/'+username+'/home');
-    }else {
-      console.log("bg - "+user.background);
-      var tl = tweets.getRecentT(username, user.following, 20);
-      res.render('home', 
-            { title: 'Home',
-              name: user.name,
-              username: username,
-			  profilepic: user.profilePic,
-              tweetN: users.getTNumberById(username),
-              followerN: user.follower.length,
-              followingN: user.following.length,
-              tweets: tl,
-			  loggedInUser: user.username,
-			  background: user.background,
-               } );
-    }
-  }
-}*/
-
 exports.home = function(req, res){
   var loggedInUser = req.session.user;
   if (loggedInUser === undefined || online[loggedInUser.uid] === undefined) {
@@ -104,10 +73,6 @@ exports.home = function(req, res){
 * And redirect to Home page.
 */
 exports.newtweet = function(req, res) {
-	/*var user = req.session.user;
-	var username = user.username;
-	var ntweet = tweets.addTweet(user.name, username, req.body.msg, null, null);
-	*/
     var loggedInUser = req.session.user;
 	var username = loggedInUser.username;
 	db.addTweet(loggedInUser.name, username, req.body.msg, null, null,function(){
@@ -445,6 +410,7 @@ exports.interaction = function(req, res) {
       } else {
 
        db.getTByMention(username, 20, function(err, tl){
+       	console.log("tl "+tl);
 		db.getTrendingHT(function(ht){
           res.render('interaction',
               { title: 'Interaction',
