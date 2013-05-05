@@ -41,7 +41,7 @@
 	
 	<div id="composeTweetBox">
 		<form method="post" id="compose" action="/<%= origTweet.tweetid %>/detailedTweetReply">
-			<textarea name="message" cols="60" rows="4">reply to @<%= username %></textarea>
+			<textarea name="message" cols="60" rows="4">reply to @<%= username %> </textarea>
 			<br>
 			<input type="submit" name="submit" value="Reply" />
 		</form>
@@ -93,7 +93,7 @@
     function (event) {
 		var id = $(this).attr("id");
 		$(".replybox#"+id).show();
-		$(".replybox#"+id+" textarea").text("reply to @"+id);
+		$(".replybox#"+id+" textarea").text("reply to @"+id+" ");
     });
 </script>
 
