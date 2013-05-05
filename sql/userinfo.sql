@@ -100,6 +100,6 @@ insert into hashtags values
 (0,"#Ford");
 
 insert into mentions values
-(1,"@tim");
+(1,"tim");
 insert into mentions values
-(1,"@caleb");
+(1,"caleb");

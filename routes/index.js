@@ -97,7 +97,7 @@ exports.profile = function(req, res) {
 		res.redirect('/');
 	} else {
 		db.getUserById(req.params.id, function(user){
-			if (user !== null) {
+			if (user !== undefined) {
 				//user exists
 				db.checkProfilePermission(loggedInUser.username, user.username, function(allow){
 					if (allow) {
@@ -409,7 +409,7 @@ exports.interaction = function(req, res) {
         res.redirect('/'+username+'/interaction');
       } else {
 
-       db.getTByMention(username, 20, function(err, tl){
+       db.getTByMention(username, 20, function(tl){
        	console.log("tl "+tl);
 		db.getTrendingHT(function(ht){
           res.render('interaction',
