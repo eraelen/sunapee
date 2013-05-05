@@ -847,34 +847,6 @@ exports.pm = function (req, res){
     }
 }
 
-// ### changeBackground
-/* 
-* GET changeBackground page
-*/
-exports.changeBackground = function (req, res){
-	var user = req.session.user
-	if (user === undefined || online[user.uid] === undefined) {
-      res.redirect('/');
-    }else{
-	  res.render('changeBackground', { title: 'Change Background', loggedInUser: user.username, username:user.username, background:user.background});
-    }
-}
-
-// ### saveBackground
-/* 
-* Post saveBackground page
-*/
-exports.saveBackground = function (req, res){
-	var user = req.session.user
-	if (user === undefined || online[user.uid] === undefined) {
-      res.redirect('/');
-    }else{
-      var bName = req.body.bName;
-      users.saveUserBackground(user,bName,req);
-	  res.redirect('/'+user.username+'/home');
-    }
-}
-
 // ### deleteTweet
 /*
 *	Deletes tweet using AJAX. Users can only delete their own tweets.
