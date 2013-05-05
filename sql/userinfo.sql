@@ -1,5 +1,5 @@
 CREATE TABLE users (
-uid integer primary key autoincrement,
+uid integer not null primary key autoincrement,
 username varchar(15) not null,
 name varchar(30) not null,
 password varchar(30) not null,
@@ -10,6 +10,7 @@ profilepic varchar(500) not null,
 profvis varchar(20),
 background varchar(100)
 );
+
 insert into users values
 (1,'tim','Tim Berners-Lee','mit',"aqua_manga@yahoo.com","Massachusetts","amazon.com","/images/users/defaultProfilePic.jpg","Public",null);
 insert into users values
@@ -26,8 +27,9 @@ CREATE TABLE isfollowings (
 username varchar(15) not null,
 fusername varchar(15) not null,
 primary key (username, fusername),
-foreign key (username, fusername) references userinfo(username, username)
+foreign key (username, fusername) references users(username, username)
 );
+
 insert into isfollowings values 
 ('tim','tim');
 insert into isfollowings values 
@@ -71,7 +73,7 @@ insert into tweets values
 CREATE TABLE hashtags (
 tweetid integer primary key not null,
 hashtag varchar(40) not null,
-foreign key (tweetid) references users(tweetid)
+foreign key (tweetid) references tweets(tweetid)
 );
 
 CREATE TABLE mentions (
@@ -100,6 +102,6 @@ insert into hashtags values
 (0,"#Ford");
 
 insert into mentions values
-(1,"@tim");
+(1,"tim");
 insert into mentions values
-(1,"@caleb");
+(1,"caleb");

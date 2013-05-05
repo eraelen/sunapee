@@ -10,14 +10,19 @@
 			</p>
 		</div>	
 		<div id="trendHashtags" class="elem">
-			<p>THIS IS trending hash tags</p>
+			<p><b>Trending Hashtags:</b></p>
+			<ul>
+			<% for (var i=0; i < ht.length; i++) { %>
+				<li> <a href="/searchT/<%= ht[i].substring(1) %>"> <%= ht[i] %> </a></li>
+			<% } %>
+			</ul>
 		</div>
 	</div>
 	
 	<div id="rightContainer">		
 		<div id="searchResults" class="elem">
 			<h3>Results for <font color="red"><%= searchPhrase %></font> :</h3>
-			<% if (users !== null) { %>
+			<% if (users.length > 0) { %>
 				<% for (var i=0; i < users.length; i++) { %>
 					<div class= "user">
 						<%= users[i].name %> <a href="/<%= users[i].username %>/profile"> @<%= users[i].username %> </a>

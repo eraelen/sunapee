@@ -40,8 +40,8 @@
 	</p>
 	
 	<div id="composeTweetBox">
-		<form method="post" id="compose" action="/<%= origTweet.id %>/detailedTweetReply">
-			<textarea name="message" cols="60" rows="4">reply to @<%= username %></textarea>
+		<form method="post" id="compose" action="/<%= origTweet.tweetid %>/detailedTweetReply">
+			<textarea name="message" cols="60" rows="4">reply to @<%= username %> </textarea>
 			<br>
 			<input type="submit" name="submit" value="Reply" />
 		</form>
@@ -51,7 +51,7 @@
 	<div id="tweetListContainer" class="elem">
 		<div id="tweetList">
 			<% for (var i=0; i < convo.length; i++) { %>
-				<div class="tweet" id = "t<%= convo[i].id %>" >
+				<div class="tweet" id = "t<%= convo[i].tweetid %>" >
 						<b><%= convo[i].name %></b> <a href="/<%= convo[i].username %>/profile"> @<%= convo[i].username %></a>
 						<div class="tmsg">
 							<% var msg = convo[i].msg %><% msg = msg.split(" ") %>
@@ -66,9 +66,9 @@
 							<% } %>
 						</div>
 						<%= convo[i].date %><br>
-						<a href="/<%= convo[i].id %>/detailedTweet">Detail</a> | <a href="/<%= convo[i].id %>/simpleReply">Reply</a> | <a href="/">Retweet</a>
+						<a href="/<%= convo[i].tweetid %>/detailedTweet">Detail</a> | <a href="/<%= convo[i].tweetid %>/simpleReply">Reply</a> | <a href="/<%= convo[i].tweetid %>/retweet">Retweet</a>
 						<% if (loggedInUser === convo[i].username) { %>
-							 | <a class="delT" id="<%= convo[i].id %>" href=>Delete</a>
+							 | <a class="delT" id="<%= convo[i].tweetid %>" href=>Delete</a>
 						<% } %>
 				</div>
 			<% } %>
@@ -93,7 +93,7 @@
     function (event) {
 		var id = $(this).attr("id");
 		$(".replybox#"+id).show();
-		$(".replybox#"+id+" textarea").text("reply to @"+id);
+		$(".replybox#"+id+" textarea").text("reply to @"+id+" ");
     });
 </script>
 

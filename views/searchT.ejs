@@ -10,14 +10,19 @@
 			</p>
 		</div>	
 		<div id="trendHashtags" class="elem">
-			<p>THIS IS trending hash tags</p>
+			<p><b>Trending Hashtags:</b></p>
+			<ul>
+			<% for (var i=0; i < ht.length; i++) { %>
+				<li> <a href="/searchT/<%= ht[i].substring(1) %>"> <%= ht[i] %> </a></li>
+			<% } %>
+			</ul>
 		</div>
 	</div>
 	
 	<div id="rightContainer">		
 		<div id="searchResults" class="elem">
 			<h3>Results for <font color="red"><%= searchPhrase %></font> :</h3>
-			<% if (tweets !== null) { %>
+			<% if (tweets.length > 0) { %>
 				<% for (var i=0; i < tweets.length; i++) { %>
 					<div class="tweet" id = "t<%= tweets[i].id %>" >
 					<b><%= tweets[i].name %></b> <a href="/<%= tweets[i].username %>/profile"> @<%= tweets[i].username %></a>
@@ -34,7 +39,7 @@
 						<% } %>
 					</div>
 					<%= tweets[i].date %><br>
-					<a href="/<%= tweets[i].id %>/detailedTweet">Detail</a> | <a href="/<%= tweets[i].id %>/simpleReply">Reply</a> | <a href="/">Retweet</a>
+					<a href="/<%= tweets[i].id %>/detailedTweet">Detail</a> | <a href="/<%= tweets[i].id %>/simpleReply">Reply</a> | <a href="/<%= tweets[i].tweetid %>/retweet">Retweet</a>
 					<% if (loggedInUser === tweets[i].username) { %>
 						 | <a class="delT" id="<%= tweets[i].id %>" href=>Delete</a>
 					<% } %>

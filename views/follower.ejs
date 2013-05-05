@@ -11,7 +11,12 @@
 			</p>
 		</div>	
 		<div id="trendHashtags" class="elem">
-			<p>THIS IS trending hash tags</p>
+			<p><b>Trending Hashtags:</b></p>
+			<ul>
+			<% for (var i=0; i < ht.length; i++) { %>
+				<li> <a href="/searchT/<%= ht[i].substring(1) %>"> <%= ht[i] %> </a></li>
+			<% } %>
+			</ul>
 		</div>
 	</div>
 	

@@ -4,25 +4,9 @@
 // ## Global variables
 //The user and tweet files in the lib directory is accessed. 
 //Variable 'online' is a logged in database.
-var tweets = require('../lib/tweets');
 var users = require('../lib/initEntry.js');
 var online = {};
 exports.online = online; 
-//users.lookupCodeCheck("a6gTpX4y3Q", function(user){console.log(user)});
-//users.getUser("tim", "users", function(user){console.log(user)});
-//users.lookupRegistrationParams("hello", "hazel", "email@email.com", "password", "password", "location", "website", function(done){console.log(done)} );
-/*
-users.lookupForgotLoginInfo("ysasaki@smith.edu",function(cb){console.log(cb)});
-users.lookup("", "",function(cb){console.log(cb)});
-users.getUser("tim", "users", function(user){console.log(user)});
-users.getDBlen("users",function(done){console.log("Done");});
-users.createUser("HEllO", "Name", "Pass", "EMAIL", "LOC", "Web" ,function(done){
-   console.log(done);});
-users.createVerUser(":)", "Name", "Pass", "EMAIL", "LOC", "Web" , "NUMBER!!",function(done){
-   console.log(done);
-   });
-});*/
-
 
 // ## User Server-Side Route-Handlers
 
@@ -31,6 +15,7 @@ users.createVerUser(":)", "Name", "Pass", "EMAIL", "LOC", "Web" , "NUMBER!!",fun
 exports.forgotlogin = function(req, res){
   res.render('forgotlogin',{message: ""});
 };
+
 // ### forgotloginProcess
 //Post forgotlogin.ejs with respective message, either error or success.
 exports.forgotloginProcess = function(req, res){
@@ -46,6 +31,7 @@ exports.forgotloginProcess = function(req, res){
 exports.register = function(req, res){
   res.render('register',{message: req.flash("error")});
 };
+
 // ### verify
 //POST to registration.ejs a message indicating if the registration information provided is valid
 exports.verify = function(req, res){
@@ -117,7 +103,6 @@ exports.userAuth = function(req, res) {
     var username = req.body.username;
     var password = req.body.password;
     users.lookup(username, password, function(error, user) {
-      console.log(user);
       if (error) {
         req.flash('userAuth', error);
         res.redirect('/');
