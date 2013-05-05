@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>tohtml.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../../../doc-style.css" />
+  <script src="../../../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../../../", thisFile = "sunapee/public/javascripts/tohtml.js", defaultSidebar = true;
+  </script>
+  <script src="../../../doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+      <div class="heading h3">
+        <a href="#function--tweettohtml">function: tweetToHtml</a>
+      </div>
+      <div class="heading h3">
+        <a href="#function--msgtohtml">function: msgToHtml</a>
+      </div>
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs">
+          <h1>tohtml.js</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function--tweettohtml">
+  <h3>
+    <a href="#function--tweettohtml" class="pilcrow">&#182;</a>
+    <em>function</em>: tweetToHtml
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>Generate HTML to display tweet which includes
+name, @username(hyperlink to user profile), tweet message, date, and Detail(link to detailedTweet page)</p>
+  </div>
+  <div class="body">
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">t,</span>
+      <span>tweet object</span>
+    </div>
+    <div class="dox_tag_title">Returns</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name"></span>
+      <span>content, converted HTML</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="kd">function</span> <span class="nx">tweetToHtml</span><span class="p">(</span><span class="nx">t</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;went to tweettohtml&quot;</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">content</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">msg</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">);</span>
+  <span class="nx">content</span> <span class="o">+=</span> <span class="s1">&#39;&lt;div class=&quot;tweet&quot; id = &quot;t&#39;</span><span class="o">+</span><span class="nx">t</span><span class="p">.</span><span class="nx">tweetid</span><span class="o">+</span><span class="s1">&#39;&quot; &gt;&lt;b&gt;&#39;</span><span class="o">+</span><span class="nx">t</span><span class="p">.</span><span class="nx">name</span><span class="o">+</span><span class="s1">&#39;&lt;/b&gt; &lt;a href=&quot;/&#39;</span><span class="o">+</span><span class="nx">t</span><span class="p">.</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;/profile&quot;&gt; @&#39;</span><span class="o">+</span><span class="nx">t</span><span class="p">.</span><span class="nx">username</span><span class="o">+</span><span class="s1">&#39;&lt;/a&gt;&#39;</span>
+      <span class="o">+</span><span class="s1">&#39;&lt;div class=&quot;tmsg&quot;&gt;&#39;</span><span class="o">+</span><span class="nx">msgToHtml</span><span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">msg</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;&lt;/div&gt;&#39;</span>
+      <span class="o">+</span> <span class="nx">t</span><span class="p">.</span><span class="nx">date</span> <span class="o">+</span><span class="s1">&#39;&lt;br&gt;&#39;</span>
+      <span class="o">+</span><span class="s1">&#39;&lt;a href=&quot;/&#39;</span><span class="o">+</span><span class="nx">t</span><span class="p">.</span><span class="nx">tweetid</span><span class="o">+</span><span class="s1">&#39;/detailedTweet&quot;&gt;Detail&lt;/a&gt; | &#39;</span> 
+      <span class="o">+</span><span class="s1">&#39;&lt;a href=&quot;/&#39;</span><span class="o">+</span><span class="nx">t</span><span class="p">.</span><span class="nx">tweetid</span><span class="o">+</span><span class="s1">&#39;/simpleReply&quot;&gt;Reply&lt;/a&gt; | &#39;</span>
+      <span class="o">+</span><span class="s1">&#39;&lt;a href=&quot;/&quot;&gt;Retweet&lt;/a&gt; | &#39;</span>
+      <span class="o">+</span> <span class="s1">&#39;&lt;a class=&quot;delT&quot; id=&quot;&#39;</span><span class="o">+</span><span class="nx">t</span><span class="p">.</span><span class="nx">tweetid</span><span class="o">+</span><span class="s1">&#39;&quot; href=&gt;Delete&lt;/a&gt; &#39;</span>
+      <span class="o">+</span><span class="s1">&#39;&lt;/div&gt;&#39;</span><span class="p">;</span>
+  <span class="k">return</span> <span class="nx">content</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="function--msgtohtml">
+  <h3>
+    <a href="#function--msgtohtml" class="pilcrow">&#182;</a>
+    <em>function</em>: msgToHtml
+  </h3>
+</div>
+
+
+<div class="dox">
+  <div class="summary"><p>Find @username and #hashtag in a tweet message and convert them to a html href link.
+In order to be recognized as a @username mention, @ symbol must be the start
+of a word. And @username@username is considered invalid and is ignored.
+hashtag starts with # and end before a space. #ford! is considered a hashtag.
+Note: word starting with @ &amp;&amp; cannot have another @, #ford! &lt;- ! in else if statement.</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kd">function</span> <span class="nx">msgToHtml</span><span class="p">(</span><span class="nx">msg</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">msg</span> <span class="o">=</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">content</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">word</span> <span class="o">=</span> <span class="nx">msg</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">word</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">===</span> <span class="s2">&quot;@&quot;</span> <span class="o">&amp;&amp;</span> <span class="nx">word</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot;\@&quot;</span><span class="p">).</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">content</span> <span class="o">+=</span> <span class="s1">&#39; &lt;a href=&quot;/&#39;</span><span class="o">+</span><span class="nx">word</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;/profile&quot;&gt;&#39;</span><span class="o">+</span><span class="nx">word</span><span class="o">+</span><span class="s1">&#39;&lt;/a&gt; &#39;</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">word</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">===</span> <span class="s2">&quot;#&quot;</span> <span class="o">&amp;&amp;</span> <span class="nx">word</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot;\#&quot;</span><span class="p">).</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">content</span> <span class="o">+=</span> <span class="s1">&#39; &lt;a href=&quot;/searchT/&#39;</span><span class="o">+</span><span class="nx">word</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;&quot;&gt;&#39;</span><span class="o">+</span><span class="nx">word</span><span class="o">+</span><span class="s1">&#39;&lt;/a&gt; &#39;</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="nx">content</span> <span class="o">+=</span> <span class="nx">word</span><span class="o">+</span><span class="s2">&quot; &quot;</span><span class="p">;</span>
+    <span class="p">}</span> 
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">content</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>
