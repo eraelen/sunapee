@@ -12,7 +12,6 @@ Here is a list of the files and the main additions we made:
 * Database tables were created using sql/userinfo.sql.
 * Our composing tweet and follow/unfollow user functionalities are still in AJAX.
 * Our chat functionality uses Websockets and could count as our new feature.
-* We also have changing background which is also a new feature.
 * Note that our "trending hashtags" is a simple fetch of saved hashtags in the database.
 
 ## Our Working Features
