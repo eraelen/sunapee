@@ -18,27 +18,10 @@ var profileMsg = '';
 var fs = require('fs');
 
 var db = require('../lib/sql.js');
-//db.getTByMention("tim", 20, function(err, callback){console.log(callback)});
-//db.searchPeople("tim", function(err,cb){console.log("inindex")});
-//db.searchTweets("Ford", function(err, cb){});
-/*var t = db.getUserById('tim',function(u){
-	console.log(u);
-});*/
-//var u = db.getUserById('tim');
-//console.log(u);
-/*
-var t = db.getFollowing('caleb',function(fl){
-	console.log(fl);
-});*/
-/*
-users.getUserById('tim', function(user) {
-		console.log(JSON.stringify(user));
-	});*/
-//users.getFollowing('caleb');
-//db.getTNumberById('tim');
-//db.getUserStats('tim');
-//db.getRecentT('hazel');
 
+db.test(function(){
+	console.log("finished");
+});
 
 // ## User Server-Side Route-Handlers
 
