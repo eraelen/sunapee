@@ -1,5 +1,5 @@
 CREATE TABLE users (
-uid integer not null primary key autoincrement,
+uid integer not null,
 username varchar(15) not null,
 name varchar(30) not null,
 password varchar(30) not null,
@@ -8,19 +8,26 @@ location varchar(30),
 website varchar(50),
 profilepic varchar(500) not null,
 profvis varchar(20),
-background varchar(100)
+background varchar(100),
+primary key (uid, username, name)
 );
+create trigger uid_increment after insert on users
+begin 
+    update users 
+    set uid = (select max(uid) from users)+1
+    where username = new.username;
+end;
 
 insert into users values
-(1,'tim','Tim Berners-Lee','mit',"aqua_manga@yahoo.com","Massachusetts","amazon.com","/images/users/defaultProfilePic.jpg","Public",null);
+(0,'tim','Tim Berners-Lee','mit',"aqua_manga@yahoo.com","Massachusetts","amazon.com","/images/users/defaultProfilePic.jpg","Public",null);
 insert into users values
-(2,'hazel','Hazel Rozetta','lezah',"ysasaki@smith.edu","United States","petco.com", "/images/users/defaultProfilePic.jpg","Public",null);
+(0,'hazel','Hazel Rozetta','lezah',"ysasaki@smith.edu","United States","petco.com", "/images/users/defaultProfilePic.jpg","Public",null);
 insert into users values
-(3,'caleb','Caleb Marks','belac',"ysasaki2014@gmail.com","Asia","ebay.com","/images/users/defaultProfilePic.jpg","Public","");
+(0,'caleb','Caleb Marks','belac',"ysasaki2014@gmail.com","Asia","ebay.com","/images/users/defaultProfilePic.jpg","Public","");
 insert into users values
-(4,'cheerfuldonkey','Eeyore','eeyore',"mynameiseeyore@hundredacrewood.com","Hundred Acre Wood",null,"/images/users/eeyore_profilepic.jpg","Public",null);
+(0,'cheerfuldonkey','Eeyore','eeyore',"mynameiseeyore@hundredacrewood.com","Hundred Acre Wood",null,"/images/users/eeyore_profilepic.jpg","Public",null);
 insert into users values
-(5,'thepooh','Winnie','winnie',"mynameiswinnie@hundredacrewood.com","Hundred Acre Wood", null,"/images/users/pooh_profilepic.jpg","Public",null);
+(0,'thepooh','Winnie','winnie',"mynameiswinnie@hundredacrewood.com","Hundred Acre Wood", null,"/images/users/pooh_profilepic.jpg","Public",null);
 
 
 CREATE TABLE isfollowings (
